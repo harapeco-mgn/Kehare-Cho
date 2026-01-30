@@ -352,7 +352,7 @@ erDiagram
     datetime updated_at
   }
 
-  HARE_TAGS {   a
+  HARE_TAGS {
     bigint id PK
     string key
     string label
