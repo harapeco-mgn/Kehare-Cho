@@ -245,8 +245,7 @@
 ---
 
 ### 画面遷移図
-Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E3%83%AC%E5%B8%96?node-id=0-1&t=7F5Tkesl76UCd2SZ-1show-proto-sidebar=1
-
+Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E3%83%AC%E5%B8%96?node-id=0-1&t=XOe5ncOuIJ0P0DeR-1
 
 ## 💻 技術スタック・設計運用
 
