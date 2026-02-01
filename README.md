@@ -242,9 +242,10 @@
 * 0 / 5 / 15 / 30 / 50
 * ※ここはユーザーテストで調整余地あり。
 
-
-
 ---
+
+### 画面遷移図
+Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E3%83%AC%E5%B8%96?node-id=0-1&t=u5n5VcKf9XwFbOsa-1
 
 ## 💻 技術スタック・設計運用
 
@@ -350,7 +351,7 @@ erDiagram
     datetime updated_at
   }
 
-  HARE_TAGS {   a
+  HARE_TAGS {
     bigint id PK
     string key
     string label
