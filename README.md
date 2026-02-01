@@ -296,7 +296,14 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 - ポイントは「後からルール変更・集計見直し」が起きるため、台帳（トランザクション）で残す
 - stage（見た目段階）は累計ポイントから算出（閾値は設定値として管理）
 
+
+
 ### ER図（MVP想定）
+
+[![Image from Gyazo](https://i.gyazo.com/1c6fbfe9c69d8eb7ae340918d8399406.png)](https://gyazo.com/1c6fbfe9c69d8eb7ae340918d8399406)
+
+[ER図dbdiagram.io](https://dbdiagram.io/d/Kehare-Cho-697ef474bd82f5fce23dcf53)
+
 ```mermaid
 erDiagram
   USERS ||--o{ HARE_ENTRIES : has
