@@ -303,7 +303,7 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 
 ### ER図（MVP想定）
 
-![Image from Gyazo](https://i.gyazo.com/575c38687c52f40c385f39b0f9b0e8d9.png)
+![Image from Gyazo](https://i.gyazo.com/f06d195e36699e74c48cd598227dbbda.png)
 
 [ER図dbdiagram.io](https://dbdiagram.io/d/Kehare-Cho-697ef474bd82f5fce23dcf53)
 
