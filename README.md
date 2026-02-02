@@ -292,15 +292,18 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 ## 🗄 DB構造（MVP想定）
 
 ### ざっくり方針
-- マスタ（ハレタグ／ジャンル／ポイントルール）は seed で初期投入し、改善しやすくする（key は不変、label は変更可）
-- ポイントは「後からルール変更・集計見直し」が起きるため、台帳（トランザクション）で残す
-- stage（見た目段階）は累計ポイントから算出（閾値は設定値として管理）
 
-
+- enum想定の項目（公開範囲/食事形態/調理状況）はDB上は integer（Rails enum）で管理する。
+- 気分タグ（mood）は将来複数化の可能性があるが、MVPでは検証優先のため「mood_tags をマスタ化 + hare_entries は単一FK（mood_tag_id）」で開始する。
+  - 表記ゆれ防止・運用（label変更）を先に実現しつつ、UI/運用コストは抑える。
+  - 複数が必要と確定した場合は、中間テーブルを追加し、単一FKをそのまま移行して段階導入する。
+- is_active を採用し、booleanであることが分かる命名に統一する。
+- meal_searches は「検索結果」ではなく「検索行動ログ」を保持し、履歴表示や改善（よく使われる条件の把握）に活用する。
+- point_rules は seed で管理し、投稿作成/更新時に is_active なルールを priority 順に評価して適用、point_transactions に記録する。
 
 ### ER図（MVP想定）
 
-[![Image from Gyazo](https://i.gyazo.com/1c6fbfe9c69d8eb7ae340918d8399406.png)](https://gyazo.com/1c6fbfe9c69d8eb7ae340918d8399406)
+![Image from Gyazo](https://i.gyazo.com/575c38687c52f40c385f39b0f9b0e8d9.png)
 
 [ER図dbdiagram.io](https://dbdiagram.io/d/Kehare-Cho-697ef474bd82f5fce23dcf53)
 
@@ -317,6 +320,8 @@ erDiagram
   HARE_ENTRIES ||--o{ POINT_TRANSACTIONS : produces
   POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
 
+  MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
+
   USERS {
     bigint id PK
     string email "unique, not null"
@@ -332,14 +337,17 @@ erDiagram
     bigint id PK
     bigint user_id FK
     date occurred_on
-    string visibility "private/public"
+
+    integer visibility "enum: private/public"
+    integer meal_mode "enum: home_cook/ready_meal"
+    integer cook_context "enum: shopping/pantry"
+
     text body "<= 280 chars"
     integer price_yen
     integer awarded_points
-    string meal_mode "home_cook/ready_meal"
-    string cook_context "shopping/pantry"
-    integer minutes
-    string mood_tag
+
+    bigint mood_tag_id FK "single FK (MVP)"
+
     datetime created_at
     datetime updated_at
   }
@@ -349,7 +357,7 @@ erDiagram
     string key "unique, not null (immutable)"
     string label "unique, not null (renameable)"
     integer position
-    boolean active
+    boolean is_active
     datetime created_at
     datetime updated_at
   }
@@ -366,7 +374,7 @@ erDiagram
     string label "unique, not null (renameable)"
     string base_keywords
     integer position
-    boolean active
+    boolean is_active
     datetime created_at
     datetime updated_at
   }
@@ -375,12 +383,22 @@ erDiagram
     bigint id PK
     bigint user_id FK
     bigint genre_id FK
-    string meal_mode
-    string cook_context
+    integer meal_mode
+    integer cook_context
     integer minutes
-    string mood_tag
+    bigint mood_tag_id FK
     string query_text
     datetime created_at
+  }
+
+  MOOD_TAGS {
+    bigint id PK
+    string key "unique, not null (immutable)"
+    string label "unique, not null (renameable)"
+    integer position
+    boolean is_active
+    datetime created_at
+    datetime updated_at
   }
 
   POINT_RULES {
@@ -390,7 +408,7 @@ erDiagram
     integer points "not null"
     json params
     integer priority "not null"
-    boolean active "not null"
+    boolean is_active "not null"
     text description
     datetime created_at
     datetime updated_at
