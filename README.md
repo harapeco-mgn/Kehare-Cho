@@ -167,11 +167,13 @@
 - ハレ投稿（作成 / 一覧 / 詳細 / 編集 / 削除）
 - タグ付け（開発者が用意したタグを付与）
 - ポイント付与（足し算のみ）
+- ポイント付与（減点ルールなし）
   - ルール定義：point_rules（開発者管理）
   - 付与履歴：point_transactions
   - 表示：今月pt、レベル（簡易）
 - カレンダーで振り返り（occurred_on基準）
 - 献立相談（条件入力→候補提示→外部検索、検索ログ保存）
+  - 候補は「料理名マスタ（seedで投入）」から取得する（レシピ本文は保持しない）
 
 ### β（使い続けるための改善＋迷いを減らす）
 目的：MVPを実際に使ってもらい、継続率と迷い（離脱）を改善する
@@ -212,6 +214,10 @@
   - ルール定義：point_rules（key不変・label変更可・points整数）
   - 付与履歴：point_transactions（point_rule_id + pointsスナップショット）
   - 投稿ごとの合計を hare_entries.awarded_points に反映（表示用キャッシュ）
+  - 日次上限：occurred_on 基準で 3pt/日
+  - 投稿更新時：当該投稿の point_transactions を一度削除して再評価・再付与する
+  - 投稿削除時：当該投稿の point_transactions も削除する
+  - ※「減点」は行わない（ただし削除により合計が変動しうる）
 - ホーム表示
   - 今月の獲得ポイント合計の表示（point_transactions を月で集計）
   - レベル表示（累計ポイント等から算出：表示のみ）
@@ -222,6 +228,8 @@
   - ジャンル選択（genres）
   - 条件入力（自炊/中食、買い物/家にある、時間、気分 等）
   - 候補提示→外部検索（Google検索結果へ）
+   - 候補は「料理名マスタ（seedで投入）」から重複なしで最大3つ提示する
+   - 条件に合う候補が不足する場合は、全候補から補完して3つに満たす
   - 検索ログの保存・一覧表示
 - マスタデータ（開発者が用意）
   - ハレタグ（hare_tags）：key不変 / label表示名（変更可）
@@ -231,6 +239,11 @@
 ---
 
 ## 🌟 ポイント・見た目段階（MVP中の想定）
+### ポイント整合の方針（MVP）
+- 日次上限（3pt/日）は、付与時に occurred_on の当日合計を集計し、上限を超えないように調整する。
+- 投稿更新時は、当該投稿に紐づく point_transactions を削除してから、is_active な point_rules を priority 順に再評価して再付与する。
+- 投稿削除時は、当該投稿に紐づく point_transactions も削除する。
+- `hare_entries.awarded_points` は表示用キャッシュとして、作成/更新/削除で必ず同期する。
 
 ### 付与ルール（例）
 ※実装では、数値はコードに直書きせず point_rules（seed）で管理します。
@@ -251,6 +264,15 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 
 ## 💻 技術スタック・設計運用
 
+### i18n 方針
+- アプリのデフォルトロケールは `ja` とする。
+- 認証まわり（Devise）の文言は `devise-i18n` を利用して日本語化する。
+
+### 認証メール（パスワード再設定）運用
+- パスワード再設定メール等の送信は Resend を利用する。
+- メール内URL生成は `APP_HOST`（本番ドメイン）を参照する（`default_url_options` の host）。
+- 本番環境で「送信 → 受信 → 更新」までE2E確認を行う。
+
 ### バックエンド
 | 技術 | 選定理由・妥当性 |
 | --- | --- |
@@ -263,6 +285,7 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 | --- | --- |
 | Hotwire (Turbo + Stimulus) | SPA導入の学習/開発コストを避けつつ、部分更新で高速な体験を実現するため。 |
 | Tailwind CSS + daisyUI | CSS設計コストを削減し、UI構築速度を上げるため。 |
+| simple_calendar | MVPでカレンダー表示を短期間で実装し、振り返り体験を成立させるため。 |
 
 ### その他・インフラ
 | 技術 | 選定理由・妥当性 |
@@ -272,6 +295,11 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 | Node.js / Yarn | Tailwind等のビルドツール管理用。 |
 | PostgreSQL (Neon) | Railsのデファクトであり、サーバーレスでコスト最適化しやすいため。 |
 | RSpec | ドキュメントが豊富で、仕様書として読めるテストで保守性を高めるため。 |
+| Cloudflare | DNS/ドメイン管理。HTTPS前提の運用とホスト管理を整理するため。 |
+| Resend | 認証メール（パスワード再設定等）を本番で安定配信するため。 |
+
+### Turbo/Hotwire と認証フォームについて
+- 認証フォーム（Devise）でTurbo起因の挙動差が出る場合は、DeviseフォームのみTurboを無効化して安定動作を優先する（例：`data-turbo="false"`）。
 
 ---
 
@@ -279,6 +307,7 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 - `app/services/`：外部検索クエリ生成やポイント付与などのビジネスロジック
 - `app/javascript/controllers/`：Stimulusコントローラー（UI補助）
 - `db/seeds/`：マスタデータ（ハレタグ／ジャンル／ポイントルール）
+- 献立候補の料理名も seed で管理する（レシピ本文は保持しない）。必要に応じて検索補助語（例：`base_keywords`）を持たせる。
 
 ---
 
@@ -300,127 +329,144 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 - is_active を採用し、booleanであることが分かる命名に統一する。
 - meal_searches は「検索結果」ではなく「検索行動ログ」を保持し、履歴表示や改善（よく使われる条件の把握）に活用する。
 - point_rules は seed で管理し、投稿作成/更新時に is_active なルールを priority 順に評価して適用、point_transactions に記録する。
+- 献立の「候補3つ提示」は、seedで投入した料理名マスタから取得する（レシピ本文は保持しない）。
 
 ### ER図（MVP想定）
 
-![Image from Gyazo](https://i.gyazo.com/f06d195e36699e74c48cd598227dbbda.png)
+![Image from Gyazo](https://i.gyazo.com/680b1823266804b955bf005db05780a0.png)
 
 [ER図dbdiagram.io](https://dbdiagram.io/d/Kehare-Cho-697ef474bd82f5fce23dcf53)
 
-```mermaid
-erDiagram
-  USERS ||--o{ HARE_ENTRIES : has
-  HARE_ENTRIES ||--o{ HARE_ENTRY_TAGS : has
-  HARE_TAGS ||--o{ HARE_ENTRY_TAGS : has
+ ```mermaid
+ erDiagram
+   USERS ||--o{ HARE_ENTRIES : has
+   HARE_ENTRIES ||--o{ HARE_ENTRY_TAGS : has
+   HARE_TAGS ||--o{ HARE_ENTRY_TAGS : has
+ 
+   USERS ||--o{ MEAL_SEARCHES : has
+   GENRES ||--o{ MEAL_SEARCHES : used_by
+   GENRES ||--o{ MEAL_CANDIDATES : has
+ 
+   USERS ||--o{ POINT_TRANSACTIONS : has
+   HARE_ENTRIES ||--o{ POINT_TRANSACTIONS : produces
+   POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
+ 
+   MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
+   MOOD_TAGS ||--o{ MEAL_CANDIDATES : mood_of
+ 
+   USERS {
+     bigint id PK
+     string email "unique, not null"
+     string encrypted_password "not null"
+     string reset_password_token "unique"
+     datetime reset_password_sent_at
+     datetime remember_created_at
+     datetime created_at
+     datetime updated_at
+   }
+ 
+   HARE_ENTRIES {
+     bigint id PK
+     bigint user_id FK
+     date occurred_on
+ 
+     integer visibility "enum: private/public"
+     integer meal_mode "enum: home_cook/ready_meal"
+     integer cook_context "enum: shopping/pantry"
+ 
+     text body "<= 280 chars"
+     integer price_yen
+     integer awarded_points
+ 
+     bigint mood_tag_id FK "single FK (MVP)"
+ 
+     datetime created_at
+     datetime updated_at
+   }
+ 
+   HARE_TAGS {
+     bigint id PK
+     string key "unique, not null (immutable)"
+     string label "unique, not null (renameable)"
+     integer position
+     boolean is_active
+     datetime created_at
+     datetime updated_at
+   }
+ 
+   HARE_ENTRY_TAGS {
+     bigint id PK
+     bigint hare_entry_id FK
+     bigint hare_tag_id FK
+   }
+ 
+   GENRES {
+     bigint id PK
+     string key "unique, not null (immutable)"
+     string label "unique, not null (renameable)"
+     string base_keywords
+     integer position
+     boolean is_active
+     datetime created_at
+     datetime updated_at
+   }
+ 
+   MEAL_CANDIDATES {
+     bigint id PK
+     bigint genre_id FK
+     string key "unique, not null (immutable)"
+     string label "not null (renameable)"
+     integer meal_mode "nullable enum: home_cook/ready_meal"
+     integer cook_context "nullable enum: shopping/pantry"
+     integer minutes_max
+     bigint mood_tag_id FK "nullable"
+     integer position
+     boolean is_active
+     datetime created_at
+     datetime updated_at
+   }
 
-  USERS ||--o{ MEAL_SEARCHES : has
-  GENRES ||--o{ MEAL_SEARCHES : used_by
-
-  USERS ||--o{ POINT_TRANSACTIONS : has
-  HARE_ENTRIES ||--o{ POINT_TRANSACTIONS : produces
-  POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
-
-  MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
-
-  USERS {
-    bigint id PK
-    string email "unique, not null"
-    string encrypted_password "not null"
-    string reset_password_token "unique"
-    datetime reset_password_sent_at
-    datetime remember_created_at
-    datetime created_at
-    datetime updated_at
-  }
-
-  HARE_ENTRIES {
-    bigint id PK
-    bigint user_id FK
-    date occurred_on
-
-    integer visibility "enum: private/public"
-    integer meal_mode "enum: home_cook/ready_meal"
-    integer cook_context "enum: shopping/pantry"
-
-    text body "<= 280 chars"
-    integer price_yen
-    integer awarded_points
-
-    bigint mood_tag_id FK "single FK (MVP)"
-
-    datetime created_at
-    datetime updated_at
-  }
-
-  HARE_TAGS {
-    bigint id PK
-    string key "unique, not null (immutable)"
-    string label "unique, not null (renameable)"
-    integer position
-    boolean is_active
-    datetime created_at
-    datetime updated_at
-  }
-
-  HARE_ENTRY_TAGS {
-    bigint id PK
-    bigint hare_entry_id FK
-    bigint hare_tag_id FK
-  }
-
-  GENRES {
-    bigint id PK
-    string key "unique, not null (immutable)"
-    string label "unique, not null (renameable)"
-    string base_keywords
-    integer position
-    boolean is_active
-    datetime created_at
-    datetime updated_at
-  }
-
-  MEAL_SEARCHES {
-    bigint id PK
-    bigint user_id FK
-    bigint genre_id FK
-    integer meal_mode
-    integer cook_context
-    integer minutes
-    bigint mood_tag_id FK
-    string query_text
-    datetime created_at
-  }
-
-  MOOD_TAGS {
-    bigint id PK
-    string key "unique, not null (immutable)"
-    string label "unique, not null (renameable)"
-    integer position
-    boolean is_active
-    datetime created_at
-    datetime updated_at
-  }
-
-  POINT_RULES {
-    bigint id PK
-    string key "unique, not null (immutable)"
-    string label "not null (renameable)"
-    integer points "not null"
-    json params
-    integer priority "not null"
-    boolean is_active "not null"
-    text description
-    datetime created_at
-    datetime updated_at
-  }
-
-  POINT_TRANSACTIONS {
-    bigint id PK
-    bigint user_id FK
-    bigint hare_entry_id FK
-    bigint point_rule_id FK
-    date occurred_on
-    integer points "snapshot"
-    datetime created_at
-  }
-```
+   MEAL_SEARCHES {
+     bigint id PK
+     bigint user_id FK
+     bigint genre_id FK
+     integer meal_mode
+     integer cook_context
+     integer minutes
+     bigint mood_tag_id FK
+     string query_text
+     datetime created_at
+   }
+ 
+   MOOD_TAGS {
+     bigint id PK
+     string key "unique, not null (immutable)"
+     string label "unique, not null (renameable)"
+     integer position
+     boolean is_active
+     datetime created_at
+     datetime updated_at
+   }
+ 
+   POINT_RULES {
+     bigint id PK
+     string key "unique, not null (immutable)"
+     string label "not null (renameable)"
+     integer points "not null"
+     json params
+     integer priority "not null"
+     boolean is_active "not null"
+     text description
+     datetime created_at
+     datetime updated_at
+   }
+ 
+   POINT_TRANSACTIONS {
+     bigint id PK
+     bigint user_id FK
+     bigint hare_entry_id FK
+     bigint point_rule_id FK
+     date occurred_on
+     integer points "snapshot"
+     datetime created_at
+   }
