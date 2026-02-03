@@ -8,6 +8,7 @@ RUN apt-get update -qq && \
       ca-certificates curl gnupg \
       build-essential git pkg-config \
       libpq-dev postgresql-client \
+      gosu \
     && mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \
       | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
@@ -22,3 +23,8 @@ RUN gem install bundler foreman
 
 WORKDIR /myapp
 COPY . /myapp
+
+# entrypoint をコンテナに配置
+COPY bin/docker-entrypoint-dev /usr/local/bin/docker-entrypoint-dev
+RUN chmod +x /usr/local/bin/docker-entrypoint-dev
+ENTRYPOINT ["docker-entrypoint-dev"]

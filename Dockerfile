@@ -39,14 +39,10 @@ RUN apt-get update -qq && \
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /app /app
 
-RUN printf '%s\n' \
-  '#!/bin/sh' \
-  'set -e' \
-  'rm -f /app/tmp/pids/server.pid' \
-  'exec "$@"' \
-  > /usr/local/bin/docker-entrypoint && chmod +x /usr/local/bin/docker-entrypoint
-
+COPY bin/docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 EXPOSE 3000
+
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD curl -fsS http://localhost:3000/up || exit 1
 

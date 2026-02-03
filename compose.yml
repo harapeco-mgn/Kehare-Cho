@@ -34,13 +34,14 @@ services:
     environment:
       TZ: Asia/Tokyo
       HOME: /tmp
+      APP_UID: "${APP_UID:-1000}"
+      APP_GID: "${APP_GID:-1000}"
       DATABASE_URL: "postgres://postgres:password@db:5432/kehare_cho_development"
     ports:
       - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
-    user: "${APP_UID:-1000}:${APP_GID:-1000}"
 
 volumes:
   bundle_data:
