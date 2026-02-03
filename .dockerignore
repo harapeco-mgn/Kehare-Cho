@@ -1,0 +1,9 @@
+.git
+log/*
+tmp/*
+storage/*
+public/assets
+node_modules
+.bundle
+vendor/bundle
+.DS_Store

@@ -1,0 +1,5 @@
+# --- AI assistant instructions (local only) ---
+.github/copilot-instructions.md
+.claude/
+CLAUDE.md
+.cursorrules
