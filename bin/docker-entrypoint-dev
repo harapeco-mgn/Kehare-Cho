@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+
+# PID残骸で起動できない事故を防ぐ（ファイルだけ消す）
+mkdir -p /myapp/tmp/pids
+rm -f /myapp/tmp/pids/server.pid
+
+: "${HOME:=/tmp}"
+export HOME
+mkdir -p "$HOME"
+
+APP_UID="${APP_UID:-1000}"
+APP_GID="${APP_GID:-1000}"
+
+fix_owner() {
+  path="$1"
+  [ -d "$path" ] || mkdir -p "$path"
+  owner="$(stat -c '%u:%g' "$path" 2>/dev/null || echo '')"
+  if [ "$owner" != "${APP_UID}:${APP_GID}" ]; then
+    chown -R "${APP_UID}:${APP_GID}" "$path" || true
+  fi
+}
+
+if [ "$(id -u)" = "0" ]; then
+  fix_owner /usr/local/bundle
+  fix_owner /myapp/node_modules
+  exec gosu "${APP_UID}:${APP_GID}" "$@"
+fi
+
+exec "$@"

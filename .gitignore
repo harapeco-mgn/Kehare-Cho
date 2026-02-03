@@ -1,0 +1,43 @@
+# --- AI assistant instructions (local only) ---
+.github/copilot-instructions.md
+.claude/
+CLAUDE.md
+.cursorrules
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+
+# Rails
+/log/*
+/tmp/*
+/storage/*
+!/log/.keep
+!/tmp/.keep
+!/storage/.keep
+
+# Bundler
+/.bundle/
+/vendor/bundle/
+
+# Node/Yarn
+/node_modules/
+/yarn-error.log
+
+# Assets build outputs
+/public/assets
+/public/packs
+/public/packs-test
+/public/vite
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Kamal secrets (local only)
+.kamal/secrets
+
+# Editor/OS
+.DS_Store
+.idea/
+.vscode/
