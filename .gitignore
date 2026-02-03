@@ -34,6 +34,9 @@ CLAUDE.md
 .env.*
 !.env.example
 
+# Kamal secrets (local only)
+.kamal/secrets
+
 # Editor/OS
 .DS_Store
 .idea/
