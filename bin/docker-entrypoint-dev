@@ -1,7 +1,9 @@
 #!/bin/sh
 set -e
 
-# PID残骸で起動できない事故を防ぐ（ファイルだけ消す）
+# === server.pid の残骸を除去（唯一の削除箇所） ===
+# コンテナが異常終了すると server.pid が残り、次回起動時にエラーになる。
+# この entrypoint で一元的に削除する。
 mkdir -p /myapp/tmp/pids
 rm -f /myapp/tmp/pids/server.pid
 
@@ -12,6 +14,7 @@ mkdir -p "$HOME"
 APP_UID="${APP_UID:-1000}"
 APP_GID="${APP_GID:-1000}"
 
+# named volume の所有権を実行ユーザーに合わせる
 fix_owner() {
   path="$1"
   [ -d "$path" ] || mkdir -p "$path"
@@ -21,6 +24,7 @@ fix_owner() {
   fi
 }
 
+# root で起動している場合のみ、権限修正 + gosu で降格する
 if [ "$(id -u)" = "0" ]; then
   fix_owner /usr/local/bundle
   fix_owner /myapp/node_modules
