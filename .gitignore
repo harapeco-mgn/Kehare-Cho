@@ -37,7 +37,11 @@ CLAUDE.md
 # Kamal secrets (local only)
 .kamal/secrets
 
+# Test coverage
+/coverage/
+
 # Editor/OS
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/

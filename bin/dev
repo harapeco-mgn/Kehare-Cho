@@ -1,2 +1,13 @@
-#!/usr/bin/env ruby
-exec "./bin/rails", "server", *ARGV
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Gemfile に変更があった場合のみ bundle install を実行
+# bundle_data volume にキャッシュがあるため、通常は即座に終わる
+bundle check > /dev/null 2>&1 || bundle install
+
+# Procfile.dev があれば foreman を使い、なければ Rails server を直接起動
+if [ -f Procfile.dev ]; then
+  exec foreman start -f Procfile.dev "$@"
+else
+  exec bin/rails server -b 0.0.0.0 -p "${PORT:-3000}" "$@"
+fi

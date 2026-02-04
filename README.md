@@ -262,6 +262,82 @@ Figma：https://www.figma.com/design/en5ugBVs09QrvjGpNK411Z/%E3%82%B1%E3%83%8F%E
 
 ---
 
+## 開発環境セットアップ（Docker）
+
+### 前提条件
+
+- Docker / Docker Compose がインストール済みであること
+- WSL2 環境（Windows）の場合は Docker Desktop for Windows + WSL2 バックエンド推奨
+
+### 初回セットアップ
+
+```bash
+# 1. リポジトリをクローン
+git clone https://github.com/harapeco-mgn/Kehare-Cho.git
+cd Kehare-Cho
+
+# 2. 環境変数ファイルを作成
+cp .env.example .env
+
+# 3. Docker イメージをビルド
+docker compose build
+
+# 4. コンテナを起動
+docker compose up
+
+# 5. 別ターミナルで DB をセットアップ
+docker compose exec web rails db:create
+docker compose exec web rails db:migrate
+
+# 6. ヘルスチェック確認
+# ブラウザで http://localhost:3000/up にアクセスし、緑色の画面が表示されれば成功
+```
+
+### 2回目以降の起動
+
+```bash
+docker compose up
+```
+
+`bin/dev` が自動で `bundle check` を実行し、Gemfile に変更があった場合のみ `bundle install` を行います。通常の起動では gem のインストールはスキップされます。
+
+### よく使うコマンド
+
+```bash
+# コンテナの停止
+docker compose down
+
+# コンテナの停止 + volume の削除（DB データもリセットされます）
+docker compose down -v
+
+# Rails コンソール
+docker compose exec web rails console
+
+# テスト実行
+docker compose exec web bundle exec rspec
+
+# RuboCop（構文チェック）
+docker compose exec web bundle exec rubocop
+
+# DB マイグレーション
+docker compose exec web rails db:migrate
+
+# seed データ投入
+docker compose exec web rails db:seed
+```
+
+### /up エンドポイント
+
+Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み込まれています。`http://localhost:3000/up` にアクセスして緑色の画面が表示されれば、Rails サーバーと DB 接続が正常に動作しています。
+
+### WSL2 での注意点
+
+- **UID/GID の設定:** `.env` の `APP_UID` / `APP_GID` がホスト側のユーザーと一致している必要があります。`id -u` / `id -g` で確認してください（通常は 1000 のままで問題ありません）。
+- **権限エラーが出た場合:** volume の所有権がずれている可能性があります。`docker compose down -v` で volume を削除し、再度 `docker compose up` から始めてください。
+- **ファイル変更が反映されない場合:** WSL2 のファイルシステム上（`/home/` 配下）にプロジェクトを配置してください。Windows 側のパス（`/mnt/c/`）ではファイル監視が遅くなることがあります。
+
+---
+
 ## 💻 技術スタック・設計運用
 
 ### i18n 方針
