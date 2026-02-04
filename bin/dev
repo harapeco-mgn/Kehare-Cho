@@ -5,6 +5,12 @@ set -euo pipefail
 # bundle_data volume にキャッシュがあるため、通常は即座に終わる
 bundle check > /dev/null 2>&1 || bundle install
 
+# node_modules が未インストールの場合に yarn install を実行
+# .yarn-integrity は yarn install 完了時に生成されるファイル
+if [ -f package.json ] && [ ! -f node_modules/.yarn-integrity ]; then
+  yarn install
+fi
+
 # Procfile.dev があれば foreman を使い、なければ Rails server を直接起動
 if [ -f Procfile.dev ]; then
   exec foreman start -f Procfile.dev "$@"
