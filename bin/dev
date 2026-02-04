@@ -13,7 +13,7 @@ fi
 
 # Procfile.dev があれば foreman を使い、なければ Rails server を直接起動
 if [ -f Procfile.dev ]; then
-  exec foreman start -f Procfile.dev "$@"
+  exec bundle exec foreman start -f Procfile.dev "$@"
 else
   exec bin/rails server -b 0.0.0.0 -p "${PORT:-3000}" "$@"
 fi

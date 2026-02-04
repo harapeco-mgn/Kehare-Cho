@@ -21,7 +21,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    command: bin/dev
+    command: ["bash", "-lc", "bin/dev"]
     tty: true
     stdin_open: true
     volumes:
