@@ -25,7 +25,12 @@ RUN mkdir -p /etc/apt/keyrings && \
 
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
+
+# Node.js パッケージインストール + CSS ビルド
+COPY package.json yarn.lock ./
+RUN corepack enable && yarn install --frozen-lockfile
 COPY . .
+RUN yarn build:css
 
 FROM ruby:${RUBY_VERSION}-slim AS runtime
 ENV LANG=C.UTF-8 TZ=Asia/Tokyo

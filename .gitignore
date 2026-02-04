@@ -24,6 +24,8 @@ CLAUDE.md
 /yarn-error.log
 
 # Assets build outputs
+/app/assets/builds/*
+!/app/assets/builds/.keep
 /public/assets
 /public/packs
 /public/packs-test
