@@ -22,6 +22,11 @@ gem "jbuilder"
 # Rails の各種メッセージ・日付フォーマットを日本語化 [https://github.com/svenfuchs/rails-i18n]
 gem "rails-i18n", "~> 8.0"
 
+# 認証フレームワーク [https://github.com/heartcombo/devise]
+gem "devise"
+# Devise の表示文言を日本語化 [https://github.com/tigrish/devise-i18n]
+gem "devise-i18n"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
