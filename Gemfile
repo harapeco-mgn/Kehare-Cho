@@ -19,6 +19,9 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# Rails の各種メッセージ・日付フォーマットを日本語化 [https://github.com/svenfuchs/rails-i18n]
+gem "rails-i18n", "~> 8.0"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
