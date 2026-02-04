@@ -3,6 +3,7 @@ ARG RUBY_VERSION=3.3.2
 ARG NODE_VERSION=20
 
 FROM ruby:${RUBY_VERSION}-slim AS build
+ARG NODE_VERSION=20
 ENV LANG=C.UTF-8 TZ=Asia/Tokyo BUNDLE_JOBS=4 BUNDLE_RETRY=3
 WORKDIR /app
 
@@ -26,9 +27,9 @@ RUN mkdir -p /etc/apt/keyrings && \
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
-# Node.js パッケージインストール + CSS ビルド
 COPY package.json yarn.lock ./
 RUN corepack enable && yarn install --frozen-lockfile
+
 COPY . .
 RUN yarn build:css
 

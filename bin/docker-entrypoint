@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+set -e
+
+# DockerfileのWORKDIR=/app に合わせる
+rm -f /app/tmp/pids/server.pid
+
+exec "$@"
