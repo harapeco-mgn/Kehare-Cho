@@ -31,7 +31,8 @@ COPY package.json yarn.lock ./
 RUN corepack enable && yarn install --frozen-lockfile
 
 COPY . .
-RUN yarn build:css
+RUN yarn build:css && \
+    SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 FROM ruby:${RUBY_VERSION}-slim AS runtime
 ENV LANG=C.UTF-8 TZ=Asia/Tokyo
