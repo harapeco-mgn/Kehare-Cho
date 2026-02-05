@@ -62,4 +62,32 @@ RSpec.describe "Users::Sessions", type: :request do
       end
     end
   end
+
+  describe "DELETE /users/sign_out" do
+    context "ログイン状態の場合" do
+      before do
+        user
+        post user_session_path, params: valid_params
+      end
+
+      it "root_path にリダイレクトされる（303）" do
+        delete destroy_user_session_path
+        expect(response).to redirect_to(root_path)
+        expect(response).to have_http_status(:see_other)
+      end
+
+      it "ログアウト後に GET /users/edit は /users/sign_in にリダイレクトされる" do
+        delete destroy_user_session_path
+        get edit_user_registration_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "未ログイン状態の場合" do
+      it "エラーにならずリダイレクトされる" do
+        delete destroy_user_session_path
+        expect(response).to redirect_to(root_path)
+      end
+    end
+  end
 end

@@ -6,8 +6,8 @@
         Tailwind CSS + daisyUI が正しく動作しています。
       </p>
       <div class="card-actions justify-end mt-4">
-        <button class="btn btn-primary">はじめる</button>
-        <button class="btn btn-ghost">詳しく</button>
+        <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary" %>
+        <%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost" %>
       </div>
     </div>
   </div>

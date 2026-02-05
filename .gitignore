@@ -3,6 +3,7 @@
 .claude/
 CLAUDE.md
 .cursorrules
+.agent/
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key
