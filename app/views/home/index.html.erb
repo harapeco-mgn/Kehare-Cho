@@ -1,14 +1,37 @@
-<div class="min-h-screen bg-base-200 flex items-center justify-center">
-  <div class="card bg-base-100 shadow-xl w-96">
-    <div class="card-body">
-      <h2 class="card-title text-2xl">ケハレ帖</h2>
-      <p class="text-base-content/70">
-        Tailwind CSS + daisyUI が正しく動作しています。
-      </p>
-      <div class="card-actions justify-end mt-4">
-        <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary" %>
-        <%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost" %>
+<% if user_signed_in? %>
+    <%# ログイン後のホーム画面 %>
+    <%= render 'shared/header' %>
+
+    <main class="container mx-auto px-4 py-8">
+      <div class="card bg-base-100 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-2xl">ようこそ、<%=
+  current_user.email %> さん</h2>
+          <p class="text-base-content/70">
+            ケハレ帖へようこそ。各機能は現在開発中です。        
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <%= render 'shared/footer' %>
+  <% else %>
+    <%# 未ログイン時のLP %>
+    <div class="min-h-screen bg-base-200 flex items-center      
+  justify-center">
+      <div class="card bg-base-100 shadow-xl w-96">
+        <div class="card-body">
+          <h2 class="card-title text-2xl">ケハレ帖</h2>
+          <p class="text-base-content/70">
+            Tailwind CSS + daisyUI が正しく動作しています。     
+          </p>
+          <div class="card-actions justify-end mt-4">
+            <%= link_to "新規登録", new_user_registration_path, 
+  class: "btn btn-primary" %>
+            <%= link_to "ログイン", new_user_session_path,      
+  class: "btn btn-ghost" %>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  <% end %>

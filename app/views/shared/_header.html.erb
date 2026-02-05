@@ -1,0 +1,22 @@
+  <header class="navbar bg-base-100 shadow-md">
+    <div class="flex-1">
+      <span class="text-xl font-bold"><%= t('app_name')
+  %></span>
+    </div>
+    <nav class="flex-none">
+      <ul class="menu menu-horizontal px-1 space-x-2">
+        <li><button class="btn btn-ghost btn-sm"
+  disabled>カレンダー</button></li>
+        <li><button class="btn btn-ghost btn-sm"
+  disabled>献立相談</button></li>
+        <li><button class="btn btn-ghost btn-sm"
+  disabled>ハレ投稿</button></li>
+        <li><button class="btn btn-ghost btn-sm"
+  disabled>プロフィール</button></li>
+        <li>
+          <%= button_to "ログアウト", destroy_user_session_path,
+   method: :delete, class: "btn btn-primary btn-sm" %>
+        </li>
+      </ul>
+    </nav>
+  </header>
