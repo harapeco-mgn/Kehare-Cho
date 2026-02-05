@@ -27,6 +27,9 @@ gem "devise"
 # Devise の表示文言を日本語化 [https://github.com/tigrish/devise-i18n]
 gem "devise-i18n"
 
+# メール送信 API（本番環境用）[https://github.com/resend/resend-ruby]
+gem "resend"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
