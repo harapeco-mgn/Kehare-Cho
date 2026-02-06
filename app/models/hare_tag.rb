@@ -1,0 +1,2 @@
+class HareTag < ApplicationRecord
+end
