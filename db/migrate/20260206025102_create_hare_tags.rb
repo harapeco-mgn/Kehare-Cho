@@ -14,4 +14,4 @@
       add_index :hare_tags, :label, unique: true
       add_index :hare_tags, :position
     end
-  end
+ end
