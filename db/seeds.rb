@@ -9,7 +9,17 @@
 #   end
 
 require_relative 'seeds/hare_tags'
+require_relative 'seeds/genres'
+require_relative 'seeds/mood_tags'
 
 puts 'Seeding HareTags...'
 Seeds::HareTags.call
 puts "  ✓ #{HareTag.count} HareTags created"
+
+puts 'Seeding Genres...'
+Seeds::Genres.call
+puts "  ✓ #{Genre.count} Genres created"
+
+puts 'Seeding MoodTags...'
+Seeds::MoodTags.call
+puts "  ✓ #{MoodTag.count} MoodTags created"
