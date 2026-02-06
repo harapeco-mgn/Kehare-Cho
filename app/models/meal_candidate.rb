@@ -5,4 +5,4 @@ class MealCandidate < ApplicationRecord
 
   scope :active, -> { where(is_active: true) }
   scope :sorted, -> { order(position: :asc) }
-end 
+end
