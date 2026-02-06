@@ -11,6 +11,7 @@
 require_relative 'seeds/hare_tags'
 require_relative 'seeds/genres'
 require_relative 'seeds/mood_tags'
+require_relative 'seeds/meal_candidates'
 
 puts 'Seeding HareTags...'
 Seeds::HareTags.call
@@ -23,3 +24,7 @@ puts "  ✓ #{Genre.count} Genres created"
 puts 'Seeding MoodTags...'
 Seeds::MoodTags.call
 puts "  ✓ #{MoodTag.count} MoodTags created"
+
+puts 'Seeding MealCandidates...'
+Seeds::MealCandidates.call
+puts "  ✓ #{MealCandidate.count} MealCandidates created"
