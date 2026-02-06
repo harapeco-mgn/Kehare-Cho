@@ -29,7 +29,7 @@ RSpec.describe HareTag, type: :model do
           expect(tag).to be_valid, "#{key} は有効であるべき"
         end
 
-        invalid_keys = ['Test', 'test-key', 'test key', 'test!']
+        invalid_keys = [ 'Test', 'test-key', 'test key', 'test!' ]
         invalid_keys.each do |key|
           tag = HareTag.new(key: key, label: "テスト#{key}")
           expect(tag).not_to be_valid, "#{key} は無効であるべき"
@@ -62,6 +62,7 @@ RSpec.describe HareTag, type: :model do
 
   describe 'スコープ' do
     before do
+      HareTag.destroy_all
       HareTag.create!(key: 'active1', label: '有効1', is_active: true, position: 2)
       HareTag.create!(key: 'active2', label: '有効2', is_active: true, position: 1)
       HareTag.create!(key: 'inactive1', label: '無効1', is_active: false, position: 3)
@@ -78,14 +79,14 @@ RSpec.describe HareTag, type: :model do
     describe '.sorted' do
       it 'position の昇順で返すこと' do
         tags = HareTag.sorted
-        expect(tags.pluck(:key)).to eq(['active2', 'active1', 'inactive1'])
+        expect(tags.pluck(:key)).to eq([ 'active2', 'active1', 'inactive1' ])
       end
     end
 
     describe '.active.sorted' do
       it 'チェーン可能で、有効なタグを position 順で返すこと' do
         tags = HareTag.active.sorted
-        expect(tags.pluck(:key)).to eq(['active2', 'active1'])
+        expect(tags.pluck(:key)).to eq([ 'active2', 'active1' ])
       end
     end
   end
