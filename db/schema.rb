@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_06_131103) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_06_133539) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -38,6 +38,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_131103) do
     t.index ["position"], name: "index_hare_tags_on_position"
   end
 
+  create_table "meal_candidates", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "genre_id", null: false
+    t.boolean "is_active", default: true, null: false
+    t.string "name", null: false
+    t.integer "position"
+    t.string "search_hint"
+    t.datetime "updated_at", null: false
+    t.index ["genre_id", "name"], name: "index_meal_candidates_on_genre_id_and_name", unique: true
+    t.index ["genre_id"], name: "index_meal_candidates_on_genre_id"
+    t.index ["position"], name: "index_meal_candidates_on_position"
+  end
+
   create_table "mood_tags", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "is_active", default: true, null: false
@@ -61,4 +74,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_131103) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "meal_candidates", "genres"
 end
