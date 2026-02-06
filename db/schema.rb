@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_06_025102) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_06_131103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "genres", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_active", default: true, null: false
+    t.string "key", null: false
+    t.string "label", null: false
+    t.integer "position"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_genres_on_key", unique: true
+    t.index ["label"], name: "index_genres_on_label", unique: true
+    t.index ["position"], name: "index_genres_on_position"
+  end
 
   create_table "hare_tags", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -24,6 +36,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_025102) do
     t.index ["key"], name: "index_hare_tags_on_key", unique: true
     t.index ["label"], name: "index_hare_tags_on_label", unique: true
     t.index ["position"], name: "index_hare_tags_on_position"
+  end
+
+  create_table "mood_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "is_active", default: true, null: false
+    t.string "key", null: false
+    t.string "label", null: false
+    t.integer "position"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_mood_tags_on_key", unique: true
+    t.index ["label"], name: "index_mood_tags_on_label", unique: true
+    t.index ["position"], name: "index_mood_tags_on_position"
   end
 
   create_table "users", force: :cascade do |t|
