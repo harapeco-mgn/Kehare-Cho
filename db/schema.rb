@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_06_133539) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_07_014713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,6 +61,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_133539) do
     t.index ["key"], name: "index_mood_tags_on_key", unique: true
     t.index ["label"], name: "index_mood_tags_on_label", unique: true
     t.index ["position"], name: "index_mood_tags_on_position"
+  end
+
+  create_table "point_rules", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "is_active", default: true, null: false
+    t.string "key", null: false
+    t.string "label", null: false
+    t.json "params"
+    t.integer "points", null: false
+    t.integer "priority", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_point_rules_on_key", unique: true
+    t.index ["priority"], name: "index_point_rules_on_priority"
   end
 
   create_table "users", force: :cascade do |t|
