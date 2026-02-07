@@ -409,7 +409,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
 
 ### ER図（MVP想定）
 
-![Image from Gyazo](https://i.gyazo.com/680b1823266804b955bf005db05780a0.png)
+![Image from Gyazo](https://i.gyazo.com/2b9f5765e5948993b53b97b9e737c6ef.png)
 
 [ER図dbdiagram.io](https://dbdiagram.io/d/Kehare-Cho-697ef474bd82f5fce23dcf53)
 
