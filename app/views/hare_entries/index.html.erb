@@ -6,19 +6,21 @@
   <% if @hare_entries.any? %>
     <div class="space-y-4">
       <% @hare_entries.each do |entry| %>
-        <div class="card bg-base-100 shadow-xl">
-          <div class="card-body">
-            <p class="text-sm text-gray-500"><%= entry.occurred_on %></p>
-            <p class="whitespace-pre-wrap"><%= entry.body %></p>
-            <div class="card-actions justify-end">
-              <% if entry.public_post? %>
-                <span class="badge badge-primary">公開</span>
-              <% else %>
-                <span class="badge">非公開</span>
-              <% end %>
+        <%= link_to hare_entry_path(entry), class: "block" do %>
+          <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+            <div class="card-body">
+              <p class="text-sm text-gray-500"><%= entry.occurred_on %></p>
+              <p class="whitespace-pre-wrap"><%= entry.body %></p>
+              <div class="card-actions justify-end">
+                <% if entry.public_post? %>
+                  <span class="badge badge-primary">公開</span>
+                <% else %>
+                  <span class="badge">非公開</span>
+                <% end %>
+              </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   <% else %>
