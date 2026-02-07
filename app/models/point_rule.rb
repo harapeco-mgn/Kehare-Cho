@@ -1,18 +1,10 @@
-class CreatePointRules < ActiveRecord::Migration[8.1]
-    def change
-      create_table :point_rules do |t|
-        t.string :key, null: false
-        t.string :label, null: false
-        t.integer :points, null: false
-        t.json :params
-        t.integer :priority, null: false
-        t.boolean :is_active, null: false, default: true
-        t.text :description
+class PointRule < ApplicationRecord
+  validates :key, presence: true, uniqueness: true, format: { with: /\A[a-z][a-z0-9_]*\z/ }
+  validates :label, presence: true
+  validates :points, presence: true
+  validates :priority, presence: true
 
-        t.timestamps
-      end
-
-      add_index :point_rules, :key, unique: true
-      add_index :point_rules, :priority
-    end
-  end
+  # スコープ
+  scope :active, -> { where(is_active: true) }
+  scope :sorted, -> { order(priority: :asc) }
+end
