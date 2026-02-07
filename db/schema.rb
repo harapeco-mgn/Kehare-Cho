@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_07_014713) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_07_053636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_07_014713) do
     t.index ["key"], name: "index_genres_on_key", unique: true
     t.index ["label"], name: "index_genres_on_label", unique: true
     t.index ["position"], name: "index_genres_on_position"
+  end
+
+  create_table "hare_entries", force: :cascade do |t|
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.date "occurred_on", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.integer "visibility", default: 0, null: false
+    t.index ["user_id"], name: "index_hare_entries_on_user_id"
   end
 
   create_table "hare_tags", force: :cascade do |t|
@@ -89,5 +99,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_07_014713) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "hare_entries", "users"
   add_foreign_key "meal_candidates", "genres"
 end
