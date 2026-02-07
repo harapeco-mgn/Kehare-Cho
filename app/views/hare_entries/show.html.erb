@@ -25,6 +25,12 @@
 
         <div class="card-actions justify-end mt-6">
           <%= link_to "編集", edit_hare_entry_path(@hare_entry), class: "btn btn-primary" %>
+            <%= button_to "削除",
+              hare_entry_path(@hare_entry),
+              method: :delete,
+              data: { turbo_confirm: "本当に削除しますか？" },
+              class: "btn btn-error" 
+              %>
           <%= link_to "一覧に戻る", hare_entries_path, class: "btn btn-outline" %>
         </div>
       </div>

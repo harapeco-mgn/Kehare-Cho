@@ -1,6 +1,6 @@
 class HareEntriesController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_hare_entry, only: [ :show, :edit, :update ]
+    before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
 
     def index
       @hare_entries = current_user.hare_entries.order(created_at: :desc)
@@ -32,6 +32,11 @@ class HareEntriesController < ApplicationController
       else
         render :edit, status: :unprocessable_entity
       end
+    end
+
+    def destroy
+      @hare_entry.destroy
+      redirect_to hare_entries_path, notice: "ハレの記録を削除しました"
     end
 
     private

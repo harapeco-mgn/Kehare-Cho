@@ -376,4 +376,68 @@ RSpec.describe "HareEntries", type: :request do
       end
     end
   end
+
+  describe "DELETE /hare_entries/:id" do
+    context '未ログイン時' do
+      let!(:entry) { HareEntry.create!(user: user, body: 'テスト投稿', occurred_on: Date.today, visibility: 'private_post') }
+
+      it 'ログイン画面にリダイレクトされる' do
+        delete hare_entry_path(entry)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it 'HareEntryが削除されない' do
+        expect {
+          delete hare_entry_path(entry)
+        }.not_to change(HareEntry, :count)
+      end
+    end
+
+    context 'ログイン時' do
+      before { sign_in user }
+
+      context '自分の投稿の場合' do
+        let!(:entry) { HareEntry.create!(user: user, body: '削除対象の投稿', occurred_on: Date.today, visibility: 'public_post') }
+
+        it 'HareEntryが削除される' do
+          expect {
+            delete hare_entry_path(entry)
+          }.to change(HareEntry, :count).by(-1)
+        end
+
+        it '一覧画面にリダイレクトされる' do
+          delete hare_entry_path(entry)
+          expect(response).to redirect_to(hare_entries_path)
+        end
+
+        it '成功メッセージが表示される' do
+          delete hare_entry_path(entry)
+          expect(flash[:notice]).to eq('ハレの記録を削除しました')
+        end
+      end
+
+      context '他ユーザーの投稿の場合' do
+        let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
+        let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
+
+        it '404エラーになる' do
+          delete hare_entry_path(other_entry)
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'HareEntryが削除されない' do
+          expect {
+            delete hare_entry_path(other_entry)
+          }.not_to change(HareEntry, :count)
+        end
+      end
+
+      context '存在しないIDの場合' do
+        it '404エラーになる' do
+          delete hare_entry_path(id: 99999)
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
 end
