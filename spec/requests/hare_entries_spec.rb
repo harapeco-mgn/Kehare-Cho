@@ -26,6 +26,79 @@ RSpec.describe "HareEntries", type: :request do
     end
   end
 
+  describe "GET /hare_entries" do
+    context '未ログイン時' do
+      it 'ログイン画面にリダイレクトされる' do
+        get hare_entries_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'ログイン時' do
+      before { sign_in user }
+
+      context '投稿がある場合' do
+        let!(:entry1) { HareEntry.create!(user: user, body: '最初の投稿', occurred_on: 2.days.ago, visibility: 'private_post') }
+        let!(:entry2) { HareEntry.create!(user: user, body: '2番目の投稿', occurred_on: 1.day.ago, visibility: 'public_post') }
+        let!(:entry3) { HareEntry.create!(user: user, body: '最新の投稿', occurred_on: Date.today, visibility: 'public_post') }
+
+        it '正常にアクセスできる' do
+          get hare_entries_path
+          expect(response).to have_http_status(:success)
+        end
+
+        it '自分の投稿が表示される' do
+          get hare_entries_path
+          expect(response.body).to include('最初の投稿')
+          expect(response.body).to include('2番目の投稿')
+          expect(response.body).to include('最新の投稿')
+        end
+
+        it '新しい順に表示される' do
+          get hare_entries_path
+          # 最新の投稿が最初に出現することを確認
+          body = response.body
+          index_latest = body.index('最新の投稿')
+          index_second = body.index('2番目の投稿')
+          index_first = body.index('最初の投稿')
+          expect(index_latest).to be < index_second
+          expect(index_second).to be < index_first
+        end
+
+        it '個別投稿への詳細リンクが存在しない' do
+          get hare_entries_path
+          # /hare_entries/数字 のパターンがないことを確認
+          expect(response.body).not_to match(%r{/hare_entries/\d+})
+        end
+      end
+
+      context '他ユーザーの投稿' do
+        let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
+        let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
+        let!(:my_entry) { HareEntry.create!(user: user, body: '自分の投稿', occurred_on: Date.today, visibility: 'public_post') }
+
+        it '他ユーザーの投稿は表示されない' do
+          get hare_entries_path
+          expect(response.body).to include('自分の投稿')
+          expect(response.body).not_to include('他人の投稿')
+        end
+      end
+
+      context '投稿がない場合' do
+        it '空状態メッセージが表示される' do
+          get hare_entries_path
+          expect(response.body).to include('まだハレの記録がありません')
+        end
+      end
+
+      it 'ヘッダーにホームへのリンクが表示される' do
+        get hare_entries_path
+        expect(response.body).to include('ホーム')
+        expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(root_path)}"[^>]*>ホーム</a>})
+      end
+    end
+  end
+
   describe "POST /hare_entries" do
     context '未ログイン時' do
       it 'ログイン画面にリダイレクトされる' do
