@@ -8,8 +8,11 @@
           <h2 class="card-title text-2xl">ようこそ、<%=
   current_user.email %> さん</h2>
           <p class="text-base-content/70">
-            ケハレ帖へようこそ。各機能は現在開発中です。        
+            ケハレ帖へようこそ。各機能は現在開発中です。
           </p>
+          <div class="card-actions justify-end mt-4">
+            <%= link_to "ハレを記録する", new_hare_entry_path, class: "btn btn-primary" %>
+          </div>
         </div>
       </div>
     </main>
