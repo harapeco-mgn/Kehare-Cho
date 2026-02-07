@@ -428,8 +428,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
    POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
  
    MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
-   MOOD_TAGS ||--o{ MEAL_CANDIDATES : mood_of
- 
+
    USERS {
      bigint id PK
      string email "unique, not null"
@@ -480,7 +479,6 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      bigint id PK
      string key "unique, not null (immutable)"
      string label "unique, not null (renameable)"
-     string base_keywords
      integer position
      boolean is_active
      datetime created_at
@@ -490,12 +488,8 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
    MEAL_CANDIDATES {
      bigint id PK
      bigint genre_id FK
-     string key "unique, not null (immutable)"
-     string label "not null (renameable)"
-     integer meal_mode "nullable enum: home_cook/ready_meal"
-     integer cook_context "nullable enum: shopping/pantry"
-     integer minutes_max
-     bigint mood_tag_id FK "nullable"
+     string name "not null, unique with genre_id"
+     string search_hint "nullable"
      integer position
      boolean is_active
      datetime created_at
