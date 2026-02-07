@@ -226,10 +226,10 @@
   - 投稿詳細に遷移できる
 - 献立相談（検索ログ：meal_searches）
   - ジャンル選択（genres）
-  - 条件入力（自炊/中食、買い物/家にある、時間、気分 等）
   - 候補提示→外部検索（Google検索結果へ）
    - 候補は「料理名マスタ（seedで投入）」から重複なしで最大3つ提示する
-   - 条件に合う候補が不足する場合は、全候補から補完して3つに満たす
+   - MVPでは条件マッチング（自炊/中食、時間、気分等）なし。ジャンルから3つランダム提示
+   - 条件入力・絞り込みはβ版以降に実装予定
   - 検索ログの保存・一覧表示
 - マスタデータ（開発者が用意）
   - ハレタグ（hare_tags）：key不変 / label表示名（変更可）
@@ -383,7 +383,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
 - `app/services/`：外部検索クエリ生成やポイント付与などのビジネスロジック
 - `app/javascript/controllers/`：Stimulusコントローラー（UI補助）
 - `db/seeds/`：マスタデータ（ハレタグ／ジャンル／ポイントルール）
-- 献立候補の料理名も seed で管理する（レシピ本文は保持しない）。必要に応じて検索補助語（例：`base_keywords`）を持たせる。
+- 献立候補の料理名も seed で管理する（レシピ本文は保持しない）。検索しづらい料理名には検索補助語（`search_hint`）を設定できる。
 
 ---
 
@@ -409,7 +409,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
 
 ### ER図（MVP想定）
 
-![Image from Gyazo](https://i.gyazo.com/680b1823266804b955bf005db05780a0.png)
+![Image from Gyazo](https://i.gyazo.com/2b9f5765e5948993b53b97b9e737c6ef.png)
 
 [ER図dbdiagram.io](https://dbdiagram.io/d/Kehare-Cho-697ef474bd82f5fce23dcf53)
 
@@ -428,8 +428,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
    POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
  
    MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
-   MOOD_TAGS ||--o{ MEAL_CANDIDATES : mood_of
- 
+
    USERS {
      bigint id PK
      string email "unique, not null"
@@ -480,7 +479,6 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      bigint id PK
      string key "unique, not null (immutable)"
      string label "unique, not null (renameable)"
-     string base_keywords
      integer position
      boolean is_active
      datetime created_at
@@ -490,12 +488,8 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
    MEAL_CANDIDATES {
      bigint id PK
      bigint genre_id FK
-     string key "unique, not null (immutable)"
-     string label "not null (renameable)"
-     integer meal_mode "nullable enum: home_cook/ready_meal"
-     integer cook_context "nullable enum: shopping/pantry"
-     integer minutes_max
-     bigint mood_tag_id FK "nullable"
+     string name "not null, unique with genre_id"
+     string search_hint "nullable"
      integer position
      boolean is_active
      datetime created_at
@@ -546,3 +540,54 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      integer points "snapshot"
      datetime created_at
    }
+ ```
+
+### 実装上の設計判断（README設計からの変更点）
+
+MVP実装において、README記載のER図から一部カラムを省略・変更しました。以下はその変更点と理由です。
+
+#### genres テーブルの変更
+
+| カラム | README設計 | 実装 | 変更理由 |
+|--------|-----------|------|---------|
+| `base_keywords` | あり | **なし** | MVPでは料理名マスタから候補を提示するだけで、検索キーワード補助は後回しにしたため。シンプル化を優先。 |
+
+**今後の拡張方針:**
+- β版以降で、Google検索時のキーワード補助として `base_keywords` を追加する可能性あり
+- 例：「回鍋肉」→「回鍋肉 簡単 レシピ」のような検索語の自動補完に使用
+
+#### meal_candidates テーブルの変更
+
+| カラム | README設計 | 実装 | 変更理由 |
+|--------|-----------|------|---------|
+| `key` | あり（unique, immutable） | **なし** | 献立候補は `name` のみで識別可能と判断。`genre_id` との複合ユニークで十分。 |
+| `label` | あり（renameable） | **なし**（`name`に統合） | keyとlabelの二重管理を避け、シンプルに `name` 1つで運用。 |
+| `meal_mode` | あり（enum: home_cook/ready_meal） | **なし** | MVP では条件マッチングを後回しにし、ジャンルから3つランダム提示する最小実装を優先。 |
+| `cook_context` | あり（enum: shopping/pantry） | **なし** | 同上。条件による候補絞り込みはβ版以降で実装予定。 |
+| `minutes_max` | あり | **なし** | 同上。調理時間による絞り込みは後回し。 |
+| `mood_tag_id` | あり（FK） | **なし** | 同上。気分タグによる絞り込みは後回し。 |
+| `search_hint` | なし | **あり** | Google検索時のキーワード補助用に追加。料理名だけでは検索しづらい場合に使用（例：「親子丼 簡単」）。 |
+
+**現在の実装方針（MVP）:**
+- ユーザーがジャンル（和食/洋食/中華など）を選択
+- そのジャンルに紐づく `meal_candidates` から最大3件をランダムに提示
+- 条件マッチング（自炊/中食、時間、気分）は行わず、候補の絞り込みなし
+
+**今後の拡張方針（β版以降）:**
+- `meal_mode`, `cook_context`, `minutes_max`, `mood_tag_id` を追加
+- ユーザーの入力条件に合致する候補のみを提示（絞り込み機能）
+- seed データに各候補の詳細条件を追加登録
+
+#### 変更の背景
+
+**MVP の優先事項:**
+1. **「記録できる」「振り返れる」「続けられる」** を最短で成立させる
+2. 献立相談は **「候補を3つ提示→Google検索へ」** の最小フローで検証
+3. 条件マッチングの精度向上は、使用ログを見てから改善（過剰実装を避ける）
+
+**段階的実装の方針:**
+- MVP：ジャンル選択→候補3つ提示→外部検索（最小フロー）
+- β版：条件入力→絞り込み候補提示→外部検索（精度向上）
+- 本リリース：過去の検索ログから学習した候補提示（パーソナライズ）
+
+---
