@@ -1,0 +1,34 @@
+<%= render 'shared/header' %>
+
+<main class="container mx-auto px-4 py-8">
+  <div class="max-w-2xl mx-auto">
+    <div class="mb-4">
+      <%= link_to "← 一覧に戻る", hare_entries_path, class: "text-primary hover:underline" %>
+    </div>
+
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="flex justify-between items-center mb-4">
+          <p class="text-sm text-gray-500">
+            <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
+          </p>
+          <% if @hare_entry.public_post? %>
+            <span class="badge badge-primary">公開</span>
+          <% else %>
+            <span class="badge">非公開</span>
+          <% end %>
+        </div>
+
+        <div class="prose max-w-none">
+          <p class="whitespace-pre-wrap text-lg"><%= @hare_entry.body %></p>
+        </div>
+
+        <div class="card-actions justify-end mt-6">
+          <%= link_to "一覧に戻る", hare_entries_path, class: "btn btn-outline" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%= render 'shared/footer' %>
