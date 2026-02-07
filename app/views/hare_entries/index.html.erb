@@ -1,0 +1,32 @@
+<%= render 'shared/header' %>
+
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">ハレの記録</h1>
+
+  <% if @hare_entries.any? %>
+    <div class="space-y-4">
+      <% @hare_entries.each do |entry| %>
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <p class="text-sm text-gray-500"><%= entry.occurred_on %></p>
+            <p class="whitespace-pre-wrap"><%= entry.body %></p>
+            <div class="card-actions justify-end">
+              <% if entry.public_post? %>
+                <span class="badge badge-primary">公開</span>
+              <% else %>
+                <span class="badge">非公開</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center py-16">
+      <p class="text-gray-500 mb-4">まだハレの記録がありません</p>
+      <%= link_to "ハレを記録する", new_hare_entry_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</main>
+
+<%= render 'shared/footer' %>
