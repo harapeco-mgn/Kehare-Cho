@@ -26,6 +26,68 @@ RSpec.describe "HareEntries", type: :request do
     end
   end
 
+  describe "GET /hare_entries/:id" do
+    context '未ログイン時' do
+      let!(:entry) { HareEntry.create!(user: user, body: 'テスト投稿', occurred_on: Date.today, visibility: 'private_post') }
+
+      it 'ログイン画面にリダイレクトされる' do
+        get hare_entry_path(entry)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context 'ログイン時' do
+      before { sign_in user }
+
+      context '自分の投稿の場合' do
+        let!(:entry) { HareEntry.create!(user: user, body: 'マイ投稿の内容', occurred_on: Date.today, visibility: 'public_post') }
+
+        it '正常にアクセスできる' do
+          get hare_entry_path(entry)
+          expect(response).to have_http_status(:success)
+        end
+
+        it '投稿の内容が表示される' do
+          get hare_entry_path(entry)
+          expect(response.body).to include('マイ投稿の内容')
+        end
+
+        it '投稿日が表示される' do
+          get hare_entry_path(entry)
+          expect(response.body).to include(entry.occurred_on.strftime('%Y年%-m月%-d日'))
+        end
+
+        it '公開範囲が表示される' do
+          get hare_entry_path(entry)
+          expect(response.body).to include('公開')
+        end
+
+        it 'ヘッダーにホームへのリンクが表示される' do
+          get hare_entry_path(entry)
+          expect(response.body).to include('ホーム')
+          expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(root_path)}"[^>]*>ホーム</a>})
+        end
+      end
+
+      context '他ユーザーの投稿の場合' do
+        let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
+        let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
+
+        it '404エラーになる' do
+          get hare_entry_path(other_entry)
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+
+      context '存在しないIDの場合' do
+        it '404エラーになる' do
+          get hare_entry_path(id: 99999)
+          expect(response).to have_http_status(:not_found)
+        end
+      end
+    end
+  end
+
   describe "GET /hare_entries" do
     context '未ログイン時' do
       it 'ログイン画面にリダイレクトされる' do
@@ -65,10 +127,13 @@ RSpec.describe "HareEntries", type: :request do
           expect(index_second).to be < index_first
         end
 
-        it '個別投稿への詳細リンクが存在しない' do
+        it '個別投稿への詳細リンクが存在する' do
           get hare_entries_path
-          # /hare_entries/数字 のパターンがないことを確認
-          expect(response.body).not_to match(%r{/hare_entries/\d+})
+          # /hare_entries/数字 のパターンが存在することを確認
+          expect(response.body).to match(%r{/hare_entries/\d+})
+          expect(response.body).to include(hare_entry_path(entry1))
+          expect(response.body).to include(hare_entry_path(entry2))
+          expect(response.body).to include(hare_entry_path(entry3))
         end
       end
 
@@ -127,9 +192,9 @@ RSpec.describe "HareEntries", type: :request do
           }.to change(HareEntry, :count).by(1)
         end
 
-        it 'ホーム画面にリダイレクトされる' do
+        it '作成された投稿の詳細画面にリダイレクトされる' do
           post hare_entries_path, params: valid_params
-          expect(response).to redirect_to(root_path)
+          expect(response).to redirect_to(hare_entry_path(HareEntry.last))
         end
 
         it '成功メッセージが表示される' do

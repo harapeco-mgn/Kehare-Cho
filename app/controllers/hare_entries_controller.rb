@@ -5,6 +5,10 @@ class HareEntriesController < ApplicationController
       @hare_entries = current_user.hare_entries.order(created_at: :desc)
     end
 
+    def show
+      @hare_entry = current_user.hare_entries.find(params[:id])
+    end
+
     def new
       @hare_entry = HareEntry.new
     end
@@ -13,7 +17,7 @@ class HareEntriesController < ApplicationController
       @hare_entry = current_user.hare_entries.build(hare_entry_params)
 
       if @hare_entry.save
-        redirect_to root_path, notice: "ハレの記録を作成しました"
+        redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を作成しました"
       else
         render :new, status: :unprocessable_entity
       end
