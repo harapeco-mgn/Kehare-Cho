@@ -1,6 +1,6 @@
 class HareEntriesController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_hare_entry, only: [:show, :edit, :update]
+    before_action :set_hare_entry, only: [ :show, :edit, :update ]
 
     def index
       @hare_entries = current_user.hare_entries.order(created_at: :desc)
