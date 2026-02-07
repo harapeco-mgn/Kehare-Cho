@@ -10,7 +10,7 @@ class HareEntriesController < ApplicationController
     end
 
     def new
-      @hare_entry = HareEntry.new
+      @hare_entry = HareEntry.new(occurred_on: Date.today)
     end
 
     def create
