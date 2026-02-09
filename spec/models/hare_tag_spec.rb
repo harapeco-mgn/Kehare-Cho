@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe HareTag, type: :model do
+  describe 'associations' do
+    it { is_expected.to have_many(:hare_entry_tags).dependent(:destroy) }
+    it { is_expected.to have_many(:hare_entries).through(:hare_entry_tags) }
+  end
+
   describe 'バリデーション' do
     describe 'key' do
       it '必須であること' do

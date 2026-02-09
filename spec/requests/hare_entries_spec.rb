@@ -23,6 +23,26 @@ RSpec.describe "HareEntries", type: :request do
         get new_hare_entry_path
         expect(response.body).to include('ハレの記録を作成')
       end
+
+      context 'タグが存在する場合' do
+        let!(:active_tag) { create(:hare_tag, key: 'active', label: 'アクティブタグ', is_active: true, position: 1) }
+        let!(:inactive_tag) { create(:hare_tag, key: 'inactive', label: '非アクティブタグ', is_active: false, position: 2) }
+
+        it 'アクティブなタグがチェックボックスとして表示される' do
+          get new_hare_entry_path
+          expect(response.body).to include('アクティブタグ')
+        end
+
+        it '非アクティブなタグは表示されない' do
+          get new_hare_entry_path
+          expect(response.body).not_to include('非アクティブタグ')
+        end
+      end
+
+      it 'ホームへの導線が維持されている' do
+        get new_hare_entry_path
+        expect(response.body).to include('href="/"')
+      end
     end
   end
 
@@ -211,6 +231,88 @@ RSpec.describe "HareEntries", type: :request do
         it '作成されたHareEntryはログインユーザーに紐づく' do
           post hare_entries_path, params: valid_params
           expect(HareEntry.last.user).to eq(user)
+        end
+      end
+
+      context 'タグ付きパラメータの場合' do
+        let!(:tag1) { create(:hare_tag, key: 'tag1', label: 'タグ1') }
+        let!(:tag2) { create(:hare_tag, key: 'tag2', label: 'タグ2') }
+        let!(:tag3) { create(:hare_tag, key: 'tag3', label: 'タグ3') }
+        let(:params_with_tags) do
+          { hare_entry: { body: 'タグ付き投稿', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [ tag1.id, tag3.id ] } }
+        end
+
+        it 'HareEntryが作成される' do
+          expect {
+            post hare_entries_path, params: params_with_tags
+          }.to change(HareEntry, :count).by(1)
+        end
+
+        it '中間テーブルのレコードが作成される' do
+          expect {
+            post hare_entries_path, params: params_with_tags
+          }.to change(HareEntryTag, :count).by(2)
+        end
+
+        it '投稿に指定したタグが紐づく' do
+          post hare_entries_path, params: params_with_tags
+          entry = HareEntry.last
+          expect(entry.hare_tags).to contain_exactly(tag1, tag3)
+        end
+      end
+
+      context 'タグ未選択の場合' do
+        let(:params_without_tags) do
+          { hare_entry: { body: 'タグなし投稿', occurred_on: Date.today, visibility: 'private_post' } }
+        end
+
+        it 'HareEntryが作成される' do
+          expect {
+            post hare_entries_path, params: params_without_tags
+          }.to change(HareEntry, :count).by(1)
+        end
+
+        it '中間テーブルのレコードが作成されない' do
+          expect {
+            post hare_entries_path, params: params_without_tags
+          }.not_to change(HareEntryTag, :count)
+        end
+      end
+
+      context '空のhare_tag_idsの場合' do
+        let(:params_with_empty_tag_ids) do
+          { hare_entry: { body: '空タグ配列', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [] } }
+        end
+
+        it 'HareEntryが作成される' do
+          expect {
+            post hare_entries_path, params: params_with_empty_tag_ids
+          }.to change(HareEntry, :count).by(1)
+        end
+
+        it '中間テーブルのレコードが作成されない' do
+          expect {
+            post hare_entries_path, params: params_with_empty_tag_ids
+          }.not_to change(HareEntryTag, :count)
+        end
+      end
+
+      context '非アクティブなタグIDを含む場合' do
+        let!(:active_tag) { create(:hare_tag, key: 'active', label: 'アクティブ', is_active: true) }
+        let!(:inactive_tag) { create(:hare_tag, key: 'inactive', label: '非アクティブ', is_active: false) }
+        let(:params_with_inactive_tag) do
+          { hare_entry: { body: '不正タグ投稿', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [ active_tag.id, inactive_tag.id ] } }
+        end
+
+        it 'HareEntryが作成されない' do
+          expect {
+            post hare_entries_path, params: params_with_inactive_tag
+          }.not_to change(HareEntry, :count)
+        end
+
+        it 'エラーメッセージが表示される' do
+          post hare_entries_path, params: params_with_inactive_tag
+          expect(response).to have_http_status(:unprocessable_entity)
         end
       end
 

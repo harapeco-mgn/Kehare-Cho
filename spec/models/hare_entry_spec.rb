@@ -8,6 +8,17 @@ RSpec.describe HareEntry, type: :model do
       hare_entry = HareEntry.new(user: user, body: 'テスト', occurred_on: Date.today)
       expect(hare_entry.user).to eq(user)
     end
+
+    it { is_expected.to have_many(:hare_entry_tags).dependent(:destroy) }
+    it { is_expected.to have_many(:hare_tags).through(:hare_entry_tags) }
+
+    it 'destroys associated hare_entry_tags when destroyed' do
+      hare_entry = create(:hare_entry, user: user)
+      hare_tag = create(:hare_tag)
+      create(:hare_entry_tag, hare_entry: hare_entry, hare_tag: hare_tag)
+
+      expect { hare_entry.destroy }.to change { HareEntryTag.count }.by(-1)
+    end
   end
 
   describe 'validations' do

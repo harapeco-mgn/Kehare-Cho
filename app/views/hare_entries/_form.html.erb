@@ -20,6 +20,20 @@
     <%= f.date_field :occurred_on, class: "input input-bordered w-full" %>
   </div>
 
+  <% if local_assigns[:hare_tags]&.any? %>
+    <div class="form-control mb-4">
+      <%= f.label :hare_tag_ids, "タグ（複数選択可）", class: "label" %>
+      <div class="flex flex-wrap gap-2">
+        <%= f.collection_check_boxes(:hare_tag_ids, hare_tags, :id, :label) do |b| %>
+          <label class="label cursor-pointer gap-2">
+            <%= b.check_box(class: "checkbox checkbox-primary") %>
+            <span class="label-text"><%= b.text %></span>
+          </label>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="form-control mb-4">
     <%= f.label :visibility, "公開設定", class: "label" %>
     <%= f.select :visibility, HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] }, {}, class: "select select-bordered w-full" %>
