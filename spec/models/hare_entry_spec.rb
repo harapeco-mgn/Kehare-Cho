@@ -11,6 +11,7 @@ RSpec.describe HareEntry, type: :model do
 
     it { is_expected.to have_many(:hare_entry_tags).dependent(:destroy) }
     it { is_expected.to have_many(:hare_tags).through(:hare_entry_tags) }
+    it { is_expected.to have_many(:point_transactions).dependent(:destroy) }
 
     it 'destroys associated hare_entry_tags when destroyed' do
       hare_entry = create(:hare_entry, user: user)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_09_052639) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_103706) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -97,6 +97,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_052639) do
     t.index ["priority"], name: "index_point_rules_on_priority"
   end
 
+  create_table "point_transactions", force: :cascade do |t|
+    t.date "awarded_on", null: false
+    t.datetime "created_at", null: false
+    t.bigint "hare_entry_id", null: false
+    t.bigint "point_rule_id", null: false
+    t.integer "points", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["hare_entry_id"], name: "index_point_transactions_on_hare_entry_id"
+    t.index ["point_rule_id"], name: "index_point_transactions_on_point_rule_id"
+    t.index ["user_id"], name: "index_point_transactions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
@@ -113,4 +126,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_052639) do
   add_foreign_key "hare_entry_tags", "hare_entries"
   add_foreign_key "hare_entry_tags", "hare_tags"
   add_foreign_key "meal_candidates", "genres"
+  add_foreign_key "point_transactions", "hare_entries"
+  add_foreign_key "point_transactions", "point_rules"
+  add_foreign_key "point_transactions", "users"
 end

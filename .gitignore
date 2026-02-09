@@ -4,6 +4,7 @@
 **/CLAUDE.md
 .cursorrules
 .agent/
+test.md
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key
