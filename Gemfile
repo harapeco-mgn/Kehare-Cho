@@ -68,6 +68,9 @@ group :development, :test do
 
   # テストフレームワーク [https://github.com/rspec/rspec-rails]
   gem "rspec-rails"
+
+  # テストデータ作成 [https://github.com/thoughtbot/factory_bot_rails]
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -80,4 +83,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # RSpec matchers for common Rails functionality [https://github.com/thoughtbot/shoulda-matchers]
+  gem "shoulda-matchers"
 end

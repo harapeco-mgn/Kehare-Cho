@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_07_053636) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_052639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,6 +34,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_07_053636) do
     t.bigint "user_id", null: false
     t.integer "visibility", default: 0, null: false
     t.index ["user_id"], name: "index_hare_entries_on_user_id"
+  end
+
+  create_table "hare_entry_tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "hare_entry_id", null: false
+    t.bigint "hare_tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hare_entry_id", "hare_tag_id"], name: "index_hare_entry_tags_on_hare_entry_id_and_hare_tag_id", unique: true
+    t.index ["hare_entry_id"], name: "index_hare_entry_tags_on_hare_entry_id"
+    t.index ["hare_tag_id"], name: "index_hare_entry_tags_on_hare_tag_id"
   end
 
   create_table "hare_tags", force: :cascade do |t|
@@ -100,5 +110,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_07_053636) do
   end
 
   add_foreign_key "hare_entries", "users"
+  add_foreign_key "hare_entry_tags", "hare_entries"
+  add_foreign_key "hare_entry_tags", "hare_tags"
   add_foreign_key "meal_candidates", "genres"
 end

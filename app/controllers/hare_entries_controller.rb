@@ -11,6 +11,7 @@ class HareEntriesController < ApplicationController
 
     def new
       @hare_entry = HareEntry.new(occurred_on: Date.today)
+      @hare_tags = HareTag.active.sorted
     end
 
     def create
@@ -19,6 +20,7 @@ class HareEntriesController < ApplicationController
       if @hare_entry.save
         redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を作成しました"
       else
+        @hare_tags = HareTag.active.sorted
         render :new, status: :unprocessable_entity
       end
     end
@@ -46,6 +48,6 @@ class HareEntriesController < ApplicationController
     end
 
     def hare_entry_params
-      params.require(:hare_entry).permit(:body, :occurred_on, :visibility)
+      params.require(:hare_entry).permit(:body, :occurred_on, :visibility, hare_tag_ids: [])
     end
 end
