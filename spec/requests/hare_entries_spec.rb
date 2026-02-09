@@ -297,6 +297,25 @@ RSpec.describe "HareEntries", type: :request do
         end
       end
 
+      context '非アクティブなタグIDを含む場合' do
+        let!(:active_tag) { create(:hare_tag, key: 'active', label: 'アクティブ', is_active: true) }
+        let!(:inactive_tag) { create(:hare_tag, key: 'inactive', label: '非アクティブ', is_active: false) }
+        let(:params_with_inactive_tag) do
+          { hare_entry: { body: '不正タグ投稿', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [ active_tag.id, inactive_tag.id ] } }
+        end
+
+        it 'HareEntryが作成されない' do
+          expect {
+            post hare_entries_path, params: params_with_inactive_tag
+          }.not_to change(HareEntry, :count)
+        end
+
+        it 'エラーメッセージが表示される' do
+          post hare_entries_path, params: params_with_inactive_tag
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+
       context '無効なパラメータの場合' do
         let(:invalid_params) do
           { hare_entry: { body: '', occurred_on: Date.today } }

@@ -34,5 +34,22 @@ RSpec.describe HareEntryTag, type: :model do
       expect(duplicate).not_to be_valid
       expect(duplicate.errors[:hare_tag_id]).to include('はすでに存在します')
     end
+
+    it 'is invalid when hare_tag is inactive' do
+      hare_entry = create(:hare_entry)
+      inactive_tag = create(:hare_tag, is_active: false)
+
+      hare_entry_tag = build(:hare_entry_tag, hare_entry: hare_entry, hare_tag: inactive_tag)
+      expect(hare_entry_tag).not_to be_valid
+      expect(hare_entry_tag.errors[:hare_tag]).to include('は有効なタグである必要があります')
+    end
+
+    it 'is valid when hare_tag is active' do
+      hare_entry = create(:hare_entry)
+      active_tag = create(:hare_tag, is_active: true)
+
+      hare_entry_tag = build(:hare_entry_tag, hare_entry: hare_entry, hare_tag: active_tag)
+      expect(hare_entry_tag).to be_valid
+    end
   end
 end
