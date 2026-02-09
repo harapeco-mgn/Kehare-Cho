@@ -26,12 +26,14 @@ class HareEntriesController < ApplicationController
     end
 
     def edit
+      @hare_tags = HareTag.active.sorted
     end
 
     def update
       if @hare_entry.update(hare_entry_params)
         redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を更新しました"
       else
+        @hare_tags = HareTag.active.sorted
         render :edit, status: :unprocessable_entity
       end
     end

@@ -374,6 +374,30 @@ RSpec.describe "HareEntries", type: :request do
         end
       end
 
+      context 'タグが存在する場合' do
+        let!(:tag1) { create(:hare_tag, key: 'tag1', label: 'タグ1', is_active: true, position: 1) }
+        let!(:tag2) { create(:hare_tag, key: 'tag2', label: 'タグ2', is_active: true, position: 2) }
+        let!(:inactive_tag) { create(:hare_tag, key: 'inactive', label: '非アクティブ', is_active: false, position: 3) }
+        let!(:entry) { HareEntry.create!(user: user, body: '元の内容', occurred_on: Date.today, visibility: 'public_post', hare_tag_ids: [ tag1.id ]) }
+
+        it 'アクティブなタグがチェックボックスとして表示される' do
+          get edit_hare_entry_path(entry)
+          expect(response.body).to include('タグ1')
+          expect(response.body).to include('タグ2')
+        end
+
+        it '非アクティブなタグは表示されない' do
+          get edit_hare_entry_path(entry)
+          expect(response.body).not_to include('非アクティブ')
+        end
+
+        it '現在紐付いているタグが選択済みとして表示される' do
+          get edit_hare_entry_path(entry)
+          # タグ1が選択されている（checked属性を持つ）
+          expect(response.body).to match(/checked="checked"[^>]*>.*タグ1/m)
+        end
+      end
+
       context '他ユーザーの投稿の場合' do
         let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
         let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
@@ -459,6 +483,43 @@ RSpec.describe "HareEntries", type: :request do
         it 'HareEntryが更新されない' do
           patch hare_entry_path(entry), params: { hare_entry: { body: too_long_body } }
           expect(entry.reload.body).to eq('元の内容')
+        end
+      end
+
+      context 'タグを更新する場合' do
+        let!(:tag1) { create(:hare_tag, key: 'tag1', label: 'タグ1', is_active: true) }
+        let!(:tag2) { create(:hare_tag, key: 'tag2', label: 'タグ2', is_active: true) }
+        let!(:tag3) { create(:hare_tag, key: 'tag3', label: 'タグ3', is_active: true) }
+        let!(:entry) { HareEntry.create!(user: user, body: '元の内容', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [ tag1.id ]) }
+
+        it 'タグが差し替わる' do
+          expect(entry.hare_tags).to contain_exactly(tag1)
+          patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [ tag2.id, tag3.id ] } }
+          expect(entry.reload.hare_tags).to contain_exactly(tag2, tag3)
+        end
+
+        it '中間テーブルのレコード数が正しい' do
+          expect(entry.hare_entry_tags.count).to eq(1)
+          patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [ tag2.id, tag3.id ] } }
+          expect(entry.reload.hare_entry_tags.count).to eq(2)
+        end
+      end
+
+      context 'タグを全て外す場合' do
+        let!(:tag1) { create(:hare_tag, key: 'tag1', label: 'タグ1', is_active: true) }
+        let!(:tag2) { create(:hare_tag, key: 'tag2', label: 'タグ2', is_active: true) }
+        let!(:entry) { HareEntry.create!(user: user, body: '元の内容', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [ tag1.id, tag2.id ]) }
+
+        it 'タグが全て外れる' do
+          expect(entry.hare_tags).to contain_exactly(tag1, tag2)
+          patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [] } }
+          expect(entry.reload.hare_tags).to be_empty
+        end
+
+        it '中間テーブルのレコードが0件になる' do
+          expect(entry.hare_entry_tags.count).to eq(2)
+          patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [] } }
+          expect(entry.reload.hare_entry_tags.count).to eq(0)
         end
       end
 
