@@ -1,4 +1,6 @@
 class PointRule < ApplicationRecord
+  has_many :point_transactions, dependent: :restrict_with_error
+
   validates :key, presence: true, uniqueness: true, format: { with: /\A[a-z][a-z0-9_]*\z/ }
   validates :label, presence: true
   validates :points, presence: true

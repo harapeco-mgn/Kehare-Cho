@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe PointRule, type: :model do
+  describe 'アソシエーション' do
+    it { is_expected.to have_many(:point_transactions).dependent(:restrict_with_error) }
+  end
+
   describe 'バリデーション' do
     describe 'key' do
       it '必須であること' do
