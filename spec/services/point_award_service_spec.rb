@@ -4,7 +4,11 @@ RSpec.describe PointAwardService, type: :service do
   let(:user) { create(:user) }
   let(:hare_entry) { create(:hare_entry, user: user, occurred_on: Date.today) }
 
-  # テスト用のポイントルールを作成
+  # テスト用のポイントルールを作成（既存のルールを削除してからテスト用を作成）
+  before do
+    PointRule.destroy_all
+  end
+
   let!(:basic_rule) do
     create(:point_rule, key: 'basic_post', label: '基本投稿', points: 1, priority: 1, is_active: true)
   end

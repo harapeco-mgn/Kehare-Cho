@@ -211,6 +211,11 @@ RSpec.describe "HareEntries", type: :request do
         let(:valid_params) do
           { hare_entry: { body: 'テストの内容', occurred_on: Date.today, visibility: 'public_post' } }
         end
+
+        before do
+          PointRule.destroy_all
+        end
+
         let!(:point_rule) do
           create(:point_rule, key: 'basic_post', label: '基本投稿', points: 1, priority: 1, is_active: true)
         end
