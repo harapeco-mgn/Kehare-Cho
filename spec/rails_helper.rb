@@ -51,6 +51,9 @@ RSpec.configure do |config|
   # Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :request
 
+  # ActiveSupport::Testing::TimeHelpers (travel_to, travel_back)
+  config.include ActiveSupport::Testing::TimeHelpers
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

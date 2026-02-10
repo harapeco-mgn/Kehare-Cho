@@ -3,6 +3,14 @@
 <main class="container mx-auto px-4 py-8">
   <h1 class="text-2xl font-bold mb-6">ハレの記録</h1>
 
+  <%# 今月のポイント表示 %>
+  <div class="mb-6 p-4 bg-base-200 rounded-lg">
+    <p class="text-lg">
+      今月の合計ポイント:
+      <span class="font-bold text-primary text-2xl"><%= @monthly_points || 0 %>pt</span>
+    </p>
+  </div>
+
   <% if @hare_entries.any? %>
     <div class="space-y-4">
       <% @hare_entries.each do |entry| %>

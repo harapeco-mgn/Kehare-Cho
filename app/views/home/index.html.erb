@@ -3,6 +3,14 @@
     <%= render 'shared/header' %>
 
     <main class="container mx-auto px-4 py-8">
+      <%# 今月のポイント表示（追加） %>
+      <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+          <h2 class="card-title text-lg">今月の合計ポイント</h2>
+          <p class="text-4xl font-bold text-primary"><%= @monthly_points || 0 %>pt</p>
+        </div>
+      </div>
+      
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
           <h2 class="card-title text-2xl">ようこそ、<%=

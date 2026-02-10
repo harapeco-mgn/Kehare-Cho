@@ -187,6 +187,44 @@ RSpec.describe "HareEntries", type: :request do
         expect(response.body).to include('ホーム')
         expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(root_path)}"[^>]*>ホーム</a>})
       end
+
+      context '今月のポイント表示' do
+        let!(:hare_entry) { HareEntry.create!(user: user, body: 'テスト投稿', occurred_on: Time.zone.today, visibility: 'private_post') }
+        let!(:point_rule) { create(:point_rule, key: 'has_tag', points: 1, is_active: true) }
+        let!(:point_transaction) do
+          create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                     points: 15, awarded_on: Time.zone.today)
+        end
+
+        it '今月の合計ポイントが設定される' do
+          get hare_entries_path
+          expect(assigns(:monthly_points)).to eq 15
+        end
+
+        context '複数のポイントが存在する場合' do
+          let!(:point_transaction2) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 25, awarded_on: Time.zone.today.end_of_month)
+          end
+
+          it '合計が設定される' do
+            get hare_entries_path
+            expect(assigns(:monthly_points)).to eq 40
+          end
+        end
+
+        context '先月のポイントがある場合' do
+          let!(:last_month_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 200, awarded_on: 1.month.ago)
+          end
+
+          it '今月分のみ設定される' do
+            get hare_entries_path
+            expect(assigns(:monthly_points)).to eq 15
+          end
+        end
+      end
     end
   end
 
