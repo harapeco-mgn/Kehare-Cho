@@ -542,6 +542,94 @@ RSpec.describe "HareEntries", type: :request do
         end
       end
 
+      context 'ポイント再計算の統合テスト' do
+        before do
+          # テストデータを完全にクリア
+          PointTransaction.destroy_all
+          PointRule.destroy_all
+
+          # テスト用のルール（1つのみ）
+          create(:point_rule, key: 'post_base', label: 'ハレ投稿', points: 1, priority: 1, is_active: true)
+        end
+
+        context 'タグを追加した場合' do
+          let!(:entry) { HareEntry.create!(user: user, body: '元の内容', occurred_on: Date.today, visibility: 'private_post') }
+          let!(:tag) { create(:hare_tag) }
+
+          before do
+            # 初回作成時のポイント付与（タグなし: 1pt）
+            PointAwardService.call(entry)
+          end
+
+          it 'ポイントが再計算される' do
+            expect(entry.reload.awarded_points).to eq(1)
+
+            patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [ tag.id ] } }
+
+            # post_base ルールのみなので1ptのまま
+            expect(entry.reload.awarded_points).to eq(1)
+            expect(entry.point_transactions.count).to eq(1)
+          end
+
+          it 'point_transactionsが再作成される' do
+            initial_count = entry.point_transactions.count
+
+            patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [ tag.id ] } }
+
+            # 削除→再作成されるが、件数は同じ
+            expect(entry.reload.point_transactions.count).to eq(initial_count)
+          end
+        end
+
+        context 'タグを削除した場合' do
+          let!(:tag) { create(:hare_tag) }
+          let!(:entry) { HareEntry.create!(user: user, body: '元の内容', occurred_on: Date.today, visibility: 'private_post', hare_tag_ids: [ tag.id ]) }
+
+          before do
+            # 初回作成時のポイント付与（タグあり: 1pt）
+            PointAwardService.call(entry)
+          end
+
+          it 'ポイントが再計算される' do
+            expect(entry.reload.awarded_points).to eq(1)
+
+            patch hare_entry_path(entry), params: { hare_entry: { body: '元の内容', hare_tag_ids: [] } }
+
+            # post_base ルールのみなので1ptのまま
+            expect(entry.reload.awarded_points).to eq(1)
+          end
+        end
+
+        context 'occurred_onを変更した場合' do
+          let(:old_date) { Date.new(2026, 2, 10) }
+          let(:new_date) { Date.new(2026, 2, 9) }
+          let!(:entry) { HareEntry.create!(user: user, body: '元の内容', occurred_on: old_date, visibility: 'private_post') }
+
+          before do
+            # このテスト用にトランザクションをクリア
+            user.point_transactions.destroy_all
+            PointAwardService.call(entry)
+          end
+
+          it '新しい日付でpoint_transactionsが作成される' do
+            patch hare_entry_path(entry), params: { hare_entry: { occurred_on: new_date } }
+
+            transactions = entry.reload.point_transactions
+            expect(transactions.pluck(:awarded_on).uniq).to eq([ new_date ])
+          end
+
+          it '旧日付の履歴が削除され、新日付の履歴が作成される' do
+            old_count = user.point_transactions.where(awarded_on: old_date).count
+            expect(old_count).to eq(1)
+
+            patch hare_entry_path(entry), params: { hare_entry: { occurred_on: new_date } }
+
+            expect(user.point_transactions.where(awarded_on: old_date).count).to eq(0)
+            expect(user.point_transactions.where(awarded_on: new_date).count).to eq(1)
+          end
+        end
+      end
+
       context '他ユーザーの投稿の場合' do
         let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
         let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }

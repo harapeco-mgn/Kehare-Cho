@@ -32,6 +32,7 @@ class HareEntriesController < ApplicationController
 
     def update
       if @hare_entry.update(hare_entry_params)
+        PointRecalculationService.call(@hare_entry)
         redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を更新しました"
       else
         @hare_tags = HareTag.active.sorted
