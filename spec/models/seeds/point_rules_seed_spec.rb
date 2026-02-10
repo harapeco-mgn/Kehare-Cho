@@ -12,9 +12,16 @@ RSpec.describe Seeds::PointRules do
         expect { described_class.call }.to change(PointRule, :count).from(0).to(3)
       end
 
-      it '作成された全てのルールが有効であること' do
+      it '付与ルール（post_base, bonus_budget_up）が有効であること' do
         described_class.call
-        expect(PointRule.all).to all(have_attributes(is_active: true))
+        grant_rules = PointRule.where(key: %w[post_base bonus_budget_up])
+        expect(grant_rules).to all(have_attributes(is_active: true))
+      end
+
+      it '設定ルール（daily_limit）が無効であること' do
+        described_class.call
+        config_rule = PointRule.find_by!(key: 'daily_limit')
+        expect(config_rule.is_active).to be false
       end
 
       it '作成された全てのルールに priority が設定されていること' do

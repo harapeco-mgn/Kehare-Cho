@@ -22,7 +22,7 @@ module Seeds
         rule.label = '日次上限'
         rule.points = 3
         rule.priority = 99
-        rule.is_active = true
+        rule.is_active = false  # 設定値なので付与ルールではない
         rule.description = '1日あたりの獲得上限（設定値）'
       end
     end
