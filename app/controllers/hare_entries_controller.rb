@@ -18,6 +18,7 @@ class HareEntriesController < ApplicationController
       @hare_entry = current_user.hare_entries.build(hare_entry_params)
 
       if @hare_entry.save
+        PointAwardService.call(@hare_entry)
         redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を作成しました"
       else
         @hare_tags = HareTag.active.sorted

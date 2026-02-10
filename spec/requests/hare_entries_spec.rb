@@ -211,6 +211,9 @@ RSpec.describe "HareEntries", type: :request do
         let(:valid_params) do
           { hare_entry: { body: 'テストの内容', occurred_on: Date.today, visibility: 'public_post' } }
         end
+        let!(:point_rule) do
+          create(:point_rule, key: 'basic_post', label: '基本投稿', points: 1, priority: 1, is_active: true)
+        end
 
         it 'HareEntryが作成される' do
           expect {
@@ -231,6 +234,17 @@ RSpec.describe "HareEntries", type: :request do
         it '作成されたHareEntryはログインユーザーに紐づく' do
           post hare_entries_path, params: valid_params
           expect(HareEntry.last.user).to eq(user)
+        end
+
+        it 'PointTransactionが作成される' do
+          expect {
+            post hare_entries_path, params: valid_params
+          }.to change(PointTransaction, :count).by(1)
+        end
+
+        it 'awarded_pointsが更新される' do
+          post hare_entries_path, params: valid_params
+          expect(HareEntry.last.awarded_points).to eq(1)
         end
       end
 
