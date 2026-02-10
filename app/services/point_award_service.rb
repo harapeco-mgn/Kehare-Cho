@@ -16,6 +16,9 @@ class PointAwardService
     # 実際の処理
     def call
       # 1. 日次上限チェック
+      # NOTE: 並行リクエスト対策として、将来的にはこの集計をトランザクション内で
+      # ロック（行ロックまたはアドバイザリロック）してから読み取るべき。
+      # 現状はMVPのため、シンプルな実装を優先。
       total_today = @user.point_transactions
                      .where(awarded_on: @awarded_on)
                      .sum(:points)
