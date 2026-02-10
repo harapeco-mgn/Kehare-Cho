@@ -43,6 +43,55 @@ RSpec.describe "Home", type: :request do
         expect(response.body).to include("ケハレ帖へようこそ")
       end
 
+      context '今月のポイント表示' do
+        let!(:hare_entry) { create(:hare_entry, user: user, occurred_on: Time.zone.today) }
+        let!(:point_rule) { create(:point_rule, key: 'has_tag', points: 1, is_active: true) }
+        let!(:point_transaction) do
+          create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                     points: 10, awarded_on: Time.zone.today)
+        end
+
+        it '今月の合計ポイントが表示される' do
+          get root_path
+          expect(assigns(:monthly_points)).to eq 10
+        end
+
+        context '複数のポイントが存在する場合' do
+          let!(:point_transaction2) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 20, awarded_on: Time.zone.today.beginning_of_month)
+          end
+
+          it '合計が表示される' do
+            get root_path
+            expect(assigns(:monthly_points)).to eq 30
+          end
+        end
+
+        context '先月のポイントがある場合' do
+          let!(:last_month_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 100, awarded_on: 1.month.ago)
+          end
+
+          it '今月分のみ表示される' do
+            get root_path
+            expect(assigns(:monthly_points)).to eq 10
+          end
+        end
+
+        context 'ポイントがない場合' do
+          before do
+            point_transaction.destroy
+          end
+
+          it '0が表示される' do
+            get root_path
+            expect(assigns(:monthly_points)).to eq 0
+          end
+        end
+      end
+
       it "ヘッダーが表示される" do
         get root_path
         expect(response.body).to include("カレンダー")

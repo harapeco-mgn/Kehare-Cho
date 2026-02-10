@@ -86,4 +86,7 @@ group :test do
 
   # RSpec matchers for common Rails functionality [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers"
+
+  # Controller testing helpers (assigns, assert_template) [https://github.com/rails/rails-controller-testing]
+  gem "rails-controller-testing"
 end
