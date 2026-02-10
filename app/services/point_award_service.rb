@@ -32,7 +32,7 @@ class PointAwardService
         rules.each do |rule|
           break if remaining <= 0
 
-          points_to_award = [rule.points, remaining].min
+          points_to_award = [ rule.points, remaining ].min
 
           PointTransaction.create!(
             user: @user,
@@ -53,4 +53,4 @@ class PointAwardService
         total_awarded
       end
     end
-  end
+end
