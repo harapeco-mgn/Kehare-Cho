@@ -72,4 +72,96 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#level' do
+    let(:user) { create(:user) }
+
+    context 'ポイントが0ptのとき' do
+      it 'Lv.0を返す' do
+        expect(user.level).to eq(0)
+      end
+    end
+
+    context 'ポイントが1ptのとき' do
+      before do
+        create(:point_transaction, user: user, points: 1, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.1を返す（初投稿でレベルアップ）' do
+        expect(user.level).to eq(1)
+      end
+    end
+
+    context 'ポイントが10ptのとき' do
+      before do
+        create(:point_transaction, user: user, points: 10, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.1を返す（境界値）' do
+        expect(user.level).to eq(1)
+      end
+    end
+
+    context 'ポイントが11ptのとき' do
+      before do
+        create(:point_transaction, user: user, points: 11, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.2を返す（境界値）' do
+        expect(user.level).to eq(2)
+      end
+    end
+
+    context 'ポイントが20ptのとき' do
+      before do
+        create(:point_transaction, user: user, points: 20, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.2を返す（境界値）' do
+        expect(user.level).to eq(2)
+      end
+    end
+
+    context 'ポイントが21ptのとき' do
+      before do
+        create(:point_transaction, user: user, points: 21, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.3を返す（境界値）' do
+        expect(user.level).to eq(3)
+      end
+    end
+
+    context 'ポイントが25ptのとき' do
+      before do
+        create(:point_transaction, user: user, points: 25, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.3を返す' do
+        expect(user.level).to eq(3)
+      end
+    end
+
+    context 'ポイントがマイナス（-10pt）のとき' do
+      before do
+        create(:point_transaction, user: user, points: -10, awarded_on: Time.zone.today)
+      end
+
+      it 'Lv.0を返す（下限）' do
+        expect(user.level).to eq(0)
+      end
+    end
+
+    context '複数のポイントトランザクションが存在する場合' do
+      before do
+        create(:point_transaction, user: user, points: 5, awarded_on: Time.zone.today)
+        create(:point_transaction, user: user, points: 10, awarded_on: 1.day.ago)
+        create(:point_transaction, user: user, points: 7, awarded_on: 2.days.ago)
+      end
+
+      it '累計ポイント（22pt）から正しくレベル（Lv.3）を算出する' do
+        expect(user.level).to eq(3)
+      end
+    end
+  end
 end

@@ -92,6 +92,70 @@ RSpec.describe "Home", type: :request do
         end
       end
 
+      context 'レベル表示' do
+        let!(:hare_entry) { create(:hare_entry, user: user, occurred_on: Time.zone.today) }
+        let!(:point_rule) { create(:point_rule, key: 'has_tag', points: 1, is_active: true) }
+
+        context 'ポイントが0ptの場合' do
+          it 'Lv.0が設定される' do
+            get root_path
+            expect(assigns(:level)).to eq 0
+          end
+        end
+
+        context 'ポイントが1ptの場合' do
+          let!(:point_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 1, awarded_on: Time.zone.today)
+          end
+
+          it 'Lv.1が設定される（境界値：初投稿でレベルアップ）' do
+            get root_path
+            expect(assigns(:level)).to eq 1
+          end
+        end
+
+        context 'ポイントが10ptの場合' do
+          let!(:point_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 10, awarded_on: Time.zone.today)
+          end
+
+          it 'Lv.1が設定される（境界値）' do
+            get root_path
+            expect(assigns(:level)).to eq 1
+          end
+        end
+
+        context 'ポイントが11ptの場合' do
+          let!(:point_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 11, awarded_on: Time.zone.today)
+          end
+
+          it 'Lv.2が設定される（境界値）' do
+            get root_path
+            expect(assigns(:level)).to eq 2
+          end
+        end
+
+        context '累計ポイントから算出される' do
+          let!(:point_transaction1) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 15, awarded_on: Time.zone.today)
+          end
+          let!(:point_transaction2) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 10, awarded_on: 1.month.ago)
+          end
+
+          it '全期間の合計（25pt）からLv.3が算出される' do
+            get root_path
+            expect(assigns(:level)).to eq 3
+          end
+        end
+      end
+
       it "ヘッダーが表示される" do
         get root_path
         expect(response.body).to include("カレンダー")
