@@ -1,5 +1,19 @@
 # SimpleCov must be loaded before any application code
 require 'simplecov'
+require 'simplecov-lcov'
+
+# CI環境では lcov フォーマッタも有効化（PR コメント用）
+if ENV['CI']
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = 'coverage/lcov.info'
+  end
+  SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::LcovFormatter
+  ])
+end
+
 SimpleCov.start 'rails' do
   # テストコード・設定ファイルを除外
   add_filter '/spec/'
