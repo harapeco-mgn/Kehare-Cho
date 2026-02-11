@@ -92,4 +92,7 @@ group :test do
 
   # Controller testing helpers (assigns, assert_template) [https://github.com/rails/rails-controller-testing]
   gem "rails-controller-testing"
+
+  # コードカバレッジ測定 [https://github.com/simplecov-ruby/simplecov]
+  gem "simplecov", require: false
 end
