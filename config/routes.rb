@@ -18,4 +18,5 @@ Rails.application.routes.draw do
   get "calendar/:date", to: "calendar#show", as: :calendar_date
 
   resources :hare_entries, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
+  resources :meal_searches, only: [:new, :create]
 end
