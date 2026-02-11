@@ -5,6 +5,7 @@ class HareEntriesController < ApplicationController
     def index
       @hare_entries = current_user.hare_entries.order(created_at: :desc)
       @monthly_points = current_user.monthly_points
+      @level = current_user.level
     end
 
     def show
