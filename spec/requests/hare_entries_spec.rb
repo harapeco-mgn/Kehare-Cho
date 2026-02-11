@@ -85,7 +85,7 @@ RSpec.describe "HareEntries", type: :request do
         it 'ヘッダーにホームへのリンクが表示される' do
           get hare_entry_path(entry)
           expect(response.body).to include('ホーム')
-          expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(root_path)}"[^>]*>ホーム</a>})
+          expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(home_path)}"[^>]*>ホーム</a>})
         end
 
         it '編集リンクが表示される' do
@@ -185,7 +185,7 @@ RSpec.describe "HareEntries", type: :request do
       it 'ヘッダーにホームへのリンクが表示される' do
         get hare_entries_path
         expect(response.body).to include('ホーム')
-        expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(root_path)}"[^>]*>ホーム</a>})
+        expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(home_path)}"[^>]*>ホーム</a>})
       end
 
       context '今月のポイント表示' do
@@ -491,7 +491,7 @@ RSpec.describe "HareEntries", type: :request do
         it 'ヘッダーにホームへのリンクが表示される' do
           get edit_hare_entry_path(entry)
           expect(response.body).to include('ホーム')
-          expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(root_path)}"[^>]*>ホーム</a>})
+          expect(response.body).to match(%r{<a[^>]*href="#{Regexp.escape(home_path)}"[^>]*>ホーム</a>})
         end
       end
 
