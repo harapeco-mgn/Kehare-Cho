@@ -95,4 +95,5 @@ group :test do
 
   # コードカバレッジ測定 [https://github.com/simplecov-ruby/simplecov]
   gem "simplecov", require: false
+  gem "simplecov-lcov", require: false
 end
