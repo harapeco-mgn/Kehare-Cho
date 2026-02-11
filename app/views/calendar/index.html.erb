@@ -1,0 +1,20 @@
+<%= render 'shared/header' %>
+
+<main class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">カレンダー</h1>
+
+  <div class="overflow-x-auto">
+    <%= month_calendar(events: @hare_entries, attribute: :occurred_on) do |date, entries| %>
+      <div class="min-h-[100px] p-2">
+        <div class="font-bold"><%= date.day %></div>
+        <% entries.each do |entry| %>
+          <div class="text-sm bg-primary text-primary-content rounded p-1 mt-1">
+            <%= entry.body.truncate(20) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</main>
+
+<%= render 'shared/footer' %>

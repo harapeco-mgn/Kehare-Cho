@@ -27,6 +27,9 @@ gem "devise"
 # Devise の表示文言を日本語化 [https://github.com/tigrish/devise-i18n]
 gem "devise-i18n"
 
+# カレンダー表示 [https://github.com/excid3/simple_calendar]
+gem "simple_calendar", "~> 3.0"
+
 # メール送信 API（本番環境用）[https://github.com/resend/resend-ruby]
 gem "resend"
 

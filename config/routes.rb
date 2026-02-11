@@ -13,5 +13,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-    resources :hare_entries, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
+  get 'home', to: 'home#index', as: :home
+  get 'calendar', to: 'calendar#index'
+
+  resources :hare_entries, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
 end
