@@ -16,6 +16,6 @@ class CalendarController < ApplicationController
     @hare_entries = current_user.hare_entries.where(occurred_on: @date)
   rescue ArgumentError, TypeError
     # 不正な日付フォーマットの場合はカレンダートップへリダイレクト
-    redirect_to calendar_path, alert: '不正な日付フォーマットです'
+    redirect_to calendar_path, alert: "不正な日付フォーマットです"
   end
 end
