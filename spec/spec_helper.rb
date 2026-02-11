@@ -1,9 +1,18 @@
 # SimpleCov must be loaded before any application code
 require 'simplecov'
 SimpleCov.start 'rails' do
+  # テストコード・設定ファイルを除外
   add_filter '/spec/'
   add_filter '/config/'
   add_filter '/vendor/'
+
+  # ビジネスロジックでないファイルを除外
+  add_filter '/bin/'          # 実行スクリプト
+  add_filter '/db/migrate/'   # マイグレーションファイル
+  add_filter '/db/schema.rb'  # スキーマ定義（自動生成）
+  add_filter '/lib/tasks/'    # Rakeタスク
+  add_filter '/node_modules/' # Node.js依存関係
+  add_filter '/test/'         # Minitest
 
   add_group 'Models', 'app/models'
   add_group 'Controllers', 'app/controllers'
