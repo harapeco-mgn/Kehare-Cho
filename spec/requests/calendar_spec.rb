@@ -91,7 +91,7 @@ RSpec.describe 'Calendar', type: :request do
   end
 
   describe 'GET /calendar/:date (日別一覧)' do
-    let(:target_date) { Date.new(2026, 2, 11) }
+    let(:target_date) { Date.today }
 
     context '未ログインの場合' do
       it 'ログイン画面にリダイレクトされる' do
@@ -118,15 +118,15 @@ RSpec.describe 'Calendar', type: :request do
         let!(:entry_on_date) do
           create(:hare_entry,
                  user: user,
-                 body: '2月11日の投稿',
+                 body: 'テスト投稿',
                  occurred_on: target_date)
         end
 
         it '200 が返り、その日の投稿が表示される' do
           get "/calendar/#{target_date}"
           expect(response).to have_http_status(:ok)
-          expect(response.body).to include('2月11日の投稿')
-          expect(response.body).to include('2026年02月11日')
+          expect(response.body).to include('テスト投稿')
+          expect(response.body).to include(target_date.strftime('%Y年%m月%d日'))
         end
       end
 
@@ -168,7 +168,7 @@ RSpec.describe 'Calendar', type: :request do
       sign_in user
     end
 
-    let(:target_date) { Date.new(2026, 2, 11) }
+    let(:target_date) { Date.today }
     let!(:entry_on_date) do
       create(:hare_entry,
              user: user,
