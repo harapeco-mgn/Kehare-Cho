@@ -1,0 +1,50 @@
+<%= render 'shared/header' %>
+
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">
+      <%= @date.strftime("%Y年%m月%d日") %> のハレ投稿
+    </h1>
+
+    <!-- ナビゲーションボタン -->
+    <div class="mb-6 flex gap-2">
+      <%= link_to "← 月へ戻る", calendar_path, class: "btn btn-secondary" %>
+      <%= link_to "新規投稿", new_hare_entry_path, class: "btn btn-primary" %>
+    </div>
+
+    <% if @hare_entries.empty? %>
+    <div class="text-center py-12">
+      <p class="text-gray-500 mb-4">この日はまだハレ投稿がありません</p>
+      <p class="text-sm text-gray-400">小さなハレを見つけたら記録しましょう！</p>
+    </div>
+  <% else %>
+    <div class="space-y-4">
+      <% @hare_entries.each do |entry| %>
+        <div class="card bg-base-100 shadow-md">
+          <div class="card-body">
+            <%= link_to hare_entry_path(entry), class: "hover:text-primary" do %>
+              <h3 class="card-title"><%= entry.body %></h3>
+            <% end %>
+
+            <!-- タグがあれば表示 -->
+            <% if entry.hare_tags.any? %>
+              <div class="flex gap-2 mt-2">
+                <% entry.hare_tags.each do |tag| %>
+                  <span class="badge badge-primary"><%= tag.label %></span>
+                <% end %>
+              </div>
+            <% end %>
+
+             <!-- ポイントがあれば表示 -->
+            <% if entry.awarded_points&.positive? %>
+              <p class="text-sm text-gray-600 mt-2">
+                +<%= entry.awarded_points %> ポイント
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  </main>
+
+  <%= render 'shared/footer' %>

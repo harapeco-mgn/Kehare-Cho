@@ -10,4 +10,9 @@ class CalendarController < ApplicationController
       occurred_on: @start_date.beginning_of_month..@start_date.end_of_month
     )
   end
+
+  def show
+    @date = params[:date].to_date
+    @hare_entries = current_user.hare_entries.where(occurred_on: @date)
+  end
 end
