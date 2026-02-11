@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   get "home", to: "home#index", as: :home
   get "calendar", to: "calendar#index"
+  get "calendar/:date", to: "calendar#show", as: :calendar_date
 
   resources :hare_entries, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
 end

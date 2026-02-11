@@ -6,11 +6,10 @@
   <div class="overflow-x-auto">
     <%= month_calendar(events: @hare_entries, attribute: :occurred_on) do |date, entries| %>
       <div class="min-h-[100px] p-2">
-        <div class="font-bold"><%= date.day %></div>
+        <%= link_to date.day, calendar_date_path(date: date), class: "font-bold hover:text-blue-600" %>
         <% entries.each do |entry| %>
-          <div class="text-sm bg-primary text-primary-content rounded p-1 mt-1">
-            <%= entry.body.truncate(20) %>
-          </div>
+          <%= link_to entry.body.truncate(20), hare_entry_path(entry),
+              class: "block text-sm bg-primary text-primary-content rounded p-1 mt-1 hover:bg-primary-focus" %>
         <% end %>
       </div>
     <% end %>
