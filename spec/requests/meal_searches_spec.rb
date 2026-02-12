@@ -70,26 +70,15 @@ RSpec.describe "MealSearches", type: :request do
         create_list(:meal_candidate, 5, genre: genre, is_active: true)
       end
 
-      it "200が返る" do
+      it "meal_searches_path にリダイレクトする" do
         post meal_searches_path, params: { genre_id: genre.id }
-        expect(response).to have_http_status(:ok)
+        expect(response).to redirect_to(meal_searches_path)
       end
 
-      it "new テンプレートをレンダリングする" do
+      it "候補IDをセッションに保存する" do
         post meal_searches_path, params: { genre_id: genre.id }
-        expect(response).to render_template(:new)
-      end
-
-      it "@candidates に3件の候補を設定する" do
-        post meal_searches_path, params: { genre_id: genre.id }
-        expect(assigns(:candidates)).to be_present
-        expect(assigns(:candidates).size).to eq(3)
-      end
-
-      it "@genres と @moods を設定する" do
-        post meal_searches_path, params: { genre_id: genre.id }
-        expect(assigns(:genres)).to eq(Genre.all)
-        expect(assigns(:moods)).to eq(MoodTag.all)
+        expect(session[:meal_candidates]).to be_present
+        expect(session[:meal_candidates].size).to eq(3)
       end
 
       context "ジャンル一致候補が3件未満の場合" do
@@ -103,12 +92,10 @@ RSpec.describe "MealSearches", type: :request do
           create_list(:meal_candidate, 3, genre: other_genre, is_active: true)
         end
 
-        it "他ジャンルから補完して3件の候補を返す" do
+        it "他ジャンルから補完して3件の候補IDをセッションに保存する" do
           post meal_searches_path, params: { genre_id: genre.id }
-          candidates = assigns(:candidates)
-          expect(candidates.size).to eq(3)
-          # ジャンル一致の2件が含まれることを確認
-          expect(candidates.count { |c| c.genre_id == genre.id }).to eq(2)
+          expect(session[:meal_candidates]).to be_present
+          expect(session[:meal_candidates].size).to eq(3)
         end
       end
     end
@@ -116,6 +103,82 @@ RSpec.describe "MealSearches", type: :request do
     context "未ログインユーザーの場合" do
       it "/users/sign_inにリダイレクトされる" do
         post meal_searches_path, params: { genre_id: genre.id }
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
+
+  describe "GET /meal_searches" do
+    let(:genre) { create(:genre) }
+
+    context "ログイン済みユーザーの場合" do
+      before { sign_in user }
+
+      context "POST でセッションに候補を保存した後" do
+        let!(:candidates) { create_list(:meal_candidate, 3, genre: genre, is_active: true) }
+
+        before do
+          # POST で候補を選択してセッションに保存
+          post meal_searches_path, params: { genre_id: genre.id }
+          # GET で候補一覧を表示
+          get meal_searches_path
+        end
+
+        it "200が返る" do
+          expect(response).to have_http_status(:ok)
+        end
+
+        it "@candidates に候補を設定する" do
+          expect(assigns(:candidates)).to be_present
+          expect(assigns(:candidates).size).to eq(3)
+        end
+
+        it "@genres と @moods を設定する" do
+          expect(assigns(:genres)).to eq(Genre.all)
+          expect(assigns(:moods)).to eq(MoodTag.all)
+        end
+
+        it "候補の料理名が表示される" do
+          get meal_searches_path
+          candidates = assigns(:candidates)
+          candidates.each do |candidate|
+            expect(response.body).to include(candidate.name)
+          end
+        end
+
+        it "各候補にGoogle検索リンクが含まれる" do
+          get meal_searches_path
+          expect(response.body).to include("Google で検索")
+        end
+
+        it "Google検索リンクのURLが正しい" do
+          get meal_searches_path
+          candidates = assigns(:candidates)
+          candidates.each do |candidate|
+            expected_url = GoogleSearchQueryBuilder.new(candidate.name).url
+            expect(response.body).to include(expected_url)
+          end
+        end
+      end
+
+      context "セッションに候補が保存されていない場合" do
+        before do
+          get meal_searches_path
+        end
+
+        it "200が返る" do
+          expect(response).to have_http_status(:ok)
+        end
+
+        it "@candidates は空" do
+          expect(assigns(:candidates)).to be_nil
+        end
+      end
+    end
+
+    context "未ログインユーザーの場合" do
+      it "/users/sign_inにリダイレクトされる" do
+        get meal_searches_path
         expect(response).to redirect_to(new_user_session_path)
       end
     end
