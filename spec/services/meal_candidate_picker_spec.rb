@@ -1,8 +1,8 @@
 require "rails_helper"
 
 RSpec.describe MealCandidatePicker, type: :service do
-  let(:genre) { create(:genre, key: "japanese", label: "和食") }
-  let(:other_genre) { create(:genre, key: "western", label: "洋食") }
+  let(:genre) { create(:genre) }
+  let(:other_genre) { create(:genre) }
 
   describe "#pick" do
     context "genre 一致の候補が3件以上ある場合" do
