@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_10_051447) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_12_080546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -72,6 +72,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_051447) do
     t.index ["position"], name: "index_meal_candidates_on_position"
   end
 
+  create_table "meal_searches", force: :cascade do |t|
+    t.integer "cook_context"
+    t.datetime "created_at", null: false
+    t.integer "genre_id"
+    t.integer "meal_mode"
+    t.integer "mood_id"
+    t.text "presented_candidate_names"
+    t.integer "required_minutes"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_meal_searches_on_user_id"
+  end
+
   create_table "mood_tags", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "is_active", default: true, null: false
@@ -127,6 +140,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_051447) do
   add_foreign_key "hare_entry_tags", "hare_entries"
   add_foreign_key "hare_entry_tags", "hare_tags"
   add_foreign_key "meal_candidates", "genres"
+  add_foreign_key "meal_searches", "users"
   add_foreign_key "point_transactions", "hare_entries"
   add_foreign_key "point_transactions", "point_rules"
   add_foreign_key "point_transactions", "users"

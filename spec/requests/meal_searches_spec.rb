@@ -81,6 +81,41 @@ RSpec.describe "MealSearches", type: :request do
         expect(session[:meal_candidates].size).to eq(3)
       end
 
+      it "検索ログ（MealSearch）が作成される" do
+        expect {
+          post meal_searches_path, params: { genre_id: genre.id }
+        }.to change(MealSearch, :count).by(1)
+      end
+
+      it "検索ログが current_user に紐づく" do
+        post meal_searches_path, params: { genre_id: genre.id }
+        meal_search = MealSearch.last
+        expect(meal_search.user).to eq(user)
+      end
+
+      it "検索ログに genre_id が保存される" do
+        post meal_searches_path, params: { genre_id: genre.id }
+        meal_search = MealSearch.last
+        expect(meal_search.genre_id).to eq(genre.id)
+      end
+
+      it "検索ログに presented_candidate_names が配列で保存される" do
+        post meal_searches_path, params: { genre_id: genre.id }
+        meal_search = MealSearch.last
+        expect(meal_search.presented_candidate_names).to be_an(Array)
+        expect(meal_search.presented_candidate_names.size).to eq(3)
+      end
+
+      it "検索ログの presented_candidate_names が候補の name を含む" do
+        post meal_searches_path, params: { genre_id: genre.id }
+        meal_search = MealSearch.last
+        candidates = MealCandidate.where(id: session[:meal_candidates])
+
+        candidates.each do |candidate|
+          expect(meal_search.presented_candidate_names).to include(candidate.name)
+        end
+      end
+
       context "ジャンル一致候補が3件未満の場合" do
         let(:other_genre) { create(:genre, key: 'other', label: 'その他') }
 

@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :hare_entries, dependent: :destroy
   has_many :point_transactions, dependent: :destroy
+  has_many :meal_searches, dependent: :destroy
 
   def monthly_points
     current_month_range = Time.zone.now.beginning_of_month.to_date..Time.zone.now.end_of_month.to_date
