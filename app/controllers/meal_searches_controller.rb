@@ -2,6 +2,7 @@ class MealSearchesController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @meal_searches = current_user.meal_searches.order(created_at: :desc)
     if session[:meal_candidates]
       @candidates = MealCandidate.where(id: session[:meal_candidates]).includes(:genre)
     end

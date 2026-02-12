@@ -209,6 +209,60 @@ RSpec.describe "MealSearches", type: :request do
           expect(assigns(:candidates)).to be_nil
         end
       end
+
+      context "ログ一覧の表示（Issue #40）" do
+        let(:other_user) { create(:user) }
+        let!(:my_log1) { create(:meal_search, user: user, genre: genre, created_at: 2.days.ago) }
+        let!(:my_log2) { create(:meal_search, user: user, genre: genre, created_at: 1.day.ago) }
+        let!(:other_log) { create(:meal_search, user: other_user, genre: genre, created_at: 1.hour.ago) }
+
+        before do
+          get meal_searches_path
+        end
+
+        it "200が返る" do
+          expect(response).to have_http_status(:ok)
+        end
+
+        it "@meal_searches に自分のログを設定する" do
+          expect(assigns(:meal_searches)).to be_present
+          expect(assigns(:meal_searches).size).to eq(2)
+        end
+
+        it "自分のログのみが表示される（他ユーザーのログは表示されない）" do
+          expect(assigns(:meal_searches)).to include(my_log1, my_log2)
+          expect(assigns(:meal_searches)).not_to include(other_log)
+        end
+
+        it "新しい順に並んでいる" do
+          meal_searches = assigns(:meal_searches)
+          expect(meal_searches.first).to eq(my_log2)  # 1日前が最初
+          expect(meal_searches.last).to eq(my_log1)   # 2日前が最後
+        end
+
+        it "/home への導線が存在する" do
+          expect(response.body).to include('href="/home"')
+        end
+      end
+
+      context "ログが0件の場合" do
+        before do
+          user.meal_searches.destroy_all
+          get meal_searches_path
+        end
+
+        it "200が返る" do
+          expect(response).to have_http_status(:ok)
+        end
+
+        it "@meal_searches が空" do
+          expect(assigns(:meal_searches)).to be_empty
+        end
+
+        it "空状態のメッセージが表示される" do
+          expect(response.body).to include("まだ検索ログがありません")
+        end
+      end
     end
 
     context "未ログインユーザーの場合" do

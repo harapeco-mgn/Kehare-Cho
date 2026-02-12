@@ -1,5 +1,6 @@
 class MealSearch < ApplicationRecord
   belongs_to :user
+  belongs_to :genre, optional: true
 
   serialize :presented_candidate_names, coder: JSON
   validates :user, presence: true
