@@ -18,9 +18,9 @@ class MealCandidatePicker
 
   def fetch_matched_candidates
     if @genre_id.present?
-      MealCandidate.active.where(genre_id: @genre_id).to_a
+      MealCandidate.active.where(genre_id: @genre_id).includes(:genre).to_a
     else
-      MealCandidate.active.to_a
+      MealCandidate.active.includes(:genre).to_a
     end
   end
 
@@ -28,7 +28,7 @@ class MealCandidatePicker
     remaining_count = count - matched.size
     excluded_ids = matched.map(&:id)
 
-    other_candidates = MealCandidate.active.where.not(id: excluded_ids).to_a
+    other_candidates = MealCandidate.active.where.not(id: excluded_ids).includes(:genre).to_a
 
     supplemented = other_candidates.sample(remaining_count, random: @random)
     matched + supplemented
