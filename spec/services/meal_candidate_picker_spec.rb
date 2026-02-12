@@ -4,6 +4,11 @@ RSpec.describe MealCandidatePicker, type: :service do
   let(:genre) { create(:genre) }
   let(:other_genre) { create(:genre) }
 
+  before do
+    # seed データをクリアしてテストの独立性を確保
+    MealCandidate.destroy_all
+  end
+
   describe "#pick" do
     context "genre 一致の候補が3件以上ある場合" do
       let!(:japanese_candidates) do
