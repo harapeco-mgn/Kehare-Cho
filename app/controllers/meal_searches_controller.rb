@@ -1,5 +1,14 @@
 class MealSearchesController < ApplicationController
   before_action :authenticate_user!
+
+  def index
+    if session[:meal_candidates]
+      @candidates = MealCandidate.where(id: session[:meal_candidates]).includes(:genre)
+    end
+    @genres = Genre.all
+    @moods = MoodTag.all
+  end
+
   def new
     @genres = Genre.all
     @moods = MoodTag.all
@@ -8,9 +17,8 @@ class MealSearchesController < ApplicationController
   def create
     genre_id = params[:genre_id]
     picker = MealCandidatePicker.new(genre_id: genre_id)
-    @candidates = picker.pick
-    @genres = Genre.all
-    @moods = MoodTag.all
-    render :new
+    candidates = picker.pick
+    session[:meal_candidates] = candidates.map(&:id)
+    redirect_to meal_searches_path
   end
 end

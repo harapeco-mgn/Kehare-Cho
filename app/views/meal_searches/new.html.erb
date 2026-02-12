@@ -77,34 +77,10 @@
                               { class: "select select-bordered w-full" } %>
     </div>
 
-    <!-- 送信ボタン（無効化） -->
+    <!-- 送信ボタン -->
     <div class="form-control mt-6">
       <%= f.submit "候補を見る", class: "btn btn-primary w-full" %>
     </div>
 
   <% end %>
-  <% if @candidates.present? %>
-      <div class="mt-8">
-        <h2 class="text-xl font-bold mb-4">おすすめの候補</h2>
-        <div class="grid gap-4">
-          <% @candidates.each do |candidate| %>
-            <div class="card bg-base-100 border border-base-300">
-              <div class="card-body">
-                <h3 class="card-title"><%= candidate.name %></h3>
-                <p class="text-sm text-gray-600">
-                  ジャンル: <%= candidate.genre.label %>
-                </p>
-                <div class="card-actions justify-end mt-2">
-                  <%= link_to "Google で検索",
-                              "https://www.google.com/search?q=#{CGI.escape(candidate.name + ' レシピ')}",
-                              target: "_blank",
-                              rel: "noopener noreferrer",
-                              class: "btn btn-sm btn-outline btn-primary" %>
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
 </div>
