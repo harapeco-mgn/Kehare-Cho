@@ -1,2 +1,21 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* カレンダーのヘッダー・曜日を見やすく */
+.simple-calendar {
+  .calendar-heading {
+    @apply text-gray-800 font-bold mb-4;
+  }
+
+  .calendar-title {
+    @apply text-xl text-gray-800;
+  }
+
+  table thead th {
+    @apply text-gray-700 font-semibold;
+  }
+
+  .prev-month, .next-month {
+    @apply text-gray-400;
+  }
+}
