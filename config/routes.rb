@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "how_to_use", to: "pages#how_to_use"
   get "privacy_policy", to: "pages#privacy_policy"
   get "terms", to: "pages#terms"
   devise_for :users

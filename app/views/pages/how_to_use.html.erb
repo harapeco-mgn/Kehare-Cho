@@ -1,0 +1,128 @@
+<%= render "shared/header" %>
+
+<div class="container mx-auto p-4 max-w-4xl">
+  <h1 class="text-3xl font-bold mb-6 text-center">ケハレ帖の使い方</h1>
+
+  <!-- 1. イントロ -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2 class="text-primary">今日のごはんに、小さなハレを。</h2>
+      <p>
+        「ケハレ帖」は、日常の食事に「小さな特別」を見つけて記録するアプリです。
+      </p>
+      <p>
+        <strong>ケ（褻）</strong>とは「日常」のこと。<br>
+        <strong>ハレ（晴れ）</strong>とは「特別な日」のこと。
+      </p>
+      <p>
+        毎日のごはんは「ケ」だけど、ちょっと工夫したり、いつもより美味しいものを選んだり。<br>
+        そんな<span class="text-primary font-bold">「小さなハレ」</span>を記録して、日常を楽しく振り返りましょう。
+      </p>
+    </div>
+  </div>
+
+  <!-- 2. 献立相談 -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2>🍳 献立相談機能</h2>
+      <p>「今日は何を食べよう？」そんなときは、献立相談を使ってみましょう。</p>
+      <ol>
+        <li><strong>食事のジャンルを選ぶ</strong>：和食、洋食、中華など、気分に合わせて選択</li>
+        <li><strong>候補が3つ表示される</strong>：ランダムにおすすめの献立が提案されます</li>
+        <li><strong>気になったらGoogle検索へ</strong>：レシピを調べたり、お店を探したりできます</li>
+      </ol>
+      <p class="text-sm text-gray-600">
+        ※ レシピデータベースは持っていません。Google検索で自由に探してください。
+      </p>
+    </div>
+  </div>
+
+  <!-- 3. ハレ投稿 -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2>✨ ハレ投稿機能</h2>
+      <p>「今日のごはん、ちょっと特別だったな」と思ったら、ハレ投稿で記録しましょう。</p>
+      <ol>
+        <li><strong>日付を選ぶ</strong>：今日のことでも、過去のことでもOK</li>
+        <li><strong>タグを選ぶ</strong>：「いつもより手間をかけた」「ちょっと贅沢した」など、ハレの種類を選択</li>
+        <li><strong>ひとことメモを書く</strong>：「久しぶりに魚を焼いた」「デザート付き」など、自由に記録</li>
+        <li><strong>投稿完了！</strong>：ポイントが貯まり、カレンダーにスタンプが付きます</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 4. カレンダー -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2>📅 カレンダー機能</h2>
+      <p>投稿したハレは、カレンダーでスタンプとして表示されます。</p>
+      <ul>
+        <li><strong>1か月の記録が一目で分かる</strong>：「今月は何回ハレがあったかな？」</li>
+        <li><strong>タグごとにスタンプが違う</strong>：手間をかけた日、贅沢した日が色分けされます</li>
+        <li><strong>振り返りが楽しくなる</strong>：「先月より増えてる！」と成長を実感</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5. ポイント・レベル -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2>🎮 ポイントとレベル</h2>
+      <p>ハレを投稿するとポイントが貯まり、レベルアップしていきます。</p>
+      <ul>
+        <li><strong>投稿1回で+1ポイント</strong></li>
+        <li><strong>1日最大3ポイント</strong>：朝・昼・夜のハレを記録できます</li>
+        <li><strong>10ポイントでレベル1アップ</strong>：コツコツ続けることで成長を実感</li>
+      </ul>
+      <p class="text-sm text-gray-600">
+        ※ ポイントに特典はありません。自分の成長を楽しむためのものです。
+      </p>
+    </div>
+  </div>
+
+  <!-- 6. 始め方 -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2>🚀 始め方</h2>
+      <ol>
+        <li><strong>アカウント登録</strong>：メールアドレスとパスワードで簡単登録</li>
+        <li><strong>献立相談で今日のごはんを考える</strong>：気軽に試してみましょう</li>
+        <li><strong>ハレを見つけたら投稿</strong>：「ちょっと特別」を記録</li>
+        <li><strong>カレンダーで振り返る</strong>：1週間、1か月の記録を楽しむ</li>
+      </ol>
+      <% if user_signed_in? %>
+        <div class="text-center mt-4">
+          <%= link_to "献立相談を始める", new_meal_search_path, class: "btn btn-primary" %>
+        </div>
+      <% else %>
+        <div class="text-center mt-4">
+          <%= link_to "アカウント登録", new_user_registration_path, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- 7. FAQ -->
+  <div class="card bg-base-100 shadow-xl mb-6">
+    <div class="card-body prose max-w-none">
+      <h2>💡 よくある質問</h2>
+
+      <h3>Q1. 「ハレ」って、どのくらい特別じゃないとダメ？</h3>
+      <p>
+        <strong>A.</strong> 基準は自由です！「いつもよりちょっと良い」「ちょっと手間をかけた」「気分が上がった」など、あなたが「特別」と感じたらそれがハレです。
+      </p>
+
+      <h3>Q2. ポイントは何に使えるの？</h3>
+      <p>
+        <strong>A.</strong> ポイントは特典と交換できるものではありません。自分の成長や継続を楽しむための指標です。レベルが上がると達成感が得られます。
+      </p>
+
+      <h3>Q3. レシピは載っていないの？</h3>
+      <p>
+        <strong>A.</strong> ケハレ帖はレシピデータベースを持っていません。献立相談で候補を提案し、Google検索に誘導する形でレシピや食材を探せます。
+      </p>
+    </div>
+  </div>
+</div>
+
+<%= render "shared/footer" %>
