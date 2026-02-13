@@ -13,7 +13,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  get "home", to: "home#index", as: :home
+  authenticate :user do
+    root "home#index", as: :authenticated_root
+    resource :profile, only: [ :show, :edit, :update ]
+    resources :hare_entries
+  end
+
   get "calendar", to: "calendar#index"
   get "calendar/:date", to: "calendar#show", as: :calendar_date
 
