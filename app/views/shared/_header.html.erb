@@ -7,7 +7,7 @@
         <li><%= link_to "ホーム", home_path, class: "btn btn-ghost btn-sm" %></li>
         <li><%= link_to "カレンダー", calendar_path, class: "btn btn-ghost btn-sm" %></li>
         <li><%= link_to "献立相談", new_meal_search_path, class: "btn btn-ghost btn-sm" %></li>
-        <li><button class="btn btn-ghost btn-sm" disabled>ハレ投稿</button></li>
+        <li><%= link_to "ハレ投稿", new_hare_entry_path, class: "btn btn-ghost btn-sm" %></li>
         <li><%= link_to "プロフィール", profile_path, class: "btn btn-ghost btn-sm" %></li>
         <li>
           <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-primary btn-sm" %>
