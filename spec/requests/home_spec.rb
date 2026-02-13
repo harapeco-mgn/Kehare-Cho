@@ -208,6 +208,32 @@ RSpec.describe "Home", type: :request do
         get root_path
         expect(response.body).not_to include("新規登録")
       end
+
+      context 'ナビゲーションリンク表示' do
+        before do
+          get root_path
+        end
+
+        it '「ハレを記録する」リンクが存在する' do
+          expect(response.body).to include('ハレを記録する')
+          expect(response.body).to include(new_hare_entry_path)
+        end
+
+        it '「献立相談」リンクが存在する' do
+          expect(response.body).to include('献立相談')
+          expect(response.body).to include(new_meal_search_path)
+        end
+
+        it '「ハレ一覧」リンクが存在する' do
+          expect(response.body).to include('ハレ一覧')
+          expect(response.body).to include(hare_entries_path)
+        end
+
+        it '「ログ一覧」リンクが存在する' do
+          expect(response.body).to include('ログ一覧')
+          expect(response.body).to include(meal_searches_path)
+        end
+      end
     end
   end
 end
