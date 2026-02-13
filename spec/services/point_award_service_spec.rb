@@ -140,22 +140,29 @@ RSpec.describe PointAwardService, type: :service do
     end
 
     context '別の日の投稿の場合' do
-      let(:yesterday_entry) { create(:hare_entry, user: user, occurred_on: Date.yesterday) }
+      it '別の日の上限は影響しない' do
+        # 時刻を固定して日付の変更による影響を排除
+        travel_to Time.zone.local(2026, 2, 14, 12, 0, 0) do
+          # 今日（2/14）の投稿を作成
+          today_entry = create(:hare_entry, user: user, occurred_on: Date.new(2026, 2, 14))
 
-      before do
-        # 今日3pt付与済み
-        create(:point_transaction,
-               user: user,
-               hare_entry: hare_entry,
-               point_rule: basic_rule,
-               awarded_on: Date.today,
-               points: 3)
-      end
+          # 今日（2/14）に3pt付与済み
+          create(:point_transaction,
+                 user: user,
+                 hare_entry: today_entry,
+                 point_rule: basic_rule,
+                 awarded_on: Date.new(2026, 2, 14),
+                 points: 3)
 
-      it '別の日の上限は影響しない', :skip do
-        result = described_class.call(yesterday_entry)
+          # 昨日（2/13）の投稿を作成
+          yesterday_entry = create(:hare_entry, user: user, occurred_on: Date.new(2026, 2, 13))
 
-        expect(result).to eq(3)  # 昨日の分は3pt付与される
+          # 昨日の投稿にポイント付与
+          result = described_class.call(yesterday_entry)
+
+          # 昨日の分は3pt付与される（今日の上限とは別）
+          expect(result).to eq(3)
+        end
       end
     end
 
