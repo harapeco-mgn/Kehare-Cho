@@ -1,0 +1,22 @@
+ja:
+  devise:
+    sessions:
+      signed_in: "おかえりなさい！今日のハレを記録しましょう"
+      signed_out: "ログアウトしました。またお待ちしています"
+      already_signed_out: "ログアウトしました"
+    registrations:
+      signed_up: "ようこそケハレ帖へ！さっそく始めましょう"
+      updated: "アカウント情報を更新しました"
+      update_needs_confirmation: "アカウント情報を更新しました。新しいメールアドレスの確認をお願いします"
+      destroyed: "アカウントを削除しました。ご利用ありがとうございました"
+    passwords:
+      send_instructions: "パスワード再設定の案内メールを送信しました"
+      updated: "パスワードを変更しました"
+      updated_not_active: "パスワードを変更しました"
+    confirmations:
+      confirmed: "メールアドレスの確認が完了しました"
+      send_instructions: "確認メールを送信しました"
+    failure:
+      unauthenticated: "ログインしてください"
+      invalid: "メールアドレスまたはパスワードが正しくありません"
+      timeout: "セッションの有効期限が切れました。もう一度ログインしてください"
