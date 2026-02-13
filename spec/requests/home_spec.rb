@@ -39,7 +39,7 @@ RSpec.describe "Home", type: :request do
       it "ホーム画面が表示される" do
         get root_path
         expect(response).to have_http_status(:success)
-        expect(response.body).to include("ようこそ、#{user.email} さん")
+        expect(response.body).to include("ようこそ、#{user.display_name} さん")
         expect(response.body).to include("ケハレ帖へようこそ")
       end
 

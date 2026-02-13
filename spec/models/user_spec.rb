@@ -6,6 +6,94 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:point_transactions).dependent(:destroy) }
   end
 
+  describe 'validations' do
+    describe 'nickname' do
+      context 'ニックネームがnilの場合' do
+        it 'バリデーションが通る' do
+          user = build(:user, nickname: nil)
+          expect(user).to be_valid
+        end
+      end
+
+      context 'ニックネームが空文字列の場合' do
+        it 'バリデーションが通る（nilとして扱われる）' do
+          user = build(:user, nickname: '')
+          expect(user).to be_valid
+        end
+      end
+
+      context 'ニックネームが20文字の場合' do
+        it 'バリデーションが通る（境界値）' do
+          user = build(:user, nickname: 'a' * 20)
+          expect(user).to be_valid
+        end
+      end
+
+      context 'ニックネームが21文字の場合' do
+        it 'バリデーションエラーになる' do
+          user = build(:user, nickname: 'a' * 21)
+          expect(user).not_to be_valid
+          expect(user.errors[:nickname]).to include('は20文字以内で入力してください')
+        end
+      end
+
+      context '同じニックネームのユーザーが既に存在する場合' do
+        before do
+          create(:user, nickname: 'たろう')
+        end
+
+        it '大文字小文字を区別せずにバリデーションエラーになる' do
+          user = build(:user, nickname: 'たろう')
+          expect(user).not_to be_valid
+          expect(user.errors[:nickname]).to include('はすでに存在します')
+        end
+
+        it '大文字小文字の違いでもバリデーションエラーになる（英字）' do
+          create(:user, nickname: 'Taro')
+          user = build(:user, nickname: 'taro')
+          expect(user).not_to be_valid
+        end
+      end
+
+      context 'ニックネームが異なる場合' do
+        before do
+          create(:user, nickname: 'たろう')
+        end
+
+        it 'バリデーションが通る' do
+          user = build(:user, nickname: 'じろう')
+          expect(user).to be_valid
+        end
+      end
+    end
+  end
+
+  describe '#display_name' do
+    context 'ニックネームが設定されている場合' do
+      let(:user) { create(:user, email: 'test@example.com', nickname: 'たろう') }
+
+      it 'ニックネームを返す' do
+        expect(user.display_name).to eq 'たろう'
+      end
+    end
+
+    context 'ニックネームが設定されていない場合' do
+      let(:user) { create(:user, email: 'test@example.com', nickname: nil) }
+
+      it 'メールアドレスの@より前の部分を返す' do
+        expect(user.display_name).to eq 'test'
+      end
+    end
+
+    context 'ニックネームが空文字列の場合' do
+      let(:user) { create(:user, email: 'user123@example.com', nickname: '') }
+
+      it 'メールアドレスの@より前の部分を返す' do
+        expect(user.display_name).to eq 'user123'
+      end
+    end
+  end
+
   describe '#monthly_points' do
     let(:user) { create(:user) }
     let(:other_user) { create(:user) }

@@ -4,3 +4,12 @@
 
 ja:
   app_name: "ケハレ帖"
+
+  activerecord:
+    attributes:
+      user:
+        nickname: "ニックネーム"
+        email: "メールアドレス"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
+        current_password: "現在のパスワード"
