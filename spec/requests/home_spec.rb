@@ -156,6 +156,39 @@ RSpec.describe "Home", type: :request do
         end
       end
 
+      context '今月のハレ投稿数表示' do
+        let!(:hare_entry1) { create(:hare_entry, user: user, occurred_on: Time.zone.today) }
+        let!(:hare_entry2) { create(:hare_entry, user: user, occurred_on: Time.zone.today.beginning_of_month) }
+
+        it '今月のハレ投稿数が設定される' do
+          get root_path
+          expect(assigns(:monthly_hare_entries_count)).to eq 2
+        end
+
+        context '先月のハレ投稿がある場合' do
+          let!(:last_month_entry) do
+            create(:hare_entry, user: user, occurred_on: 1.month.ago)
+          end
+
+          it '今月分のみカウントされる' do
+            get root_path
+            expect(assigns(:monthly_hare_entries_count)).to eq 2
+          end
+        end
+
+        context 'ハレ投稿がない場合' do
+          before do
+            hare_entry1.destroy
+            hare_entry2.destroy
+          end
+
+          it '0が設定される' do
+            get root_path
+            expect(assigns(:monthly_hare_entries_count)).to eq 0
+          end
+        end
+      end
+
       it "ヘッダーが表示される" do
         get root_path
         expect(response.body).to include("カレンダー")

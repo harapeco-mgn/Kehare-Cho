@@ -18,6 +18,14 @@
           <p class="text-4xl font-bold text-secondary">Lv.<%= @level || 0 %></p>
         </div>
       </div>
+
+      <%# 今月のハレ投稿数表示 %>
+      <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+          <h2 class="card-title text-lg">今月のハレ投稿数</h2>
+          <p class="text-4xl font-bold text-accent"><%= @monthly_hare_entries_count || 0 %>件</p>
+        </div>
+      </div>
       
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
