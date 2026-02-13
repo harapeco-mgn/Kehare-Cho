@@ -39,8 +39,8 @@ RSpec.describe "Home", type: :request do
       it "ホーム画面が表示される" do
         get root_path
         expect(response).to have_http_status(:success)
-        expect(response.body).to include("ようこそ、#{user.display_name} さん")
-        expect(response.body).to include("ケハレ帖へようこそ")
+        expect(response.body).to include("こんにちは、#{user.display_name} さん")
+        expect(response.body).to include("今日のごはん、")
       end
 
       context '今月のポイント表示' do
@@ -214,13 +214,13 @@ RSpec.describe "Home", type: :request do
           get root_path
         end
 
-        it '「ハレを記録する」リンクが存在する' do
-          expect(response.body).to include('ハレを記録する')
+        it '「記録する」リンクが存在する' do
+          expect(response.body).to include('記録する')
           expect(response.body).to include(new_hare_entry_path)
         end
 
-        it '「献立相談」リンクが存在する' do
-          expect(response.body).to include('献立相談')
+        it '「相談する」リンクが存在する' do
+          expect(response.body).to include('相談する')
           expect(response.body).to include(new_meal_search_path)
         end
 
@@ -229,8 +229,8 @@ RSpec.describe "Home", type: :request do
           expect(response.body).to include(hare_entries_path)
         end
 
-        it '「ログ一覧」リンクが存在する' do
-          expect(response.body).to include('ログ一覧')
+        it '「献立ログ」リンクが存在する' do
+          expect(response.body).to include('献立ログ')
           expect(response.body).to include(meal_searches_path)
         end
       end

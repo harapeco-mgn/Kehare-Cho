@@ -34,8 +34,8 @@ RSpec.describe "MealSearches", type: :request do
 
       it "cook_contextの選択肢が表示される" do
         get new_meal_search_path
-        expect(response.body).to include("自炊")
-        expect(response.body).to include("外食")
+        expect(response.body).to include("自炊する")
+        expect(response.body).to include("外で食べる")
       end
 
       it "required_minutesの選択肢が表示される" do
@@ -254,7 +254,7 @@ RSpec.describe "MealSearches", type: :request do
         end
 
         it "空状態のメッセージが表示される" do
-          expect(response.body).to include("まだ検索ログがありません")
+          expect(response.body).to include("まだ献立相談のログがありません")
         end
       end
     end

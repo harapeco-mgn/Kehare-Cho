@@ -1,65 +1,63 @@
-<div class="container mx-auto p-4 max-w-2xl">
-  <!-- ヘッダー -->
-  <div class="flex items-center justify-between mb-6">
-    <h1 class="text-2xl font-bold">検索ログ一覧</h1>
-    <div class="flex gap-2">
-      <%= link_to "新しく検索", new_meal_search_path, class: "btn btn-ghost" %>
-      <%= link_to "ホーム", home_path, class: "btn btn-ghost" %>
+<main class="max-w-5xl mx-auto p-8">
+  <%# ページヘッダー %>
+  <div class="flex items-center justify-between mb-8">
+    <h1 class="text-3xl font-bold text-gray-800">献立相談のログ</h1>
+    <div class="flex gap-3">
+      <%= link_to "新しく相談する", new_meal_search_path, class: "bg-gradient-to-r from-green-500 to-green-400 text-white px-6 py-2.5 rounded-full font-semibold hover:from-green-600 hover:to-green-500 transition-colors shadow-sm" %>
+      <%= link_to "ホーム", home_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
     </div>
   </div>
 
-  <!-- セクション1: ログ一覧（Issue #40） -->
-  <div class="mb-8">
-    <% if @meal_searches.present? %>
-      <div class="grid gap-4">
-        <% @meal_searches.each do |meal_search| %>
-          <div class="card bg-base-100 border border-base-300">
-            <div class="card-body">
-              <div class="flex items-center justify-between mb-2">
-                <span class="badge badge-outline"><%= meal_search.created_at.strftime("%Y年%m月%d日 %H:%M") %></span>
-                <% if meal_search.genre.present? %>
-                  <span class="badge badge-primary"><%= meal_search.genre.label %></span>
-                <% end %>
-              </div>
-              <div class="text-sm text-gray-700">
-                <strong>提案された候補:</strong>
-                <%= meal_search.presented_candidate_names.join(", ") %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <div class="alert alert-info">
-        <p>まだ検索ログがありません</p>
-      </div>
-    <% end %>
-  </div>
-
-  <!-- セクション2: 検索結果（Issue #38） -->
+  <%# 今回の提案（最新の検索結果） %>
   <% if @candidates.present? %>
-    <div class="divider">今回の検索結果</div>
-    <div class="mb-6">
-      <h2 class="text-xl font-bold mb-4">おすすめの候補</h2>
-      <div class="grid gap-4">
+    <div class="mb-12">
+      <div class="flex items-center gap-2 mb-6">
+        <span class="text-2xl">🍳</span>
+        <h2 class="text-2xl font-bold text-gray-800">今回の提案</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
         <% @candidates.each do |candidate| %>
-          <div class="card bg-base-100 border border-base-300 border-2 border-primary">
-            <div class="card-body">
-              <h3 class="card-title"><%= candidate.name %></h3>
-              <p class="text-sm text-gray-600">
-                ジャンル: <%= candidate.genre.label %>
-              </p>
-              <div class="card-actions justify-end mt-2">
-                <%= link_to "Google で検索",
-                            GoogleSearchQueryBuilder.new(candidate.name).url,
-                            target: "_blank",
-                            rel: "noopener noreferrer",
-                            class: "btn btn-sm btn-outline btn-primary" %>
-              </div>
-            </div>
+          <div class="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-400 rounded-2xl p-6 shadow-sm">
+            <h3 class="text-xl font-bold text-gray-800 mb-2"><%= candidate.name %></h3>
+            <p class="text-sm text-gray-600 mb-4">
+              ジャンル: <span class="font-semibold"><%= candidate.genre.label %></span>
+            </p>
+            <%= link_to "Google で検索",
+                        GoogleSearchQueryBuilder.new(candidate.name).url,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        class: "inline-block bg-white text-green-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition-colors shadow-sm" %>
           </div>
         <% end %>
       </div>
     </div>
   <% end %>
-</div>
+
+  <%# 過去のログ一覧 %>
+  <div>
+    <h2 class="text-xl font-bold text-gray-800 mb-4">過去の相談</h2>
+    <% if @meal_searches.present? %>
+      <div class="space-y-3">
+        <% @meal_searches.each do |meal_search| %>
+          <div class="bg-white rounded-xl shadow-sm p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm text-gray-500"><%= meal_search.created_at.strftime("%Y年%-m月%-d日 %H:%M") %></span>
+              <% if meal_search.genre.present? %>
+                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold"><%= meal_search.genre.label %></span>
+              <% end %>
+            </div>
+            <div class="text-gray-700">
+              <span class="font-semibold">提案された候補:</span>
+              <span class="text-gray-600"><%= meal_search.presented_candidate_names.join(", ") %></span>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-16 bg-white rounded-2xl shadow-sm">
+        <div class="text-5xl mb-4">🍚</div>
+        <p class="text-gray-600">まだ献立相談のログがありません</p>
+      </div>
+    <% end %>
+  </div>
+</main>

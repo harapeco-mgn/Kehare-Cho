@@ -145,7 +145,7 @@ RSpec.describe "Users::Passwords", type: :request do
         }
 
         expect(response).to have_http_status(:unprocessable_content)
-        expect(response.body).to include("メールアドレスまたはパスワードが違います")
+        expect(response.body).to include("メールアドレスまたはパスワードが正しくありません")
       end
     end
 

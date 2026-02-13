@@ -1,46 +1,53 @@
-  <main>
-    <h1 class="text-2xl font-bold mb-6">
-      <%= @date.strftime("%Y年%m月%d日") %> のハレ投稿
-    </h1>
-
-    <!-- ナビゲーションボタン -->
-    <div class="mb-6 flex gap-2">
-      <%= link_to "← 月へ戻る", calendar_path, class: "btn btn-secondary" %>
-      <%= link_to "新規投稿", new_hare_entry_path, class: "btn btn-primary" %>
+<main class="max-w-4xl mx-auto p-8">
+  <%# ページヘッダー %>
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="text-4xl">📅</span>
+      <h1 class="text-3xl font-bold text-gray-800">
+        <%= @date.strftime("%Y年%-m月%-d日") %> のハレ投稿
+      </h1>
     </div>
 
-    <% if @hare_entries.empty? %>
-    <div class="text-center py-12">
-      <p class="text-gray-500 mb-4">この日はまだハレ投稿がありません</p>
-      <p class="text-sm text-gray-400">小さなハレを見つけたら記録しましょう！</p>
+    <%# ナビゲーションボタン %>
+    <div class="flex gap-3">
+      <%= link_to "← 月へ戻る", calendar_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
+      <%= link_to "新規投稿", new_hare_entry_path, class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-6 py-2.5 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-sm" %>
+    </div>
+  </div>
+
+  <%# ハレ投稿一覧 %>
+  <% if @hare_entries.empty? %>
+    <div class="text-center py-20 bg-white rounded-2xl shadow-sm">
+      <div class="text-6xl mb-4">✨</div>
+      <p class="text-gray-600 text-lg mb-2">この日はまだハレがありません</p>
+      <p class="text-sm text-gray-500">小さなハレを見つけたら、記録してみましょう</p>
     </div>
   <% else %>
     <div class="space-y-4">
       <% @hare_entries.each do |entry| %>
-        <div class="card bg-base-100 shadow-md">
-          <div class="card-body">
-            <%= link_to hare_entry_path(entry), class: "hover:text-primary" do %>
-              <h3 class="card-title"><%= entry.body %></h3>
-            <% end %>
+        <div class="bg-white rounded-2xl shadow-sm p-6 hover:shadow-md transition-shadow">
+          <%= link_to hare_entry_path(entry), class: "block group" do %>
+            <p class="text-gray-800 text-lg leading-relaxed mb-3 group-hover:text-gray-900"><%= entry.body %></p>
+          <% end %>
 
-            <!-- タグがあれば表示 -->
-            <% if entry.hare_tags.any? %>
-              <div class="flex gap-2 mt-2">
-                <% entry.hare_tags.each do |tag| %>
-                  <span class="badge badge-primary"><%= tag.label %></span>
-                <% end %>
-              </div>
-            <% end %>
+          <%# タグがあれば表示 %>
+          <% if entry.hare_tags.any? %>
+            <div class="flex flex-wrap gap-2 mb-3">
+              <% entry.hare_tags.each do |tag| %>
+                <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold"><%= tag.label %></span>
+              <% end %>
+            </div>
+          <% end %>
 
-             <!-- ポイントがあれば表示 -->
-            <% if entry.awarded_points&.positive? %>
-              <p class="text-sm text-gray-600 mt-2">
-                +<%= entry.awarded_points %> ポイント
-              </p>
-            <% end %>
-          </div>
+          <%# ポイントがあれば表示 %>
+          <% if entry.awarded_points&.positive? %>
+            <div class="flex items-center gap-1 text-orange-600">
+              <span class="text-lg">✨</span>
+              <p class="text-sm font-semibold">+<%= entry.awarded_points %> ポイント</p>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
   <% end %>
-  </main>
+</main>

@@ -21,7 +21,7 @@ RSpec.describe "HareEntries", type: :request do
 
       it '新規HareEntryフォームが表示される' do
         get new_hare_entry_path
-        expect(response.body).to include('ハレの記録を作成')
+        expect(response.body).to include('今日のハレを記録する')
       end
 
       context 'タグが存在する場合' do
@@ -335,7 +335,7 @@ RSpec.describe "HareEntries", type: :request do
 
         it '成功メッセージが表示される' do
           post hare_entries_path, params: valid_params
-          expect(flash[:notice]).to eq('ハレの記録を作成しました')
+          expect(flash[:notice]).to eq('ハレを記録しました！')
         end
 
         it '作成されたHareEntryはログインユーザーに紐づく' do
@@ -451,7 +451,7 @@ RSpec.describe "HareEntries", type: :request do
         it 'newテンプレートが再表示される' do
           post hare_entries_path, params: invalid_params
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(response.body).to include('ハレの記録を作成')
+          expect(response.body).to include('今日のハレを記録する')
         end
       end
     end

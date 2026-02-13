@@ -127,8 +127,8 @@ RSpec.describe "共通レイアウト", type: :request do
           }
         }
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.body).to include("個のエラーが発生しました")
-        expect(response.body).to include("Bodyを入力してください")
+        expect(response.body).to include("件の入力エラーがあります")
+        expect(response.body).to include("内容を入力してください")
       end
     end
   end

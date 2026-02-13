@@ -13,3 +13,13 @@ ja:
         password: "パスワード"
         password_confirmation: "パスワード（確認）"
         current_password: "現在のパスワード"
+      hare_entry:
+        body: "内容"
+        occurred_on: "日付"
+        visibility: "公開設定"
+
+  enums:
+    hare_entry:
+      visibility:
+        public_post: "公開"
+        private_post: "非公開"
