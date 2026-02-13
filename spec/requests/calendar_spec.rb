@@ -126,7 +126,7 @@ RSpec.describe 'Calendar', type: :request do
           get "/calendar/#{target_date}"
           expect(response).to have_http_status(:ok)
           expect(response.body).to include('テスト投稿')
-          expect(response.body).to include(target_date.strftime('%Y年%m月%d日'))
+          expect(response.body).to include(target_date.strftime('%Y年%-m月%-d日'))
         end
       end
 

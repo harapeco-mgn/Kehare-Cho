@@ -1,37 +1,41 @@
-<main>
-  <div class="max-w-2xl mx-auto">
-    <div class="mb-4">
-      <%= link_to "← 一覧に戻る", hare_entries_path, class: "text-primary hover:underline" %>
+<main class="max-w-3xl mx-auto p-8">
+  <%# 戻るリンク %>
+  <div class="mb-6">
+    <%= link_to "← 一覧に戻る", hare_entries_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
+  </div>
+
+  <%# メインカード %>
+  <div class="bg-white rounded-2xl shadow-sm p-8">
+    <%# ヘッダー情報 %>
+    <div class="flex justify-between items-center mb-6 pb-4 border-b border-gray-100">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">✨</span>
+        <p class="text-lg font-medium text-gray-700">
+          <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
+        </p>
+      </div>
+      <% if @hare_entry.public_post? %>
+        <span class="px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">公開</span>
+      <% else %>
+        <span class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-semibold">非公開</span>
+      <% end %>
     </div>
 
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body">
-        <div class="flex justify-between items-center mb-4">
-          <p class="text-sm text-gray-500">
-            <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
-          </p>
-          <% if @hare_entry.public_post? %>
-            <span class="badge badge-primary">公開</span>
-          <% else %>
-            <span class="badge">非公開</span>
-          <% end %>
-        </div>
+    <%# 本文 %>
+    <div class="mb-8">
+      <p class="whitespace-pre-wrap text-lg leading-relaxed text-gray-800"><%= @hare_entry.body %></p>
+    </div>
 
-        <div class="prose max-w-none">
-          <p class="whitespace-pre-wrap text-lg"><%= @hare_entry.body %></p>
-        </div>
-
-        <div class="card-actions justify-end mt-6">
-          <%= link_to "編集", edit_hare_entry_path(@hare_entry), class: "btn btn-primary" %>
-            <%= button_to "削除",
-              hare_entry_path(@hare_entry),
-              method: :delete,
-              data: { turbo_confirm: "この記録を削除しますか？" },
-              class: "btn btn-error"
-              %>
-          <%= link_to "一覧に戻る", hare_entries_path, class: "btn btn-outline" %>
-        </div>
-      </div>
+    <%# アクションボタン %>
+    <div class="flex flex-wrap gap-3 pt-6 border-t border-gray-100">
+      <%= link_to "編集", edit_hare_entry_path(@hare_entry), class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-6 py-2.5 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-sm" %>
+      <%= button_to "削除",
+        hare_entry_path(@hare_entry),
+        method: :delete,
+        data: { turbo_confirm: "この記録を削除しますか？" },
+        class: "bg-red-500 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-red-600 transition-colors shadow-sm"
+        %>
+      <%= link_to "一覧に戻る", hare_entries_path, class: "px-6 py-2.5 text-gray-600 hover:text-gray-800 font-semibold" %>
     </div>
   </div>
 </main>

@@ -1,13 +1,21 @@
-<main>
-  <h1 class="text-2xl font-bold mb-6">ハレのカレンダー</h1>
+<main class="max-w-7xl mx-auto p-8">
+  <%# ページヘッダー %>
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="text-4xl">📅</span>
+      <h1 class="text-3xl font-bold text-gray-800">ハレのカレンダー</h1>
+    </div>
+    <p class="text-gray-600">あなたのハレを振り返りましょう</p>
+  </div>
 
-  <div class="overflow-x-auto">
+  <%# カレンダー本体 %>
+  <div class="bg-white rounded-2xl shadow-sm p-6 overflow-x-auto">
     <%= month_calendar(events: @hare_entries, attribute: :occurred_on) do |date, entries| %>
-      <div class="min-h-[100px] p-2">
-        <%= link_to date.day, calendar_date_path(date: date), class: "font-bold hover:text-blue-600" %>
+      <div class="min-h-[100px] p-3 hover:bg-orange-50 rounded-lg transition-colors">
+        <%= link_to date.day, calendar_date_path(date: date), class: "font-bold text-lg text-gray-700 hover:text-orange-600 transition-colors" %>
         <% entries.each do |entry| %>
           <%= link_to entry.body.truncate(20), hare_entry_path(entry),
-              class: "block text-sm bg-primary text-primary-content rounded p-1 mt-1 hover:bg-primary-focus" %>
+              class: "block text-sm bg-gradient-to-r from-orange-100 to-orange-50 text-orange-800 rounded-lg px-2 py-1 mt-2 hover:from-orange-200 hover:to-orange-100 transition-all" %>
         <% end %>
       </div>
     <% end %>

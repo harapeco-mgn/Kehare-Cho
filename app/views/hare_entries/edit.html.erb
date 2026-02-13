@@ -1,9 +1,17 @@
-<main>
-  <div class="max-w-2xl mx-auto">
-    <div class="mb-4">
-      <%= link_to "← 詳細に戻る", hare_entry_path(@hare_entry), class: "text-primary hover:underline" %>
-    </div>
-    <h1 class="text-2xl font-bold mb-6">ハレの記録を編集する</h1>
+<main class="max-w-3xl mx-auto p-8">
+  <%# 戻るリンク %>
+  <div class="mb-4">
+    <%= link_to "← 詳細に戻る", hare_entry_path(@hare_entry), class: "text-gray-600 hover:text-gray-800 font-medium" %>
+  </div>
+
+  <%# ページヘッダー %>
+  <div class="mb-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">ハレの記録を編集する</h1>
+    <p class="text-gray-600">記録を更新しましょう 📝</p>
+  </div>
+
+  <%# フォームカード %>
+  <div class="bg-white rounded-2xl shadow-sm p-8">
     <%= render 'form', hare_entry: @hare_entry, submit_label: "更新する", cancel_path: hare_entry_path(@hare_entry), hare_tags: @hare_tags %>
   </div>
 </main>
