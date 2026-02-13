@@ -40,7 +40,7 @@ RSpec.describe "Home", type: :request do
         get root_path
         expect(response).to have_http_status(:success)
         expect(response.body).to include("こんにちは、#{user.display_name} さん")
-        expect(response.body).to include("今日のごはん、何かいいことあった？")
+        expect(response.body).to include("今日のごはん、")
       end
 
       context '今月のポイント表示' do

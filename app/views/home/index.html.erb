@@ -1,44 +1,82 @@
 <% if user_signed_in? %>
     <%# ログイン後のホーム画面 %>
-    <main>
-      <%# 今月のポイント表示 %>
-      <div class="card bg-base-100 shadow-xl mb-6">
+    <main class="max-w-4xl mx-auto">
+      <%# 挨拶 %>
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold mb-2">こんにちは、<%= current_user.display_name %> さん</h1>
+      </div>
+
+      <%# レベル表示（プログレスバー付き） %>
+      <div class="card bg-gradient-to-r from-orange-50 to-yellow-50 shadow-lg mb-6">
         <div class="card-body">
-          <h2 class="card-title text-lg">今月のがんばり</h2>
-          <p class="text-4xl font-bold text-primary"><%= @monthly_points || 0 %>pt</p>
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <p class="text-sm text-gray-600 uppercase tracking-wide">Current Level</p>
+              <h2 class="text-2xl font-bold text-orange-600">ハレ度: Lv.<%= @level || 0 %></h2>
+            </div>
+            <div class="text-5xl">🌸</div>
+          </div>
+          <progress class="progress progress-warning w-full" value="<%= @monthly_points || 0 %>" max="100"></progress>
+          <p class="text-sm text-gray-600 mt-2">あと <%= [100 - (@monthly_points || 0), 0].max %>pt で新しいハレが咲きます！</p>
         </div>
       </div>
 
-      <%# レベル表示 %>
-      <div class="card bg-base-100 shadow-xl mb-6">
-        <div class="card-body">
-          <h2 class="card-title text-lg">ハレ度</h2>
-          <p class="text-4xl font-bold text-secondary">Lv.<%= @level || 0 %></p>
-        </div>
-      </div>
-
-      <%# 今月のハレ投稿数表示 %>
-      <div class="card bg-base-100 shadow-xl mb-6">
-        <div class="card-body">
-          <h2 class="card-title text-lg">今月のハレ</h2>
-          <p class="text-4xl font-bold text-accent"><%= @monthly_hare_entries_count || 0 %>件</p>
-        </div>
-      </div>
-      
-      <div class="card bg-base-100 shadow-xl">
-        <div class="card-body">
-          <h2 class="card-title text-2xl">こんにちは、<%=
-  current_user.display_name %> さん</h2>
-          <p class="text-base-content/70">
-            今日のごはん、何かいいことあった？
-          </p>
-          <div class="card-actions justify-end mt-4 gap-2">
-            <%= link_to "記録する", new_hare_entry_path, class: "btn btn-primary" %>
-            <%= link_to "相談する", new_meal_search_path, class: "btn btn-secondary" %>
-            <%= link_to "ハレ一覧", hare_entries_path, class: "btn btn-outline btn-primary" %>
-            <%= link_to "献立ログ", meal_searches_path, class: "btn btn-outline btn-secondary" %>
+      <%# 統計情報（横並び3カード） %>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="card bg-blue-50 shadow-md">
+          <div class="card-body items-center text-center p-4">
+            <div class="text-3xl mb-2">🎯</div>
+            <h3 class="text-sm font-semibold text-gray-600">今月のがんばり</h3>
+            <p class="text-2xl font-bold text-blue-600"><%= @monthly_points || 0 %>pt</p>
           </div>
         </div>
+        <div class="card bg-green-50 shadow-md">
+          <div class="card-body items-center text-center p-4">
+            <div class="text-3xl mb-2">✨</div>
+            <h3 class="text-sm font-semibold text-gray-600">今月のハレ</h3>
+            <p class="text-2xl font-bold text-green-600"><%= @monthly_hare_entries_count || 0 %>件</p>
+          </div>
+        </div>
+        <div class="card bg-purple-50 shadow-md">
+          <div class="card-body items-center text-center p-4">
+            <div class="text-3xl mb-2">📅</div>
+            <h3 class="text-sm font-semibold text-gray-600">連続記録</h3>
+            <p class="text-2xl font-bold text-purple-600">0日</p>
+          </div>
+        </div>
+      </div>
+
+      <%# メインアクション（大きなカード2つ横並び） %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <%# 献立相談カード %>
+        <div class="card bg-gradient-to-br from-green-100 to-green-50 shadow-xl hover:shadow-2xl transition-shadow">
+          <div class="card-body items-center text-center p-8">
+            <div class="text-6xl mb-4">🍚</div>
+            <h2 class="card-title text-xl mb-2">今日のごはん、<br>どうする？</h2>
+            <p class="text-gray-600 text-sm mb-6">献立の迷いを解消</p>
+            <%= link_to new_meal_search_path, class: "btn btn-success btn-wide" do %>
+              相談する
+            <% end %>
+          </div>
+        </div>
+
+        <%# ハレ記録カード %>
+        <div class="card bg-gradient-to-br from-orange-100 to-orange-50 shadow-xl hover:shadow-2xl transition-shadow">
+          <div class="card-body items-center text-center p-8">
+            <div class="text-6xl mb-4">✨</div>
+            <h2 class="card-title text-xl mb-2">今日、いいこと<br>あった？</h2>
+            <p class="text-gray-600 text-sm mb-6">小さなハレを記録</p>
+            <%= link_to new_hare_entry_path, class: "btn btn-warning btn-wide" do %>
+              記録する
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <%# サブナビゲーション %>
+      <div class="flex gap-3 justify-center">
+        <%= link_to "ハレ一覧", hare_entries_path, class: "btn btn-outline btn-sm" %>
+        <%= link_to "献立ログ", meal_searches_path, class: "btn btn-outline btn-sm" %>
       </div>
     </main>
   <% else %>
