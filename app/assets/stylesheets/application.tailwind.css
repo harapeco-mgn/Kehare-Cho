@@ -11,6 +11,10 @@
     @apply text-xl text-gray-800;
   }
 
+  table {
+    @apply w-full mx-auto;
+  }
+
   table thead th {
     @apply text-gray-700 font-semibold;
   }
