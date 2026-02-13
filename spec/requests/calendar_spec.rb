@@ -110,7 +110,7 @@ RSpec.describe 'Calendar', type: :request do
         it '200 が返り、投稿なしメッセージが表示される' do
           get "/calendar/#{target_date}"
           expect(response).to have_http_status(:ok)
-          expect(response.body).to include('この日はまだハレ投稿がありません')
+          expect(response.body).to include('この日はまだハレがありません')
         end
       end
 
