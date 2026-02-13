@@ -9,16 +9,16 @@
     <!-- 自炊 or 外食 -->
     <div class="form-control">
       <label class="label">
-        <span class="label-text font-semibold">自炊 or 外食</span>
+        <span class="label-text font-semibold">今日はどうする？</span>
       </label>
       <div class="flex gap-4">
         <label class="label cursor-pointer gap-2">
           <%= f.radio_button :cook_context, "self_cook", class: "radio radio-primary", data: { action: "change->meal-search-form#toggleMinutes" } %>
-          <span class="label-text">自炊</span>
+          <span class="label-text">自炊する</span>
         </label>
         <label class="label cursor-pointer gap-2">
           <%= f.radio_button :cook_context, "eat_out", class: "radio radio-primary", data: { action: "change->meal-search-form#toggleMinutes" } %>
-          <span class="label-text">外食</span>
+          <span class="label-text">外で食べる</span>
         </label>
       </div>
     </div>
