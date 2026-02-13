@@ -21,7 +21,7 @@ class HareEntriesController < ApplicationController
 
       if @hare_entry.save
         PointAwardService.call(@hare_entry)
-        redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を作成しました"
+        redirect_to hare_entry_path(@hare_entry), notice: "ハレを記録しました！"
       else
         @hare_tags = HareTag.active.sorted
         render :new, status: :unprocessable_entity
