@@ -35,7 +35,7 @@ RSpec.describe "MealSearches", type: :request do
       it "cook_contextの選択肢が表示される" do
         get new_meal_search_path
         expect(response.body).to include("自炊")
-        expect(response.body).to include("中食")
+        expect(response.body).to include("外食")
       end
 
       it "required_minutesの選択肢が表示される" do
@@ -262,6 +262,124 @@ RSpec.describe "MealSearches", type: :request do
     context "未ログインユーザーの場合" do
       it "/users/sign_inにリダイレクトされる" do
         get meal_searches_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+  end
+
+  describe "POST /meal_searches (外食選択時)" do
+    let(:genre) { Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" } }
+    let(:mood) { MoodTag.find_or_create_by(key: "energetic") { |m| m.label = "がっつり食べたい" } }
+
+    context "ログイン済みユーザーの場合" do
+      before { sign_in user }
+
+      context "外食を選択した場合" do
+        it "Google Mapsにリダイレクトする" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response).to have_http_status(:redirect)
+          expect(response.location).to include("google.com/maps/search/")
+        end
+
+        it "リダイレクト先のURLにapi=1パラメータが含まれる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response.location).to include("api=1")
+        end
+
+        it "リダイレクト先のURLにジャンル名が含まれる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response.location).to include(CGI.escape("和食"))
+        end
+
+        it "リダイレクト先のURLに「惣菜」が含まれる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response.location).to include(CGI.escape("惣菜"))
+        end
+
+        it "リダイレクト先のURLに「定食」が含まれる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response.location).to include(CGI.escape("定食"))
+        end
+
+        it "検索ログ（MealSearch）が作成される" do
+          expect {
+            post meal_searches_path, params: {
+              cook_context: "eat_out",
+              genre_id: genre.id
+            }
+          }.to change(MealSearch, :count).by(1)
+        end
+
+        it "検索ログのcook_contextが「eat_out」になる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          meal_search = MealSearch.last
+          expect(meal_search.cook_context).to eq("eat_out")
+        end
+
+        it "検索ログのpresented_candidate_namesが空配列になる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          meal_search = MealSearch.last
+          expect(meal_search.presented_candidate_names).to eq([])
+        end
+
+        it "セッションに候補IDが保存されない" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(session[:meal_candidates]).to be_nil
+        end
+
+        context "気分タグも指定した場合" do
+          it "リダイレクト先のURLに気分タグのキーワードが含まれる" do
+            post meal_searches_path, params: {
+              cook_context: "eat_out",
+              genre_id: genre.id,
+              mood_tag_id: mood.id
+            }
+
+            expect(response.location).to include(CGI.escape("ボリューム"))
+          end
+        end
+      end
+    end
+
+    context "未ログインユーザーの場合" do
+      it "/users/sign_inにリダイレクトされる" do
+        post meal_searches_path, params: {
+          cook_context: "eat_out",
+          genre_id: genre.id
+        }
+
         expect(response).to redirect_to(new_user_session_path)
       end
     end
