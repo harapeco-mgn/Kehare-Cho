@@ -23,7 +23,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="bg-[#FEF7ED]">
     <% if user_signed_in? && !content_for?(:hide_header) %>
       <%= render 'shared/header' %>
     <% end %>
