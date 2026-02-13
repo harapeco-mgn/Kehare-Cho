@@ -4,7 +4,7 @@
     <%= link_to "ホーム", home_path, class: "btn btn-ghost" %>
   </div>
 
-  <%= form_with url: meal_searches_path, method: :post, local: true, class: "space-y-6" do |f| %>
+  <%= form_with url: meal_searches_path, method: :post, local: true, class: "space-y-6", data: { controller: "meal-search-form" } do |f| %>
 
     <!-- 自炊 or 中食 -->
     <div class="form-control">
@@ -13,35 +13,18 @@
       </label>
       <div class="flex gap-4">
         <label class="label cursor-pointer gap-2">
-          <%= f.radio_button :meal_mode, "home_cooking", class: "radio radio-primary" %>
+          <%= f.radio_button :cook_context, "self_cook", class: "radio radio-primary", data: { action: "change->meal-search-form#toggleMinutes" } %>
           <span class="label-text">自炊</span>
         </label>
         <label class="label cursor-pointer gap-2">
-          <%= f.radio_button :meal_mode, "ready_made", class: "radio radio-primary" %>
+          <%= f.radio_button :cook_context, "ready_made", class: "radio radio-primary", data: { action: "change->meal-search-form#toggleMinutes" } %>
           <span class="label-text">中食</span>
         </label>
       </div>
     </div>
 
-    <!-- 買い物 or 家にある -->
-    <div class="form-control">
-      <label class="label">
-        <span class="label-text font-semibold">買い物 or 家にある</span>
-      </label>
-      <div class="flex gap-4">
-        <label class="label cursor-pointer gap-2">
-          <%= f.radio_button :cook_context, "shopping", class: "radio radio-primary" %>
-          <span class="label-text">買い物</span>
-        </label>
-        <label class="label cursor-pointer gap-2">
-          <%= f.radio_button :cook_context, "at_home", class: "radio radio-primary" %>
-          <span class="label-text">家にある</span>
-        </label>
-      </div>
-    </div>
-
     <!-- 所要時間 -->
-    <div class="form-control">
+    <div class="form-control" data-meal-search-form-target="minutesField">
       <label class="label">
         <span class="label-text font-semibold">所要時間（分）</span>
       </label>
