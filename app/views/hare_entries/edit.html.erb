@@ -3,7 +3,7 @@
     <div class="mb-4">
       <%= link_to "← 詳細に戻る", hare_entry_path(@hare_entry), class: "text-primary hover:underline" %>
     </div>
-    <h1 class="text-2xl font-bold mb-6">ハレの記録を編集</h1>
+    <h1 class="text-2xl font-bold mb-6">ハレの記録を編集する</h1>
     <%= render 'form', hare_entry: @hare_entry, submit_label: "更新する", cancel_path: hare_entry_path(@hare_entry), hare_tags: @hare_tags %>
   </div>
 </main>

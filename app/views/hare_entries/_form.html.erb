@@ -1,7 +1,7 @@
 <%= form_with model: hare_entry, local: true do |f| %>
   <% if hare_entry.errors.any? %>
     <div class="alert alert-error mb-4">
-      <h2 class="font-bold"><%= pluralize(hare_entry.errors.count, "個のエラー") %>が発生しました</h2>
+      <h2 class="font-bold"><%= hare_entry.errors.count %>件の入力エラーがあります</h2>
       <ul class="list-disc list-inside">
         <% hare_entry.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -12,7 +12,7 @@
 
   <div class="form-control mb-4">
     <%= f.label :body, "内容", class: "label" %>
-    <%= f.text_area :body, class: "textarea textarea-bordered w-full", rows: 5, maxlength: 280, placeholder: "今日のハレな出来事を記録しましょう（280文字まで）" %>
+    <%= f.text_area :body, class: "textarea textarea-bordered w-full", rows: 5, maxlength: 280, placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）" %>
   </div>
 
   <div class="form-control mb-4">
