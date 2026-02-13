@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "privacy_policy", to: "pages#privacy_policy"
+  get "terms", to: "pages#terms"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
