@@ -23,10 +23,10 @@ RSpec.describe "Home", type: :request do
         expect(response.body).to include("ログイン")
       end
 
-      it "ヘッダーとフッターは表示されない" do
+      it "ヘッダーは表示されないが、フッターは表示される" do
         get root_path
         expect(response.body).not_to include("ログアウト")
-        expect(response.body).not_to include("プライバシーポリシー")
+        expect(response.body).to include("プライバシーポリシー")
       end
     end
 
