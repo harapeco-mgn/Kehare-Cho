@@ -8,7 +8,7 @@
       <span class="font-bold text-primary text-2xl"><%= @monthly_points || 0 %>pt</span>
     </p>
     <p class="text-lg mt-2">
-      あなたのレベル:
+      ハレ度:
       <span class="font-bold text-secondary text-2xl">Lv.<%= @level || 0 %></span>
     </p>
   </div>
@@ -36,7 +36,7 @@
   <% else %>
     <div class="text-center py-16">
       <p class="text-gray-500 mb-4">まだハレの記録がありません。最初の一歩を踏み出しましょう！</p>
-      <%= link_to "ハレを記録する", new_hare_entry_path, class: "btn btn-primary" %>
+      <%= link_to "記録する", new_hare_entry_path, class: "btn btn-primary" %>
     </div>
   <% end %>
 </main>
