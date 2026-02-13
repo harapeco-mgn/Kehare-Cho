@@ -32,16 +32,10 @@ RSpec.describe "MealSearches", type: :request do
         expect(response.body).to include(mood2.label)
       end
 
-      it "meal_modeの選択肢が表示される" do
+      it "cook_contextの選択肢が表示される" do
         get new_meal_search_path
         expect(response.body).to include("自炊")
         expect(response.body).to include("中食")
-      end
-
-      it "cook_contextの選択肢が表示される" do
-        get new_meal_search_path
-        expect(response.body).to include("買い物")
-        expect(response.body).to include("家にある")
       end
 
       it "required_minutesの選択肢が表示される" do
