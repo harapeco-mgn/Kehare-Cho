@@ -4,7 +4,7 @@
     <%= link_to "ホーム", home_path, class: "btn btn-ghost" %>
   </div>
 
-  <%= form_with url: meal_searches_path, method: :post, local: true, class: "space-y-6", data: { controller: "meal-search-form" } do |f| %>
+  <%= form_with url: meal_searches_path, method: :post, local: true, class: "space-y-6", data: { controller: "meal-search-form", turbo: false } do |f| %>
 
     <!-- 自炊 or 中食 -->
     <div class="form-control">
