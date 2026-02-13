@@ -16,8 +16,8 @@ class MealSearchesController < ApplicationController
   end
 
   def create
-    if params[:cook_context] == "ready_made"
-      # 中食の処理
+    if params[:cook_context] == "eat_out"
+      # 外食の処理
       current_user.meal_searches.create!(
         cook_context: params[:cook_context],
         genre_id: params[:genre_id],
