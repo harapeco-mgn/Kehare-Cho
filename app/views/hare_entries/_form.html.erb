@@ -13,25 +13,25 @@
 
   <%# 内容入力 %>
   <div>
-    <%= f.label :body, "内容", class: "block text-sm font-semibold text-gray-700 mb-2" %>
-    <%= f.text_area :body, class: "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-transparent resize-none", rows: 6, maxlength: 280, placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）" %>
+    <%= f.label :body, "内容", class: "block text-base font-bold text-gray-800 mb-3" %>
+    <%= f.text_area :body, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white resize-none text-gray-900 placeholder-gray-500", rows: 6, maxlength: 280, placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）" %>
   </div>
 
   <%# 日付入力 %>
   <div>
-    <%= f.label :occurred_on, "日付", class: "block text-sm font-semibold text-gray-700 mb-2" %>
-    <%= f.date_field :occurred_on, class: "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-transparent" %>
+    <%= f.label :occurred_on, "日付", class: "block text-base font-bold text-gray-800 mb-3" %>
+    <%= f.date_field :occurred_on, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900" %>
   </div>
 
   <%# タグ選択 %>
   <% if local_assigns[:hare_tags]&.any? %>
     <div>
-      <%= f.label :hare_tag_ids, "タグ（複数選択可）", class: "block text-sm font-semibold text-gray-700 mb-3" %>
+      <%= f.label :hare_tag_ids, "タグ（複数選択可）", class: "block text-base font-bold text-gray-800 mb-3" %>
       <div class="flex flex-wrap gap-3">
         <%= f.collection_check_boxes(:hare_tag_ids, hare_tags, :id, :label) do |b| %>
-          <label class="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-orange-50 rounded-full cursor-pointer transition-colors border border-gray-200 hover:border-orange-300">
+          <label class="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-orange-50 rounded-full cursor-pointer transition-colors border-2 border-gray-300 hover:border-orange-400">
             <%= b.check_box(class: "rounded text-orange-500 focus:ring-orange-400") %>
-            <span class="text-sm font-medium text-gray-700"><%= b.text %></span>
+            <span class="text-sm font-medium text-gray-800"><%= b.text %></span>
           </label>
         <% end %>
       </div>
@@ -40,8 +40,8 @@
 
   <%# 公開設定 %>
   <div>
-    <%= f.label :visibility, "公開設定", class: "block text-sm font-semibold text-gray-700 mb-2" %>
-    <%= f.select :visibility, HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] }, {}, class: "w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-white" %>
+    <%= f.label :visibility, "公開設定", class: "block text-base font-bold text-gray-800 mb-3" %>
+    <%= f.select :visibility, HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] }, {}, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900" %>
   </div>
 
   <%# ボタン %>
