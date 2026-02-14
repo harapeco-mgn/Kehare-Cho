@@ -20,3 +20,8 @@ ja:
       unauthenticated: "ログインしてください"
       invalid: "メールアドレスまたはパスワードが正しくありません"
       timeout: "セッションの有効期限が切れました。もう一度ログインしてください"
+      email_unavailable: "こちらのメールアドレスは使用できません。"
+    paranoid:
+      send_paranoid_instructions: "メールアドレスが登録されている場合、パスワード再設定の案内メールを送信しました"
+      send_unlock_instructions: "メールアドレスが登録されている場合、アカウントのロック解除方法を記載したメールを送信しました"
+      send_confirmation_instructions: "メールアドレスが登録されている場合、確認メールを送信しました"
