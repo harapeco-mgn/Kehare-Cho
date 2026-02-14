@@ -86,6 +86,13 @@ RSpec.describe "Users::Registrations", type: :request do
         post user_registration_path, params: duplicate_params
         expect(response).to have_http_status(:unprocessable_content)
       end
+
+      it "メールアドレスの存在を明かすエラーメッセージが表示されない" do
+        post user_registration_path, params: duplicate_params
+        expect(response.body).not_to include("すでに存在")
+        expect(response.body).not_to include("already been taken")
+        expect(response.body).not_to include("has already been taken")
+      end
     end
   end
 end
