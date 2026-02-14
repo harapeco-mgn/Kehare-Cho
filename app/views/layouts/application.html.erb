@@ -24,8 +24,12 @@
   </head>
 
   <body class="bg-[#FEF7ED]">
-    <% if user_signed_in? && !content_for?(:hide_header) %>
-      <%= render 'shared/header' %>
+    <% unless content_for?(:hide_header) %>
+      <% if user_signed_in? %>
+        <%= render 'shared/header' %>
+      <% else %>
+        <%= render 'shared/guest_header' %>
+      <% end %>
     <% end %>
 
     <div class="container mx-auto px-4 py-6">
