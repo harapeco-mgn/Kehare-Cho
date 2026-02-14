@@ -67,12 +67,18 @@ RSpec.describe "共通レイアウト", type: :request do
 
   describe "未ログインユーザー" do
     context "ホームページ（LP）" do
-      it "ヘッダーが表示されない" do
+      it "ログイン済みヘッダーが表示されず、未ログイン時ヘッダーが表示される" do
         get root_path
         expect(response).to have_http_status(:ok)
+        # ログイン済みヘッダー特有の要素が表示されない
         expect(response.body).not_to include("ホーム")
-        expect(response.body).not_to include("カレンダー")
         expect(response.body).not_to include("ハレ投稿")
+        expect(response.body).not_to include("プロフィール")
+        expect(response.body).not_to include("ログアウト")
+        # 未ログイン時ヘッダーの要素が表示される
+        expect(response.body).to include("使い方")
+        expect(response.body).to include("ログイン")
+        expect(response.body).to include("新規登録")
       end
 
       it "フッターは表示される" do
@@ -84,11 +90,18 @@ RSpec.describe "共通レイアウト", type: :request do
     end
 
     context "ログインページ" do
-      it "ヘッダーが表示されない" do
+      it "ログイン済みヘッダーが表示されず、未ログイン時ヘッダーが表示される" do
         get new_user_session_path
         expect(response).to have_http_status(:ok)
+        # ログイン済みヘッダー特有の要素が表示されない
         expect(response.body).not_to include("ホーム")
-        expect(response.body).not_to include("カレンダー")
+        expect(response.body).not_to include("ハレ投稿")
+        expect(response.body).not_to include("プロフィール")
+        expect(response.body).not_to include("ログアウト")
+        # 未ログイン時ヘッダーの要素が表示される
+        expect(response.body).to include("使い方")
+        expect(response.body).to include("ログイン")
+        expect(response.body).to include("新規登録")
       end
 
       it "フッターは表示される" do

@@ -87,21 +87,130 @@
       </div>
     </main>
   <% else %>
-    <% content_for :hide_header do %>true<% end %>
     <%# 未ログイン時のLP %>
-    <div class="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div class="card bg-white shadow-xl w-96">
-        <div class="card-body">
-          <h2 class="card-title text-2xl text-gray-900">ケハレ帖</h2>
-          <p class="text-lg text-orange-600 font-semibold mb-2">今日のごはんに、小さなハレを。</p>
-          <p class="text-gray-700">
-            毎日の食事に「ちょっとした特別」を見つけて記録する、あなただけのごはん日誌です。
+    <div class="min-h-screen bg-[#FEF7ED]">
+      <%# ヒーローセクション %>
+      <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            ケハレ帖
+          </h1>
+          <p class="text-2xl md:text-3xl text-orange-600 font-semibold mb-8">
+            今日のごはんに、小さなハレを。
           </p>
-          <div class="card-actions justify-end mt-4">
-            <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white border-0" %>
-            <%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost text-gray-700 hover:text-orange-600" %>
+          <p class="text-lg md:text-xl text-gray-700 mb-12 leading-relaxed max-w-2xl mx-auto">
+            毎日の食事に「ちょっとした特別」を見つけて記録する、<br>
+            あなただけのごはん日誌です。
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <%= link_to "無料で始める", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-4 h-auto border-0 shadow-lg" %>
+            <%= link_to "ログイン", new_user_session_path, class: "btn btn-outline text-gray-700 hover:bg-gray-100 text-lg px-8 py-4 h-auto" %>
           </div>
         </div>
-      </div>
+      </section>
+
+      <%# 機能紹介セクション %>
+      <section class="py-16 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+          <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+            ケハレ帖でできること
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <%# 献立相談 %>
+            <div class="bg-gradient-to-br from-[#7A9D7E] to-[#6B8D6E] rounded-3xl p-8 text-white shadow-lg">
+              <div class="text-5xl mb-4">🍚</div>
+              <h3 class="text-2xl font-bold mb-3">献立相談</h3>
+              <p class="text-white/90 leading-relaxed">
+                「今日は何を作ろう？」そんな迷いを解決。
+                あなたの好みに合わせた献立を提案します。
+              </p>
+            </div>
+
+            <%# ハレ記録 %>
+            <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-8 text-white shadow-lg">
+              <div class="text-5xl mb-4">✨</div>
+              <h3 class="text-2xl font-bold mb-3">ハレ記録</h3>
+              <p class="text-white/90 leading-relaxed">
+                ちょっとした工夫や嬉しかったことを記録。
+                日常の中の「小さなハレ」を大切に。
+              </p>
+            </div>
+
+            <%# カレンダー %>
+            <div class="bg-gradient-to-br from-[#E8A87C] to-[#D99B6E] rounded-3xl p-8 text-white shadow-lg">
+              <div class="text-5xl mb-4">📅</div>
+              <h3 class="text-2xl font-bold mb-3">ハレ度カレンダー</h3>
+              <p class="text-white/90 leading-relaxed">
+                あなたの「ハレ度」を可視化。
+                毎日の積み重ねが成長の記録に。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <%# ベネフィットセクション %>
+      <section class="py-16 px-4 bg-[#FEF7ED]">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
+            こんな方におすすめ
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start gap-4">
+                <div class="text-3xl">👨‍🍳</div>
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">料理初心者の方</h3>
+                  <p class="text-gray-700">献立の悩みを解決し、楽しく料理を続けられます。</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start gap-4">
+                <div class="text-3xl">🏠</div>
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">一人暮らしの方</h3>
+                  <p class="text-gray-700">毎日の食事を記録し、自炊のモチベーションを維持。</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start gap-4">
+                <div class="text-3xl">📈</div>
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">成長を実感したい方</h3>
+                  <p class="text-gray-700">小さな工夫を積み重ね、「ハレ度」として可視化。</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm">
+              <div class="flex items-start gap-4">
+                <div class="text-3xl">💡</div>
+                <div>
+                  <h3 class="font-bold text-lg text-gray-900 mb-2">日常を楽しみたい方</h3>
+                  <p class="text-gray-700">ちょっとした工夫で、毎日の食事が特別に。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <%# CTAセクション %>
+      <section class="py-20 px-4 bg-gradient-to-br from-orange-500 to-orange-600">
+        <div class="max-w-3xl mx-auto text-center text-white">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            今日から始めよう、<br>小さなハレのある暮らし
+          </h2>
+          <p class="text-lg md:text-xl mb-10 text-white/90">
+            無料でアカウントを作成して、<br>
+            あなただけのごはん日誌を始めましょう。
+          </p>
+          <%= link_to "無料で始める", new_user_registration_path, class: "btn bg-white text-orange-600 hover:bg-gray-100 text-lg px-10 py-4 h-auto border-0 shadow-lg font-bold" %>
+        </div>
+      </section>
     </div>
   <% end %>
