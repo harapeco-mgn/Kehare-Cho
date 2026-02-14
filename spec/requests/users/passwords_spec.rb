@@ -61,9 +61,10 @@ RSpec.describe "Users::Passwords", type: :request do
         }.not_to change { ActionMailer::Base.deliveries.count }
       end
 
-      it "422 が返る" do
+      it "paranoid モードにより 303 リダイレクトが返る（存在しないメールアドレスでも成功したかのように振る舞う）" do
         post user_password_path, params: { user: { email: "nonexistent@example.com" } }
-        expect(response).to have_http_status(:unprocessable_content)
+        expect(response).to have_http_status(:see_other)
+        expect(response).to redirect_to(new_user_session_path)
       end
     end
   end
