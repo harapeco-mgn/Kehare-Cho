@@ -1,10 +1,10 @@
 <div class="container mx-auto p-4 max-w-4xl">
-  <h1 class="text-3xl font-bold mb-6 text-center">ケハレ帖の使い方</h1>
+  <h1 class="text-3xl font-bold mb-6 text-center text-gray-900">ケハレ帖の使い方</h1>
 
   <!-- 1. イントロ -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
-      <h2 class="text-primary">今日のごはんに、小さなハレを。</h2>
+      <h2 class="text-orange-600">今日のごはんに、小さなハレを。</h2>
       <p>
         「ケハレ帖」は、日常の食事に「小さな特別」を見つけて記録するアプリです。
       </p>
@@ -14,13 +14,13 @@
       </p>
       <p>
         毎日のごはんは「ケ」だけど、ちょっと工夫したり、いつもより美味しいものを選んだり。<br>
-        そんな<span class="text-primary font-bold">「小さなハレ」</span>を記録して、日常を楽しく振り返りましょう。
+        そんな<span class="text-orange-600 font-bold">「小さなハレ」</span>を記録して、日常を楽しく振り返りましょう。
       </p>
     </div>
   </div>
 
   <!-- 2. 献立相談 -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
       <h2>🍳 献立相談機能</h2>
       <p>「今日は何を食べよう？」そんなときは、献立相談を使ってみましょう。</p>
@@ -36,7 +36,7 @@
   </div>
 
   <!-- 3. ハレ投稿 -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
       <h2>✨ ハレ投稿機能</h2>
       <p>「今日のごはん、ちょっと特別だったな」と思ったら、ハレ投稿で記録しましょう。</p>
@@ -50,7 +50,7 @@
   </div>
 
   <!-- 4. カレンダー -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
       <h2>📅 カレンダー機能</h2>
       <p>投稿したハレは、カレンダーでスタンプとして表示されます。</p>
@@ -63,7 +63,7 @@
   </div>
 
   <!-- 5. ポイント・レベル -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
       <h2>🎮 ポイントとレベル</h2>
       <p>ハレを投稿するとポイントが貯まり、レベルアップしていきます。</p>
@@ -79,7 +79,7 @@
   </div>
 
   <!-- 6. 始め方 -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
       <h2>🚀 始め方</h2>
       <ol>
@@ -90,18 +90,18 @@
       </ol>
       <% if user_signed_in? %>
         <div class="text-center mt-4">
-          <%= link_to "献立相談を始める", new_meal_search_path, class: "btn btn-primary" %>
+          <%= link_to "献立相談を始める", new_meal_search_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white border-0" %>
         </div>
       <% else %>
         <div class="text-center mt-4">
-          <%= link_to "アカウント登録", new_user_registration_path, class: "btn btn-primary" %>
+          <%= link_to "アカウント登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white border-0" %>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- 7. FAQ -->
-  <div class="card bg-base-100 shadow-xl mb-6">
+  <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose max-w-none">
       <h2>💡 よくある質問</h2>
 

@@ -89,20 +89,17 @@
   <% else %>
     <% content_for :hide_header do %>true<% end %>
     <%# 未ログイン時のLP %>
-    <div class="min-h-screen bg-base-200 flex items-center      
-  justify-center">
-      <div class="card bg-base-100 shadow-xl w-96">
+    <div class="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div class="card bg-white shadow-xl w-96">
         <div class="card-body">
-          <h2 class="card-title text-2xl">ケハレ帖</h2>
-          <p class="text-lg text-primary font-semibold mb-2">今日のごはんに、小さなハレを。</p>
-          <p class="text-base-content/70">
+          <h2 class="card-title text-2xl text-gray-900">ケハレ帖</h2>
+          <p class="text-lg text-orange-600 font-semibold mb-2">今日のごはんに、小さなハレを。</p>
+          <p class="text-gray-700">
             毎日の食事に「ちょっとした特別」を見つけて記録する、あなただけのごはん日誌です。
           </p>
           <div class="card-actions justify-end mt-4">
-            <%= link_to "新規登録", new_user_registration_path, 
-  class: "btn btn-primary" %>
-            <%= link_to "ログイン", new_user_session_path,      
-  class: "btn btn-ghost" %>
+            <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white border-0" %>
+            <%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost text-gray-700 hover:text-orange-600" %>
           </div>
         </div>
       </div>
