@@ -51,6 +51,9 @@ RSpec.configure do |config|
   # Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :request
 
+  # Warden test helpers for system specs
+  config.include Warden::Test::Helpers, type: :system
+
   # ActiveSupport::Testing::TimeHelpers (travel_to, travel_back)
   config.include ActiveSupport::Testing::TimeHelpers
 
