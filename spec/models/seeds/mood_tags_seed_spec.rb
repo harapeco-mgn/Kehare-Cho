@@ -5,6 +5,7 @@ RSpec.describe Seeds::MoodTags do
   describe '.call' do
     context '空のデータベースから実行した場合' do
       before do
+        MealCandidate.destroy_all
         MoodTag.destroy_all
       end
 
@@ -38,6 +39,7 @@ RSpec.describe Seeds::MoodTags do
 
     context '冪等性の確認' do
       before do
+        MealCandidate.destroy_all
         MoodTag.destroy_all
       end
 
