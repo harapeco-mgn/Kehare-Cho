@@ -1,14 +1,17 @@
 require 'rails_helper'
 require_relative '../../../db/seeds/genres'
+require_relative '../../../db/seeds/mood_tags'
 require_relative '../../../db/seeds/meal_candidates'
 
 RSpec.describe Seeds::MealCandidates do
   describe '.call' do
     before do
-      # 前提条件: Genreのseedを先に実行
+      # 前提条件: GenreとMoodTagのseedを先に実行
       Genre.destroy_all
+      MoodTag.destroy_all
       MealCandidate.destroy_all
       Seeds::Genres.call
+      Seeds::MoodTags.call
     end
 
     context '空のデータベースから実行した場合' do

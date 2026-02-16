@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_070337) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_16_130601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,15 +88,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_070337) do
   end
 
   create_table "meal_candidates", force: :cascade do |t|
+    t.integer "cook_context", default: 0, null: false
     t.datetime "created_at", null: false
     t.bigint "genre_id", null: false
     t.boolean "is_active", default: true, null: false
+    t.integer "minutes_max"
+    t.bigint "mood_tag_id"
     t.string "name", null: false
     t.integer "position"
     t.string "search_hint"
     t.datetime "updated_at", null: false
+    t.index ["cook_context"], name: "index_meal_candidates_on_cook_context"
     t.index ["genre_id", "name"], name: "index_meal_candidates_on_genre_id_and_name", unique: true
     t.index ["genre_id"], name: "index_meal_candidates_on_genre_id"
+    t.index ["minutes_max"], name: "index_meal_candidates_on_minutes_max"
+    t.index ["mood_tag_id"], name: "index_meal_candidates_on_mood_tag_id"
     t.index ["position"], name: "index_meal_candidates_on_position"
   end
 
@@ -293,6 +299,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_070337) do
   add_foreign_key "hare_entry_tags", "hare_entries"
   add_foreign_key "hare_entry_tags", "hare_tags"
   add_foreign_key "meal_candidates", "genres"
+  add_foreign_key "meal_candidates", "mood_tags"
   add_foreign_key "meal_searches", "users"
   add_foreign_key "point_transactions", "hare_entries"
   add_foreign_key "point_transactions", "point_rules"

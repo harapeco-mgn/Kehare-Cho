@@ -27,11 +27,22 @@ class MealSearchesController < ApplicationController
       url = GoogleMapsQueryBuilder.new(params[:genre_id], params[:mood_tag_id]).url
       redirect_to url, allow_other_host: true
     else
-      # 自炊の処理（既存の処理）
+      # 自炊の処理
       genre_id = params[:genre_id]
-      picker = MealCandidatePicker.new(genre_id: genre_id)
+      picker = MealCandidatePicker.new(
+        genre_id: genre_id,
+        cook_context: :self_cook,
+        required_minutes: params[:required_minutes],
+        mood_tag_id: params[:mood_tag_id]
+      )
       candidates = picker.pick
-      current_user.meal_searches.create!(genre_id: genre_id, presented_candidate_names: candidates.map(&:name))
+      current_user.meal_searches.create!(
+        cook_context: :self_cook,
+        genre_id: genre_id,
+        required_minutes: params[:required_minutes],
+        mood_id: params[:mood_tag_id],
+        presented_candidate_names: candidates.map(&:name)
+      )
       session[:meal_candidates] = candidates.map(&:id)
       redirect_to meal_searches_path
     end
