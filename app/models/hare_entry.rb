@@ -12,6 +12,6 @@ class HareEntry < ApplicationRecord
   validates :body, presence: true, length: { maximum: 280 }
   validates :occurred_on, presence: true
   validates :photo,
-            content_type: { in: %w[image/jpeg image/png image/webp], message: 'はJPEG、PNG、WebP形式のみ対応しています' },
-            size: { less_than: 5.megabytes, message: 'は5MB以下にしてください' }
+            content_type: { in: %w[image/jpeg image/png image/webp], message: "はJPEG、PNG、WebP形式のみ対応しています" },
+            size: { less_than: 5.megabytes, message: "は5MB以下にしてください" }
 end

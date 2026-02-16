@@ -33,7 +33,7 @@ class HareEntriesController < ApplicationController
     end
 
     def update
-      @hare_entry.photo.purge if @hare_entry.remove_photo == '1'
+      @hare_entry.photo.purge if @hare_entry.remove_photo == "1"
 
       if @hare_entry.update(hare_entry_params)
         PointRecalculationService.call(@hare_entry)
