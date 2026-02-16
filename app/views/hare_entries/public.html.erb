@@ -1,0 +1,64 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <!-- ヘッダー -->
+    <div class="mb-6">
+      <h1 class="text-3xl font-bold text-gray-800 mb-2">みんなのハレ</h1>
+      <p class="text-gray-600">他のユーザーのハレ投稿を見てみましょう</p>
+    </div>
+
+    <!-- 投稿一覧 -->
+    <% if @hare_entries.any? %>
+      <div class="space-y-4">
+        <% @hare_entries.each do |entry| %>
+          <div class="card bg-base-100 shadow-xl">
+            <div class="card-body">
+              <!-- ユーザー情報 -->
+              <div class="flex items-center mb-3">
+                <div class="avatar placeholder">
+                  <div class="bg-neutral text-neutral-content rounded-full w-10">
+                    <span class="text-sm"><%= entry.user.display_name.first.upcase %></span>
+                  </div>
+                </div>
+                <div class="ml-3">
+                  <p class="font-semibold text-gray-800"><%= entry.user.display_name %></p>
+                  <p class="text-sm text-gray-500"><%= l(entry.occurred_on, format: :long) %></p>
+                </div>
+              </div>
+
+              <!-- 投稿内容 -->
+              <p class="text-gray-700 mb-3"><%= entry.body %></p>
+
+              <!-- 写真 -->
+              <% if entry.photo.attached? %>
+                <div class="mb-3">
+                  <%= image_tag entry.photo, class: "rounded-lg max-h-96 w-auto mx-auto" %>
+                </div>
+              <% end %>
+
+              <!-- タグ -->
+              <% if entry.hare_tags.any? %>
+                <div class="flex flex-wrap gap-2">
+                  <% entry.hare_tags.each do |tag| %>
+                    <span class="badge badge-primary badge-outline">
+                      <%= tag.label %>
+                    </span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- ページネーション -->
+      <div class="mt-8 flex justify-center">
+        <%= paginate @hare_entries %>
+      </div>
+    <% else %>
+      <!-- 投稿がない場合 -->
+      <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">まだ公開されている投稿がありません</p>
+      </div>
+    <% end %>
+  </div>
+</div>
