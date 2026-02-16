@@ -1,5 +1,5 @@
 class HareEntriesController < ApplicationController
-    before_action :authenticate_user!, except: [:public]
+    before_action :authenticate_user!, except: [ :public ]
     before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
 
     def index
