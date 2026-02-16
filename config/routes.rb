@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   root "home#index"
   get "home", to: "home#index"
 
+  # 公開タイムライン（認証不要） - resources より前に配置
+  get "hare_entries/public", to: "hare_entries#public", as: :public_hare_entries
+
   authenticate :user do
     root "home#index", as: :authenticated_root
     resource :profile, only: [ :show, :edit, :update ]
@@ -27,7 +30,5 @@ Rails.application.routes.draw do
 
   get "calendar", to: "calendar#index"
   get "calendar/:date", to: "calendar#show", as: :calendar_date
-
-  resources :hare_entries, only: [ :index, :show, :new, :create, :edit, :update, :destroy ]
   resources :meal_searches, only: [ :index, :new, :create ]
 end

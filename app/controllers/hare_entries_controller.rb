@@ -1,5 +1,5 @@
 class HareEntriesController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_user!, except: [:public]
     before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
 
     def index
@@ -47,6 +47,16 @@ class HareEntriesController < ApplicationController
     def destroy
       @hare_entry.destroy
       redirect_to hare_entries_path, notice: "ハレの記録を削除しました"
+    end
+
+    def public
+      @hare_entries = HareEntry
+        .publicly_visible
+        .includes(:user, :hare_tags)
+        .with_attached_photo
+        .recent
+        .page(params[:page])
+        .per(25)
     end
 
     private

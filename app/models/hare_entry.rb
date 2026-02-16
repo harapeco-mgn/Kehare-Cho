@@ -9,6 +9,9 @@ class HareEntry < ApplicationRecord
 
   enum :visibility, { public_post: 0, private_post: 1 }
 
+  scope :publicly_visible, -> { where(visibility: :public_post) }
+  scope :recent, -> { order(occurred_on: :desc, created_at: :desc) }
+
   validates :body, presence: true, length: { maximum: 280 }
   validates :occurred_on, presence: true
   validates :photo, content_type: %w[image/jpeg image/png image/webp],

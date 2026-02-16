@@ -30,6 +30,9 @@ gem "devise-i18n"
 # カレンダー表示 [https://github.com/excid3/simple_calendar]
 gem "simple_calendar", "~> 3.0"
 
+# ページネーション [https://github.com/kaminari/kaminari]
+gem "kaminari"
+
 # メール送信 API（本番環境用）[https://github.com/resend/resend-ruby]
 gem "resend"
 
