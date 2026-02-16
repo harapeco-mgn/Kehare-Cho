@@ -3,7 +3,7 @@ class HareEntriesController < ApplicationController
     before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
 
     def index
-      @hare_entries = current_user.hare_entries.order(created_at: :desc)
+      @hare_entries = current_user.hare_entries.with_attached_photo.order(created_at: :desc)
       @monthly_points = current_user.monthly_points
       @level = current_user.level
     end
@@ -33,6 +33,8 @@ class HareEntriesController < ApplicationController
     end
 
     def update
+      @hare_entry.photo.purge if @hare_entry.remove_photo == '1'
+
       if @hare_entry.update(hare_entry_params)
         PointRecalculationService.call(@hare_entry)
         redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を更新しました"
@@ -54,6 +56,6 @@ class HareEntriesController < ApplicationController
     end
 
     def hare_entry_params
-      params.require(:hare_entry).permit(:body, :occurred_on, :visibility, hare_tag_ids: [])
+      params.require(:hare_entry).permit(:body, :occurred_on, :visibility, :photo, :remove_photo, hare_tag_ids: [])
     end
 end
