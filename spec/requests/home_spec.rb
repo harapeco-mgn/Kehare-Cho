@@ -156,6 +156,57 @@ RSpec.describe "Home", type: :request do
         end
       end
 
+
+      context 'レベルイラスト表示' do
+        let!(:hare_entry) { create(:hare_entry, user: user, occurred_on: Time.zone.today) }
+        let!(:point_rule) { create(:point_rule, key: 'has_tag', points: 1, is_active: true) }
+
+        context 'レベル0の場合' do
+          it '「芽生え」のレベル名が表示される' do
+            get root_path
+            expect(response.body).to include('芽生え')
+          end
+
+          it '芽生えのイラストURLが含まれる' do
+            get root_path
+            expect(response.body).to include('kehare-cho/levels/beginner')
+          end
+        end
+
+        context 'レベル5の場合' do
+          let!(:point_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 45, awarded_on: Time.zone.today)
+          end
+
+          it '「彩り」のレベル名が表示される' do
+            get root_path
+            expect(response.body).to include('彩り')
+          end
+
+          it '彩りのイラストURLが含まれる' do
+            get root_path
+            expect(response.body).to include('kehare-cho/levels/intermediate')
+          end
+        end
+
+        context 'レベル15の場合' do
+          let!(:point_transaction) do
+            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+                                       points: 145, awarded_on: Time.zone.today)
+          end
+
+          it '「豊穣」のレベル名が表示される' do
+            get root_path
+            expect(response.body).to include('豊穣')
+          end
+
+          it '豊穣のイラストURLが含まれる' do
+            get root_path
+            expect(response.body).to include('kehare-cho/levels/master')
+          end
+        end
+      end
       context '今月のハレ投稿数表示' do
         let!(:hare_entry1) { create(:hare_entry, user: user, occurred_on: Time.zone.today) }
         let!(:hare_entry2) { create(:hare_entry, user: user, occurred_on: Time.zone.today.beginning_of_month) }

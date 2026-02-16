@@ -26,9 +26,20 @@
       </div>
 
       <%# 現在のレベル %>
-      <div class="flex items-center justify-between py-4 border-b border-gray-100">
-        <span class="text-sm font-semibold text-gray-600">ハレ度</span>
-        <span class="text-2xl font-bold text-orange-600">Lv.<%= @user.level %></span>
+      <div class="py-6 border-b border-gray-100">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm font-semibold text-gray-600">ハレ度</span>
+          <div class="text-right">
+            <div class="text-2xl font-bold text-orange-600 mb-1">Lv.<%= @user.level %></div>
+            <div class="text-sm text-gray-600"><%= level_name(@user.level) %></div>
+          </div>
+        </div>
+        <%# レベルイラスト %>
+        <div class="flex justify-center mt-4">
+          <%= image_tag level_image_url(@user.level),
+                        alt: level_name(@user.level),
+                        class: "w-40 h-40 rounded-full shadow-lg object-cover" %>
+        </div>
       </div>
 
       <%# 累計ポイント %>

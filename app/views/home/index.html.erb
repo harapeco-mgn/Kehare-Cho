@@ -12,7 +12,8 @@
         <div class="flex items-start justify-between">
           <div class="flex-1">
             <p class="text-xs text-orange-600 font-semibold uppercase tracking-wider mb-2">● CURRENT LEVEL</p>
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">ハレ度: Lv.<%= @level || 0 %></h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">ハレ度: Lv.<%= @level || 0 %></h2>
+            <p class="text-sm text-gray-600 mb-4"><%= level_name(@level || 0) %></p>
 
             <%# プログレスバー %>
             <div class="relative mb-2">
@@ -27,10 +28,11 @@
             <p class="text-xs text-gray-600">あと <%= [100 - (@monthly_points || 0), 0].max %>pt で新しいハレが咲きます！</p>
           </div>
 
-          <%# 花のイラスト %>
-          <div class="flex gap-2 ml-4">
-            <div class="text-4xl">🌷</div>
-            <div class="text-4xl">🌸</div>
+          <%# レベルイラスト %>
+          <div class="flex-shrink-0 ml-6">
+            <%= image_tag level_image_url(@level || 0),
+                          alt: level_name(@level || 0),
+                          class: "w-32 h-32 rounded-full shadow-md object-cover" %>
           </div>
         </div>
       </div>
