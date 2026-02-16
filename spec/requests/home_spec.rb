@@ -169,7 +169,7 @@ RSpec.describe "Home", type: :request do
 
           it '芽生えのイラストURLが含まれる' do
             get root_path
-            expect(response.body).to include('kehare-cho/levels/beginner')
+            expect(response.body).to include('beginner')
           end
         end
 
@@ -186,7 +186,7 @@ RSpec.describe "Home", type: :request do
 
           it '彩りのイラストURLが含まれる' do
             get root_path
-            expect(response.body).to include('kehare-cho/levels/intermediate')
+            expect(response.body).to include('intermediate')
           end
         end
 
@@ -203,7 +203,7 @@ RSpec.describe "Home", type: :request do
 
           it '豊穣のイラストURLが含まれる' do
             get root_path
-            expect(response.body).to include('kehare-cho/levels/master')
+            expect(response.body).to include('master')
           end
         end
       end

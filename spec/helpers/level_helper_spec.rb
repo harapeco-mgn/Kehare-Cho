@@ -7,7 +7,7 @@ RSpec.describe LevelHelper, type: :helper do
     context 'レベル0の場合' do
       it '芽生えのイラストURLを返す' do
         url = helper.level_image_url(0)
-        expect(url).to include('kehare-cho/levels/beginner')
+        expect(url).to include('beginner')
         expect(url).to include('cloudinary.com')
       end
     end
@@ -15,7 +15,7 @@ RSpec.describe LevelHelper, type: :helper do
     context 'レベル1-3の場合' do
       it '日々のイラストURLを返す' do
         url = helper.level_image_url(2)
-        expect(url).to include('kehare-cho/levels/apprentice')
+        expect(url).to include('apprentice')
         expect(url).to include('cloudinary.com')
       end
     end
@@ -23,7 +23,7 @@ RSpec.describe LevelHelper, type: :helper do
     context 'レベル4-6の場合' do
       it '彩りのイラストURLを返す' do
         url = helper.level_image_url(5)
-        expect(url).to include('kehare-cho/levels/intermediate')
+        expect(url).to include('intermediate')
         expect(url).to include('cloudinary.com')
       end
     end
@@ -31,7 +31,7 @@ RSpec.describe LevelHelper, type: :helper do
     context 'レベル7-9の場合' do
       it '華やぎのイラストURLを返す' do
         url = helper.level_image_url(8)
-        expect(url).to include('kehare-cho/levels/advanced')
+        expect(url).to include('advanced')
         expect(url).to include('cloudinary.com')
       end
     end
@@ -39,7 +39,7 @@ RSpec.describe LevelHelper, type: :helper do
     context 'レベル10以上の場合' do
       it '豊穣のイラストURLを返す' do
         url = helper.level_image_url(15)
-        expect(url).to include('kehare-cho/levels/master')
+        expect(url).to include('master')
         expect(url).to include('cloudinary.com')
       end
     end

@@ -52,7 +52,7 @@ module LevelHelper
   # デフォルト画像URL（イラストが見つからない場合のフォールバック）
   def default_image_url
     Cloudinary::Utils.cloudinary_url(
-      "kehare-cho/levels/beginner",
+      "beginner",
       width: 256,
       height: 256,
       crop: :fill,

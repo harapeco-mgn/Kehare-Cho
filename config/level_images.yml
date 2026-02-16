@@ -6,29 +6,29 @@ level_images:
   - min: 0
     max: 0
     name: "芽生え"
-    cloudinary_public_id: "kehare-cho/levels/beginner"
+    cloudinary_public_id: "beginner"
     description: "種が芽を出した状態"
 
   - min: 1
     max: 3
     name: "日々"
-    cloudinary_public_id: "kehare-cho/levels/apprentice"
+    cloudinary_public_id: "apprentice"
     description: "若葉が育つ日常"
 
   - min: 4
     max: 6
     name: "彩り"
-    cloudinary_public_id: "kehare-cho/levels/intermediate"
+    cloudinary_public_id: "intermediate"
     description: "つぼみができて色が見え始める"
 
   - min: 7
     max: 9
     name: "華やぎ"
-    cloudinary_public_id: "kehare-cho/levels/advanced"
+    cloudinary_public_id: "advanced"
     description: "花が咲く"
 
   - min: 10
     max: ~  # nil = 無限大（YAML の nil 表現）
     name: "豊穣"
-    cloudinary_public_id: "kehare-cho/levels/master"
+    cloudinary_public_id: "master"
     description: "実りを迎える"
