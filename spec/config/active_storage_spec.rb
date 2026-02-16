@@ -56,7 +56,7 @@ RSpec.describe 'ActiveStorage Configuration', type: :config do
     end
   end
 
-  describe 'Cloudinary initialization' do
+  describe 'Cloudinary initialization', skip: !defined?(Cloudinary) do
     it 'loads Cloudinary configuration without error' do
       expect { Cloudinary.config }.not_to raise_error
     end

@@ -8,6 +8,7 @@ RUN apt-get update -qq && \
       ca-certificates curl gnupg \
       build-essential git pkg-config \
       libpq-dev postgresql-client \
+      libvips-dev \
       gosu \
     && mkdir -p /etc/apt/keyrings \
     && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key \

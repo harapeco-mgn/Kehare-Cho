@@ -17,6 +17,7 @@ ja:
         body: "内容"
         occurred_on: "日付"
         visibility: "公開設定"
+        photo: "写真"
 
   enums:
     hare_entry:

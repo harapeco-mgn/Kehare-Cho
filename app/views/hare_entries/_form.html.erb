@@ -44,6 +44,30 @@
     <%= f.select :visibility, HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] }, {}, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900" %>
   </div>
 
+  <%# 写真アップロード %>
+  <div data-controller="image-preview">
+    <%= f.label :photo, "写真", class: "block text-base font-bold text-gray-800 mb-3" %>
+    <%= f.file_field :photo, accept: "image/jpeg,image/png,image/webp", class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900", data: { image_preview_target: "input", action: "change->image-preview#preview" } %>
+    <p class="text-sm text-gray-600 mt-2">JPEG、PNG、WebP形式（最大5MB）</p>
+
+    <%# プレビューエリア %>
+    <div data-image-preview-target="previewContainer" class="mt-4 hidden">
+      <img data-image-preview-target="preview" class="max-w-md rounded-xl border-2 border-gray-300 shadow-sm">
+    </div>
+
+    <%# 既存の写真表示と削除チェックボックス %>
+    <% if hare_entry.photo.attached? %>
+      <div class="mt-4">
+        <p class="text-sm font-bold text-gray-800 mb-2">現在の写真</p>
+        <%= image_tag hare_entry.photo.variant(resize_to_limit: [200, 200]), class: "max-w-md rounded-xl border-2 border-gray-300 shadow-sm" %>
+        <label class="flex items-center gap-2 mt-3">
+          <%= f.check_box :remove_photo, class: "rounded text-red-500 focus:ring-red-400" %>
+          <span class="text-sm font-medium text-gray-800">写真を削除する</span>
+        </label>
+      </div>
+    <% end %>
+  </div>
+
   <%# ボタン %>
   <div class="flex gap-4 pt-4">
     <%= f.submit submit_label, class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-8 py-3 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-md" %>

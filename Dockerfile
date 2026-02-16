@@ -11,6 +11,7 @@ RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
       build-essential git pkg-config \
       libpq-dev \
+      libvips-dev \
       ca-certificates curl gnupg \
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,6 +42,7 @@ WORKDIR /app
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
       libpq5 postgresql-client curl ca-certificates \
+      libvips42 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /usr/local/bundle /usr/local/bundle
