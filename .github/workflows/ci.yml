@@ -100,6 +100,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          bundle-without: production
 
       - name: Install libvips for image processing
         run: sudo apt-get update -qq && sudo apt-get install -y libvips-dev
