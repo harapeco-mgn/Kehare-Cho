@@ -10,13 +10,13 @@
     <% if @hare_entries.any? %>
       <div class="space-y-4">
         <% @hare_entries.each do |entry| %>
-          <div class="card bg-base-100 shadow-xl">
+          <div class="card bg-white shadow-md">
             <div class="card-body">
               <!-- ユーザー情報 -->
               <div class="flex items-center mb-3">
-                <div class="avatar placeholder">
-                  <div class="bg-neutral text-neutral-content rounded-full w-10">
-                    <span class="text-sm"><%= entry.user.display_name.first.upcase %></span>
+                <div class="avatar">
+                  <div class="w-10 rounded-full">
+                    <%= image_tag level_image_url(entry.user.level), alt: entry.user.display_name, class: "rounded-full" %>
                   </div>
                 </div>
                 <div class="ml-3">
@@ -39,7 +39,7 @@
               <% if entry.hare_tags.any? %>
                 <div class="flex flex-wrap gap-2">
                   <% entry.hare_tags.each do |tag| %>
-                    <span class="badge badge-primary badge-outline">
+                    <span class="badge badge-accent">
                       <%= tag.label %>
                     </span>
                   <% end %>
