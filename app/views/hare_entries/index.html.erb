@@ -37,6 +37,11 @@
                 <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">非公開</span>
               <% end %>
             </div>
+            <% if entry.photo.attached? %>
+              <div class="mb-3">
+                <%= image_tag entry.photo.variant(resize_to_limit: [200, 200]), class: "rounded-lg border-2 border-gray-200 shadow-sm" %>
+              </div>
+            <% end %>
             <p class="text-gray-800 whitespace-pre-wrap leading-relaxed group-hover:text-gray-900"><%= entry.body %></p>
           </div>
         <% end %>
