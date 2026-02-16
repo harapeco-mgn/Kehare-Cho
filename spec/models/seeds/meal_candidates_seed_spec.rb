@@ -16,10 +16,10 @@ RSpec.describe Seeds::MealCandidates do
         expect { described_class.call }.to change(MealCandidate, :count).by_at_least(1)
       end
 
-      it '各ジャンルに最低3件の候補が存在すること' do
+      it '各ジャンルに最低20件の候補が存在すること' do
         described_class.call
         Genre.all.each do |genre|
-          expect(genre.meal_candidates.count).to be >= 3
+          expect(genre.meal_candidates.count).to be >= 20
         end
       end
 
