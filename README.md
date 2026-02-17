@@ -1,5 +1,347 @@
 # ケハレ帖 — 今日のごはんに、小さなハレを。
 
+![Ruby](https://img.shields.io/badge/Ruby-3.3.2-CC342D?logo=ruby&logoColor=white&style=for-the-badge)
+![Rails](https://img.shields.io/badge/Rails-8.1-CC0000?logo=rubyonrails&logoColor=white&style=for-the-badge)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?logo=postgresql&logoColor=white&style=for-the-badge)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white&style=for-the-badge)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2671E5?logo=githubactions&logoColor=white&style=for-the-badge)
+![RSpec](https://img.shields.io/badge/RSpec-90%25%2B_coverage-6EBE4A?style=for-the-badge)
+
+---
+
+## サービス概要
+
+**サービス URL:** https://kehare-cho.onrender.com
+
+日常の食事（ケ）に「小さなハレ」を足す行動を短文＋タグで記録し、カレンダーとポイントで振り返るサービスです。献立相談では条件を選ぶだけで候補3件を提示し、ワンタップで外部検索へ誘導します。「決められない」を減らし、「できた」を積み上げる継続体験を提供します。
+
+**テストアカウント:**
+| 項目 | 値 |
+|------|---|
+| メール | `test@example.com` |
+| パスワード | `password` |
+
+---
+
+## スクリーンショット
+
+
+![alt text](image.png)
+![alt text](image-2.png)
+![alt text](image-1.png)
+
+---
+
+## 開発背景と課題解決
+
+前職のパティシエ・食品製造の現場で、ウェディングや季節行事など"ハレ"の瞬間が日常に与える効果を体感してきました。一方で、一人暮らしの日々は「何を作るか決められず時間が溶ける」「良かった行動が残らない」という悩みがつきまといます。
+
+**「決める工程の圧縮」×「プチハレの記録」の組み合わせで、この課題を解決します。**
+
+| 課題（ケ） | 解決アプローチ |
+|------------|----------------|
+| 献立を決めるのがしんどい | 選択式 UI で条件を絞り、候補 3 件を提示 → ワンタップで外部検索 |
+| 検索ワードを考えるのが面倒 | Google / Google マップの検索クエリを自動生成（`GoogleMapsQueryBuilder`） |
+| 良かった行動が残らない | タグ＋短文で記録。カレンダーとポイントで「積み上げ」を可視化 |
+| 続けられない | ゲーミフィケーション（ポイント・レベル・イラスト変化）で継続を促進 |
+
+---
+
+## 主要機能
+
+| 機能 | 説明 |
+|------|------|
+| ハレ投稿 | 短文（280 字以内）＋タグで「小さなハレ」を記録。画像添付・公開/非公開切替・編集・削除 |
+| 献立相談 | 条件選択（自炊/中食・時間・気分）→ 候補 3 件提示 → ワンタップで外部検索（段階的フォールバック付き） |
+| カレンダー | 月間・日別で振り返り。投稿スタンプで継続を可視化（`simple_calendar` 使用） |
+| ポイント・レベル | ルールベースで公平なポイント付与。日次上限・更新時再計算。レベルに応じたイラスト表示 |
+| 公開タイムライン | 他ユーザーの公開投稿を閲覧。ページネーション付き（`kaminari` 使用） |
+| プロフィール | ニックネーム設定・累計レベル・イラスト表示（Cloudinary × YAML 設定） |
+| 認証 | Devise による新規登録・ログイン・パスワード再設定（メール送信：Resend） |
+
+---
+
+## 技術スタック
+
+### バックエンド
+
+| 技術 | バージョン | 選定理由 |
+|------|----------|---------|
+| Ruby | 3.3.2 | YJIT によるパフォーマンス向上。最新安定版としての保守性 |
+| Ruby on Rails | 8.1 | Hotwire 標準搭載で SPA 不要。学習コスト最小で高速な UX を実現 |
+| Devise | - | 認証の自作工数を削減し、セキュリティリスクを下げる |
+| PostgreSQL | 15（Neon） | Rails のデファクト DB。Neon のサーバーレスでコスト最適化 |
+
+### フロントエンド
+
+| 技術 | バージョン | 選定理由 |
+|------|----------|---------|
+| Hotwire（Turbo + Stimulus） | - | JavaScript フレームワーク不要でページ遷移・部分更新を実現 |
+| Tailwind CSS | v4 | ユーティリティファーストで UI 構築速度を最大化 |
+| daisyUI | v5 | Tailwind ベースのコンポーネントで世界観を統一 |
+| Cloudinary | - | 画像の CDN 配信・レベルイラストのホスティング |
+
+### インフラ・開発環境
+
+| 技術 | 選定理由 |
+|------|---------|
+| Render | インフラ管理の手間を最小化。Rails 8 に最適化されたデプロイ |
+| Docker | OS 差をなくし、セットアップを統一する |
+| Cloudflare | DNS / HTTPS 管理 |
+| Resend | 認証メール（パスワード再設定）の本番安定配信 |
+| GitHub Actions | CI/CD パイプラインの自動化 |
+
+### テスト・品質
+
+| 技術 | 選定理由 |
+|------|---------|
+| RSpec | ドキュメントとして読めるテストで保守性を向上 |
+| SimpleCov | カバレッジ測定。90% 以上を CI で強制 |
+| RuboCop | コードスタイルの統一と品質維持 |
+| Brakeman | Rails 特化の静的セキュリティ解析 |
+
+---
+
+## 工夫した点・技術的チャレンジ
+
+### 1. Service Object パターンの徹底
+
+コントローラーを薄く保ち、ビジネスロジックをサービス層に分離しました。
+
+| サービスクラス | 役割 |
+|--------------|------|
+| `PointAwardService` | ポイント付与ルールの評価・記録・再計算 |
+| `MealCandidatePicker` | 段階的フォールバック付きの候補抽出 |
+| `GoogleMapsQueryBuilder` | 外部検索クエリの自動生成 |
+| `HareEntryTagsSyncService` | タグの差分同期（不要なレコードの削除） |
+| `CalendarQueryService` | カレンダー表示用クエリの集約 |
+
+**`MealCandidatePicker` の段階的フォールバック:**
+
+```
+条件フル適用 → 候補が 3 件未満なら
+  条件を緩和（ジャンルのみ）→ 候補が 3 件未満なら
+    全候補からランダム選択
+```
+
+### 2. ルールベースのポイントエンジン
+
+ポイントのルール定義を DB（`point_rules` テーブル）で管理することで、コードを変更せずに付与ロジックを運用変更できます。
+
+```ruby
+# 評価フロー: is_active なルールを priority 順に評価
+point_rules.active.order(:priority).each do |rule|
+  next unless rule.applicable?(hare_entry)
+  # 日次上限チェック → point_transactions に記録
+end
+```
+
+- **投稿更新時:** 紐づく `point_transactions` を削除 → 再評価・再付与（べき等性を確保）
+- **日次上限:** `occurred_on` 基準で 3pt/日（コード直書きなし、seed で管理）
+
+### 3. テスト・品質管理
+
+- **34 spec ファイル**（モデル / リクエスト / サービス / ヘルパー / seed）
+- **SimpleCov 90%+ カバレッジ**を CI で強制（未達成時はビルド失敗）
+- **TDD 開発フロー**（テスト → 実装 → リファクタリング）
+
+### 4. CI/CD パイプライン
+
+GitHub Actions で 4 ジョブを並列実行します。
+
+```
+PR 作成 / push
+  ├── RSpec（テスト + SimpleCov カバレッジ計測）
+  ├── RuboCop（コードスタイルチェック）
+  ├── Brakeman（静的セキュリティ解析）
+  └── bundler-audit + importmap audit（脆弱性チェック）
+```
+
+- PR へのカバレッジレポートを自動コメントで通知
+- CI 全通過前のマージを Branch Protection Rules でブロック
+
+### 5. セキュリティ対策
+
+- **Brakeman 静的解析:** Rails 特有の脆弱性パターンを自動検出
+- **ユーザー列挙攻撃対策:** 登録済みメールアドレスの有無を推測させない実装
+- **Active Storage バリデーション:** ファイルタイプ・サイズ制限でファイルアップロードを制御
+
+---
+
+## ER図
+
+```mermaid
+erDiagram
+  USERS ||--o{ HARE_ENTRIES : has
+  HARE_ENTRIES ||--o{ HARE_ENTRY_TAGS : has
+  HARE_TAGS ||--o{ HARE_ENTRY_TAGS : has
+
+  USERS ||--o{ MEAL_SEARCHES : has
+  GENRES ||--o{ MEAL_SEARCHES : used_by
+  GENRES ||--o{ MEAL_CANDIDATES : has
+
+  USERS ||--o{ POINT_TRANSACTIONS : has
+  HARE_ENTRIES ||--o{ POINT_TRANSACTIONS : produces
+  POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
+
+  MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
+
+  USERS {
+    bigint id PK
+    string email "unique, not null"
+    string encrypted_password "not null"
+    string nickname
+    datetime created_at
+    datetime updated_at
+  }
+
+  HARE_ENTRIES {
+    bigint id PK
+    bigint user_id FK
+    date occurred_on
+    integer visibility "enum: private/public"
+    integer meal_mode "enum: home_cook/ready_meal"
+    text body "280字以内"
+    integer price_yen
+    integer awarded_points "表示用キャッシュ"
+    bigint mood_tag_id FK
+    datetime created_at
+    datetime updated_at
+  }
+
+  HARE_TAGS {
+    bigint id PK
+    string key "unique, immutable"
+    string label "renameable"
+    integer position
+    boolean is_active
+  }
+
+  HARE_ENTRY_TAGS {
+    bigint id PK
+    bigint hare_entry_id FK
+    bigint hare_tag_id FK
+  }
+
+  GENRES {
+    bigint id PK
+    string key "unique, immutable"
+    string label "renameable"
+    integer position
+    boolean is_active
+  }
+
+  MEAL_CANDIDATES {
+    bigint id PK
+    bigint genre_id FK
+    string name "not null"
+    string search_hint "nullable"
+    integer position
+    boolean is_active
+  }
+
+  MEAL_SEARCHES {
+    bigint id PK
+    bigint user_id FK
+    bigint genre_id FK
+    integer meal_mode
+    integer cook_context
+    integer minutes
+    bigint mood_tag_id FK
+    string query_text
+    datetime created_at
+  }
+
+  MOOD_TAGS {
+    bigint id PK
+    string key "unique, immutable"
+    string label "renameable"
+    boolean is_active
+  }
+
+  POINT_RULES {
+    bigint id PK
+    string key "unique, immutable"
+    string label "renameable"
+    integer points
+    json params
+    integer priority
+    boolean is_active
+  }
+
+  POINT_TRANSACTIONS {
+    bigint id PK
+    bigint user_id FK
+    bigint hare_entry_id FK
+    bigint point_rule_id FK
+    date occurred_on
+    integer points "snapshot"
+    datetime created_at
+  }
+```
+
+---
+
+## インフラ構成
+
+```
+ユーザー（スマホ / PC）
+    │
+    ▼
+Cloudflare（DNS / HTTPS）
+    │
+    ▼
+Render（Rails 8.1 アプリケーション）
+    ├── Neon（PostgreSQL 15 / サーバーレス）
+    ├── Cloudinary（画像 CDN / レベルイラスト）
+    └── Resend（認証メール送信）
+
+開発 ─── Docker（WSL2 環境）
+         └── GitHub Actions（CI/CD）
+```
+
+---
+
+## 開発環境セットアップ
+
+**前提:** Docker / Docker Compose がインストール済みであること
+
+```bash
+# 1. リポジトリをクローン
+git clone https://github.com/harapeco-mgn/Kehare-Cho.git
+cd Kehare-Cho
+
+# 2. 環境変数ファイルを作成
+cp .env.example .env
+
+# 3. Docker イメージをビルド＆コンテナを起動
+docker compose build
+docker compose up
+
+# 4. 別ターミナルで DB をセットアップ
+docker compose exec web rails db:create db:migrate db:seed
+
+# 5. http://localhost:3000 にアクセスして動作確認
+```
+
+**WSL2 をお使いの場合:** `.env` の `APP_UID` / `APP_GID` がホスト UID と一致していることを確認してください（`id -u` / `id -g` で確認）。
+
+---
+
+## 今後の実装予定
+
+- **いいね・コメント機能** — 公開タイムラインへの反応機能
+- **献立条件マッチング（β版）** — 自炊/中食・時間・気分タグによる候補絞り込み
+- **週次・月次レポート** — 振り返り強化のためのサマリーレポート
+- **管理画面** — タグ・ジャンル・ポイントルールの GUI 管理
+- **パーソナライズ候補提示** — 過去の検索ログを活用した献立推薦
+
+---
+
+<details>
+<summary>企画書・設計書（詳細）</summary>
+
 ## 本サービスの概要（700文字以内）
 
 **サービス名:** ケハレ帖
@@ -18,14 +360,14 @@
 ---
 
 ## 💡 このサービスへの思い・作りたい理由
-前職でパティシエ／食品製造の現場にいたとき、日々の仕事は「ケ」が多い一方で、ウェディングなど“ハレ”の瞬間は強く記憶に残る体験だと感じていました。  
+前職でパティシエ／食品製造の現場にいたとき、日々の仕事は「ケ」が多い一方で、ウェディングなど"ハレ"の瞬間は強く記憶に残る体験だと感じていました。
 季節感、香り、盛り付け、最後の一皿の余韻。ほんの小さな差が、その日を「特別な記憶」に変えることを何度も見てきました。
 
-でも生活は基本的に「ケ」が大半で、特別な日を増やしたくても、献立を決めることや片付けが面倒で止まりがちです。  
+でも生活は基本的に「ケ」が大半で、特別な日を増やしたくても、献立を決めることや片付けが面倒で止まりがちです。
 自分自身も「献立迷い（買い物前に家で迷う）」で時間が溶けるタイプでした。
 
-一方で「新作・限定を選ぶ」「普段より少し予算を上げる」「デザートを足す」「コーヒー／紅茶を合わせる」といった小さな行動で、ケの日でも“プチハレ”は作れる。  
-このサービスは、そうした **“ハレを足す行動”を記録・共有し、続けるほど日常が少し楽しくなる体験**を作るために企画しました。
+一方で「新作・限定を選ぶ」「普段より少し予算を上げる」「デザートを足す」「コーヒー／紅茶を合わせる」といった小さな行動で、ケの日でも"プチハレ"は作れる。
+このサービスは、そうした **"ハレを足す行動"を記録・共有し、続けるほど日常が少し楽しくなる体験**を作るために企画しました。
 
 ---
 
@@ -34,7 +376,7 @@
 ### メインターゲット
 - **属性：** 一人暮らしの個人ユーザー
 - **スキル：** 料理初心者（レシピを見れば作れるが、献立決めが負担）
-- **生活スタイル：** 自炊多め〜中食多め  
+- **生活スタイル：** 自炊多め〜中食多め
   ※コンビニ弁当／ファストフードは「中食」として扱う
 - **利用シーン：** スマホ中心
 - **プライバシー：** 個人情報は扱わない（従業員名・健康状態・取引先情報などは扱わない）
@@ -44,14 +386,14 @@
 ---
 
 ## 🚫 一番潰したい失敗（＝解決したい課題）
-**献立迷い（買い物前に家で迷う）**  
+**献立迷い（買い物前に家で迷う）**
 「何を作るか決められない」「検索ワードの試行錯誤で疲れる」ことで、時間が溶けたり自炊を諦めてしまう状態。
 
 ---
 
 ## ユーザーの課題と解決アプローチ
 
-### 課題（ケ）：献立を“決める”のがしんどい
+### 課題（ケ）：献立を"決める"のがしんどい
 - 何を作るか決められず、買い物前に家で迷って時間が溶ける
 - 検索ワードの試行錯誤で疲れる（検索しても決めきれない）
 
@@ -64,10 +406,10 @@
 - 小さな満足が積み上がらず、日々の「ちゃんとできた」が流れてしまう
 - 食の楽しみが継続しづらい（振り返りがない）
 
-### アプローチ（ハレ）：主観でOKの“プチハレ”を記録し、可視化して継続させる
+### アプローチ（ハレ）：主観でOKの"プチハレ"を記録し、可視化して継続させる
 - ハレタグ（ボタン）＋ひとことの短文で記録
 - カレンダースタンプ＋ポイント＋見た目変化で「積み上げ」を見える化
-- 記録が“自分のネタ帳”になり、次回の迷い軽減（ケ）にもつながる
+- 記録が"自分のネタ帳"になり、次回の迷い軽減（ケ）にもつながる
 
 ---
 
@@ -109,7 +451,7 @@
 ```
 
 ### 献立相談画面（ケ）
-最小限の入力で、料理名の候補を3つ提示し、ワンタップで外部検索へ移動します。  
+最小限の入力で、料理名の候補を3つ提示し、ワンタップで外部検索へ移動します。
 ※特定レシピサイトに固定せず、検索結果を入口にすることで、ユーザーが普段使う情報源（レシピサイト/動画等）を選べる設計にしています。
 
 ```text
@@ -154,11 +496,11 @@
 
 **この差別化が優れている点**
 - 完璧な自炊や健康管理を求めず、続けやすい
-- “良かった行動”を積み上げられ、モチベーションが持続する
+- "良かった行動"を積み上げられ、モチベーションが持続する
 
 ### 推しポイント（このサービスならでは）
 - **ケ（迷い軽減）×ハレ（記録/可視化）**のループで、「決められない」→「行動できた」→「残る」→「次が少し楽」の体験を作る
-- パティシエ/食品現場の経験を背景に、「季節感・香り・盛り付け・余韻」など“体験としての食”を、ログ体験の設計に落とし込む
+- パティシエ/食品現場の経験を背景に、「季節感・香り・盛り付け・余韻」など"体験としての食"を、ログ体験の設計に落とし込む
 
 ---
 
@@ -192,10 +534,6 @@
 - 通報・非表示など安全機能
 - 週次/月次レポート（振り返り強化）
 - 管理画面（タグ・ジャンル・ポイントルールの編集/並び替え）
-
-### MVP と β の違い（要点）
-- MVP：コア体験（迷い軽減×ハレ記録）が成立するかを最優先
-- β：実使用で出る「面倒」「分からない」「続かない」を潰す（UX/納得感/運用性が主役）
 
 ---
 
@@ -257,6 +595,7 @@
 ---
 
 ## 🌟 ポイント・見た目段階（MVP中の想定）
+
 ### ポイント整合の方針（MVP）
 - 日次上限（3pt/日）は、付与時に occurred_on の当日合計を集計し、上限を超えないように調整する。
 - 投稿更新時は、当該投稿に紐づく point_transactions を削除してから、is_active な point_rules を priority 順に再評価して再付与する。
@@ -436,15 +775,15 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
    USERS ||--o{ HARE_ENTRIES : has
    HARE_ENTRIES ||--o{ HARE_ENTRY_TAGS : has
    HARE_TAGS ||--o{ HARE_ENTRY_TAGS : has
- 
+
    USERS ||--o{ MEAL_SEARCHES : has
    GENRES ||--o{ MEAL_SEARCHES : used_by
    GENRES ||--o{ MEAL_CANDIDATES : has
- 
+
    USERS ||--o{ POINT_TRANSACTIONS : has
    HARE_ENTRIES ||--o{ POINT_TRANSACTIONS : produces
    POINT_RULES ||--o{ POINT_TRANSACTIONS : applies
- 
+
    MOOD_TAGS ||--o{ HARE_ENTRIES : mood_of
 
    USERS {
@@ -457,26 +796,26 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      datetime created_at
      datetime updated_at
    }
- 
+
    HARE_ENTRIES {
      bigint id PK
      bigint user_id FK
      date occurred_on
- 
+
      integer visibility "enum: private/public"
      integer meal_mode "enum: home_cook/ready_meal"
      integer cook_context "enum: shopping/pantry"
- 
+
      text body "<= 280 chars"
      integer price_yen
      integer awarded_points
- 
+
      bigint mood_tag_id FK "single FK (MVP)"
- 
+
      datetime created_at
      datetime updated_at
    }
- 
+
    HARE_TAGS {
      bigint id PK
      string key "unique, not null (immutable)"
@@ -486,13 +825,13 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      datetime created_at
      datetime updated_at
    }
- 
+
    HARE_ENTRY_TAGS {
      bigint id PK
      bigint hare_entry_id FK
      bigint hare_tag_id FK
    }
- 
+
    GENRES {
      bigint id PK
      string key "unique, not null (immutable)"
@@ -502,7 +841,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      datetime created_at
      datetime updated_at
    }
- 
+
    MEAL_CANDIDATES {
      bigint id PK
      bigint genre_id FK
@@ -525,7 +864,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      string query_text
      datetime created_at
    }
- 
+
    MOOD_TAGS {
      bigint id PK
      string key "unique, not null (immutable)"
@@ -535,7 +874,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      datetime created_at
      datetime updated_at
    }
- 
+
    POINT_RULES {
      bigint id PK
      string key "unique, not null (immutable)"
@@ -548,7 +887,7 @@ Rails 8 にはヘルスチェック用の `/up` エンドポイントが組み�
      datetime created_at
      datetime updated_at
    }
- 
+
    POINT_TRANSACTIONS {
      bigint id PK
      bigint user_id FK
@@ -608,5 +947,6 @@ MVP実装において、README記載のER図から一部カラムを省略・変
 - β版：条件入力→絞り込み候補提示→外部検索（精度向上）
 - 本リリース：過去の検索ログから学習した候補提示（パーソナライズ）
 
-
 ---
+
+</details>
