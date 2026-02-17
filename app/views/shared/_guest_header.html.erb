@@ -1,15 +1,35 @@
 <header class="navbar bg-white shadow-md">
-  <div class="flex-1">
+  <%# モバイル: ハンバーガー + アプリ名 %>
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52">
+        <li><%= link_to "使い方", how_to_use_path, class: "text-gray-700 hover:text-orange-600" %></li>
+        <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "text-gray-700 hover:text-orange-600" %></li>
+        <li><%= link_to "ログイン", new_user_session_path, class: "text-gray-700 hover:text-orange-600" %></li>
+        <li>
+          <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0 w-full mt-1" %>
+        </li>
+      </ul>
+    </div>
     <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-gray-900" %>
   </div>
-  <nav class="flex-none">
+
+  <%# デスクトップ: 横並びメニュー %>
+  <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 space-x-2">
       <li><%= link_to "使い方", how_to_use_path, class: "btn btn-ghost btn-sm text-gray-700 hover:text-orange-600" %></li>
       <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "btn btn-ghost btn-sm text-gray-700 hover:text-orange-600" %></li>
       <li><%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost btn-sm text-gray-700 hover:text-orange-600" %></li>
-      <li>
-        <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
-      </li>
     </ul>
-  </nav>
+  </div>
+
+  <%# 新規登録ボタン %>
+  <div class="navbar-end hidden lg:flex">
+    <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
+  </div>
 </header>

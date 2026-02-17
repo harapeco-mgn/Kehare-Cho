@@ -22,7 +22,7 @@
   }
 
   table {
-    @apply w-full mx-auto;
+    @apply w-full mx-auto min-w-[500px];
   }
 
   table thead th {

@@ -1,4 +1,4 @@
-<main class="max-w-3xl mx-auto p-8">
+<main class="max-w-3xl mx-auto p-4 md:p-8">
   <%# 戻るリンク %>
   <div class="mb-4">
     <%= link_to "← 詳細に戻る", hare_entry_path(@hare_entry), class: "text-gray-600 hover:text-gray-800 font-medium" %>
@@ -11,7 +11,7 @@
   </div>
 
   <%# フォームカード %>
-  <div class="bg-white rounded-2xl shadow-sm p-8">
+  <div class="bg-white rounded-2xl shadow-sm p-5 md:p-8">
     <%= render 'form', hare_entry: @hare_entry, submit_label: "更新する", cancel_path: hare_entry_path(@hare_entry), hare_tags: @hare_tags %>
   </div>
 </main>
