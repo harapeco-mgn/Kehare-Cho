@@ -1,7 +1,7 @@
-<main class="max-w-5xl mx-auto p-8">
+<main class="max-w-5xl mx-auto p-4 md:p-8">
   <%# ページヘッダー %>
-  <div class="flex items-center justify-between mb-8">
-    <h1 class="text-3xl font-bold text-gray-800">献立相談のログ</h1>
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">献立相談のログ</h1>
     <div class="flex gap-3">
       <%= link_to "新しく相談する", new_meal_search_path, class: "bg-gradient-to-r from-green-500 to-green-400 text-white px-6 py-2.5 rounded-full font-semibold hover:from-green-600 hover:to-green-500 transition-colors shadow-sm" %>
       <%= link_to "ホーム", home_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
@@ -48,7 +48,7 @@
             </div>
             <div class="text-gray-700">
               <span class="font-semibold">提案された候補:</span>
-              <span class="text-gray-600"><%= meal_search.presented_candidate_names.join(", ") %></span>
+              <span class="text-gray-600 break-words"><%= meal_search.presented_candidate_names.join(", ") %></span>
             </div>
           </div>
         <% end %>

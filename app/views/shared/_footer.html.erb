@@ -1,13 +1,12 @@
 <footer class="footer footer-center p-4 bg-orange-50 text-gray-700 mt-8">
-    <div>
-      <p>
-        <%= link_to "使い方", how_to_use_path, class: "text-gray-700 hover:text-orange-600 transition-colors" %>
-        <span class="text-gray-400">|</span>
-        <%= link_to "プライバシーポリシー", privacy_policy_path, class: "text-gray-700 hover:text-orange-600 transition-colors" %>
-        <span class="text-gray-400">|</span>
-        <%= link_to "利用規約", terms_path, class: "text-gray-700 hover:text-orange-600 transition-colors" %>
-      </p>
-      <p class="text-gray-600">&copy; 2026 <%= t('app_name') %></p>
+  <div>
+    <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+      <%= link_to "使い方", how_to_use_path, class: "text-gray-700 hover:text-orange-600 transition-colors" %>
+      <span class="text-gray-400">|</span>
+      <%= link_to "プライバシーポリシー", privacy_policy_path, class: "text-gray-700 hover:text-orange-600 transition-colors" %>
+      <span class="text-gray-400">|</span>
+      <%= link_to "利用規約", terms_path, class: "text-gray-700 hover:text-orange-600 transition-colors" %>
     </div>
-  </footer>
-  
+    <p class="text-gray-600">&copy; 2026 <%= t('app_name') %></p>
+  </div>
+</footer>

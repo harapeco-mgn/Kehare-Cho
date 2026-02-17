@@ -1,9 +1,9 @@
 <% if user_signed_in? %>
     <%# ログイン後のホーム画面（Stitch完全コピー） %>
-    <main class="max-w-5xl mx-auto bg-[#FEF7ED] min-h-screen p-8">
+    <main class="max-w-5xl mx-auto bg-[#FEF7ED] min-h-screen p-4 md:p-8">
       <%# 挨拶エリア %>
       <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-1">こんにちは、<%= current_user.display_name %> さん</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1">こんにちは、<%= current_user.display_name %> さん</h1>
         <p class="text-sm text-gray-500">今日も1日を大切に過ごしましょう</p>
       </div>
 
@@ -29,10 +29,10 @@
           </div>
 
           <%# レベルイラスト %>
-          <div class="flex-shrink-0 ml-6">
+          <div class="flex-shrink-0 ml-3 md:ml-6">
             <%= image_tag level_image_url(@level || 0),
                           alt: level_name(@level || 0),
-                          class: "w-32 h-32 rounded-full shadow-md object-cover" %>
+                          class: "w-20 h-20 md:w-32 md:h-32 rounded-full shadow-md object-cover" %>
           </div>
         </div>
       </div>
@@ -40,36 +40,36 @@
       <%# メインアクションカード（2つ横並び・Stitch完全再現） %>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <%# 献立相談カード（深緑） %>
-        <div class="bg-[#7A9D7E] rounded-3xl p-8 shadow-lg relative overflow-hidden min-h-[240px]">
+        <div class="bg-[#7A9D7E] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
           <%# 背景の丸（装飾）+ 絵文字 %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
             <div class="text-5xl">🍚</div>
           </div>
 
-          <div class="relative z-10">
+          <div class="relative z-10 flex flex-col flex-1">
             <h2 class="text-white text-xl font-bold mb-1">今日のごはん、</h2>
-            <h2 class="text-white text-xl font-bold mb-8">どうする？</h2>
+            <h2 class="text-white text-xl font-bold mb-4 md:mb-8">どうする？</h2>
 
             <%# ボタン %>
-            <div class="absolute bottom-8 right-8">
+            <div class="mt-auto flex justify-end">
               <%= link_to "相談する", new_meal_search_path, class: "bg-white text-[#7A9D7E] px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
             </div>
           </div>
         </div>
 
         <%# ハレ記録カード（オレンジ） %>
-        <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-8 shadow-lg relative overflow-hidden min-h-[240px]">
+        <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
           <%# 背景の丸（装飾）+ 絵文字 %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
             <div class="text-5xl">✨</div>
           </div>
 
-          <div class="relative z-10">
+          <div class="relative z-10 flex flex-col flex-1">
             <h2 class="text-white text-xl font-bold mb-1">今日、いいこと</h2>
-            <h2 class="text-white text-xl font-bold mb-8">あった？</h2>
+            <h2 class="text-white text-xl font-bold mb-4 md:mb-8">あった？</h2>
 
             <%# ボタン %>
-            <div class="absolute bottom-8 right-8">
+            <div class="mt-auto flex justify-end">
               <%= link_to "記録する", new_hare_entry_path, class: "bg-white text-[#D4845F] px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
             </div>
           </div>

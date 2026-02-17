@@ -2,7 +2,7 @@
   <div class="max-w-3xl mx-auto">
     <!-- ヘッダー -->
     <div class="mb-6">
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">みんなのハレ</h1>
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">みんなのハレ</h1>
       <p class="text-gray-600">他のユーザーのハレ投稿を見てみましょう</p>
     </div>
 
@@ -26,12 +26,12 @@
               </div>
 
               <!-- 投稿内容 -->
-              <p class="text-gray-700 mb-3"><%= entry.body %></p>
+              <p class="text-gray-700 mb-3 break-words"><%= entry.body %></p>
 
               <!-- 写真 -->
               <% if entry.photo.attached? %>
                 <div class="mb-3">
-                  <%= image_tag entry.photo, class: "rounded-lg max-h-96 w-auto mx-auto" %>
+                  <%= image_tag entry.photo, class: "rounded-lg max-h-96 max-w-full w-auto mx-auto" %>
                 </div>
               <% end %>
 

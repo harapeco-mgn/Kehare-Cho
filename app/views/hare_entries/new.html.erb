@@ -1,4 +1,4 @@
-<main class="max-w-3xl mx-auto p-8">
+<main class="max-w-3xl mx-auto p-4 md:p-8">
   <%# ページヘッダー %>
   <div class="mb-6">
     <h1 class="text-3xl font-bold text-gray-800 mb-2">今日のハレを記録する</h1>
@@ -6,7 +6,7 @@
   </div>
 
   <%# フォームカード %>
-  <div class="bg-white rounded-2xl shadow-sm p-8">
+  <div class="bg-white rounded-2xl shadow-sm p-5 md:p-8">
     <%= render 'form', hare_entry: @hare_entry, hare_tags: @hare_tags, submit_label: "記録する", cancel_path: root_path %>
   </div>
 </main>
