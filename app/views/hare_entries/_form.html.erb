@@ -59,7 +59,7 @@
     <% if hare_entry.photo.attached? %>
       <div class="mt-4">
         <p class="text-sm font-bold text-gray-800 mb-2">現在の写真</p>
-        <%= image_tag hare_entry.photo.variant(resize_to_limit: [200, 200]), class: "max-w-full md:max-w-md rounded-xl border-2 border-gray-300 shadow-sm" %>
+        <%= image_tag cloudinary_photo_url(hare_entry.photo, resize_to_limit: [200, 200]), class: "max-w-full md:max-w-md rounded-xl border-2 border-gray-300 shadow-sm" %>
         <label class="flex items-center gap-2 mt-3">
           <%= f.check_box :remove_photo, class: "rounded text-red-500 focus:ring-red-400" %>
           <span class="text-sm font-medium text-gray-800">写真を削除する</span>

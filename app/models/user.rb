@@ -20,7 +20,6 @@ class User < ApplicationRecord
   end
 
   def level
-    total_points = point_transactions.sum(:points)
     return 0 if total_points <= 0
     (total_points - 1) / 10 + 1
   end
