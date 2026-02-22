@@ -3,7 +3,7 @@ class HareEntriesController < ApplicationController
     before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
 
     def index
-      @hare_entries = current_user.hare_entries.with_attached_photo.order(created_at: :desc)
+      @hare_entries = current_user.hare_entries.with_attached_photo.order(created_at: :desc).page(params[:page]).per(20)
       @monthly_points = current_user.monthly_points
       @level = current_user.level
     end
@@ -46,6 +46,8 @@ class HareEntriesController < ApplicationController
 
     def destroy
       @hare_entry.destroy
+      # 削除後に total_points カウンターキャッシュを更新
+      current_user.update!(total_points: current_user.point_transactions.sum(:points))
       redirect_to hare_entries_path, notice: "ハレの記録を削除しました"
     end
 
