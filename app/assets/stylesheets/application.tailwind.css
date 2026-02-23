@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* JS で動的に追加するクラスのセーフリスト（Tailwind v4 purge 対策） */
+@source inline("{text-gray-700,text-orange-500,text-red-500}");
+
 /* 絵文字表示用フォント設定 - Tailwind 4.x スタイル */
 @theme {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
