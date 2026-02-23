@@ -24,14 +24,14 @@ export default class extends Controller {
 
   // 残り文字数に応じてカウント表示の色を切り替える
   #updateColor(remaining) {
-    this.countTarget.classList.remove("text-gray-400", "text-orange-500", "text-red-500")
+    this.countTarget.classList.remove("text-gray-600", "text-orange-500", "text-red-500")
 
     if (remaining <= 0) {
       this.countTarget.classList.add("text-red-500")
     } else if (remaining <= 20) {
       this.countTarget.classList.add("text-orange-500")
     } else {
-      this.countTarget.classList.add("text-gray-400")
+      this.countTarget.classList.add("text-gray-600")
     }
   }
 }
