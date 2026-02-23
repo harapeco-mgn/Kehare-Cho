@@ -16,7 +16,7 @@
     <%= f.label :body, "内容", class: "block text-base font-bold text-gray-800 mb-3" %>
     <%= f.text_area :body, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white resize-none text-gray-900 placeholder-gray-500", rows: 6, maxlength: 280, placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）", data: { character_count_target: "input", action: "input->character-count#update" } %>
     <p class="text-right text-sm mt-1">
-      残り <span data-character-count-target="count" class="font-semibold text-gray-700">280</span> 文字
+      残り <span data-character-count-target="count" class="font-semibold text-stone-600">280</span> 文字
     </p>
   </div>
 
@@ -51,7 +51,7 @@
   <div data-controller="image-preview">
     <%= f.label :photo, "写真", class: "block text-base font-bold text-gray-800 mb-3" %>
     <%= f.file_field :photo, accept: "image/jpeg,image/png,image/webp", class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900", data: { image_preview_target: "input", action: "change->image-preview#preview" } %>
-    <p class="text-sm text-gray-700 mt-2">JPEG、PNG、WebP形式（最大5MB）</p>
+    <p class="text-sm text-gray-600 mt-2">JPEG、PNG、WebP形式（最大5MB）</p>
 
     <%# プレビューエリア %>
     <div data-image-preview-target="previewContainer" class="mt-4 hidden">
@@ -74,6 +74,6 @@
   <%# ボタン %>
   <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
     <%= f.submit submit_label, class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-6 md:px-8 py-3 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-md w-full sm:w-auto" %>
-    <%= link_to "キャンセル", cancel_path, class: "px-6 md:px-8 py-3 text-gray-700 hover:text-gray-800 font-semibold text-center" %>
+    <%= link_to "キャンセル", cancel_path, class: "px-6 md:px-8 py-3 text-gray-600 hover:text-gray-800 font-semibold text-center" %>
   </div>
 <% end %>
