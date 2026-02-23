@@ -4,6 +4,24 @@
     <meta charset="utf-8">
     <title><%= content_for(:title) || "ケハレ帖 - 今日のごはんに、小さなハレを" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%# meta description（SEO） %>
+    <meta name="description" content="<%= content_for(:description) || "一人暮らしの食事に、小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
+
+    <%# OGP（Open Graph Protocol） %>
+    <meta property="og:title"       content="<%= content_for(:title) || "ケハレ帖 - 今日のごはんに、小さなハレを" %>">
+    <meta property="og:description" content="<%= content_for(:description) || "一人暮らしの食事に、小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="<%= request.original_url %>">
+    <meta property="og:image"       content="<%= image_url("ogp.png") %>">
+    <meta property="og:site_name"   content="ケハレ帖">
+    <meta property="og:locale"      content="ja_JP">
+
+    <%# Twitter Card %>
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="<%= content_for(:title) || "ケハレ帖 - 今日のごはんに、小さなハレを" %>">
+    <meta name="twitter:description" content="<%= content_for(:description) || "一人暮らしの食事に、小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
+    <meta name="twitter:image"       content="<%= image_url("ogp.png") %>">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="ケハレ帖">
     <meta name="mobile-web-app-capable" content="yes">
