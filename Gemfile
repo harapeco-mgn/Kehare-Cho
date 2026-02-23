@@ -36,6 +36,9 @@ gem "kaminari"
 # メール送信 API（本番環境用）[https://github.com/resend/resend-ruby]
 gem "resend"
 
+# レートリミット・ブルートフォース対策 [https://github.com/rack/rack-attack]
+gem "rack-attack"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
