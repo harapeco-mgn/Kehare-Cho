@@ -31,7 +31,7 @@
               <!-- 写真 -->
               <% if entry.photo.attached? %>
                 <div class="mb-3">
-                  <%= image_tag entry.photo, class: "rounded-lg max-h-96 max-w-full w-auto mx-auto" %>
+                  <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [600, 600]), class: "rounded-lg max-h-96 max-w-full w-auto mx-auto" %>
                 </div>
               <% end %>
 

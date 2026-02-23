@@ -52,7 +52,10 @@ class PointAwardService
         total_awarded = @hare_entry.point_transactions.sum(:points)
         @hare_entry.update!(awarded_points: total_awarded)
 
-        # 6. 付与したポイント数を返す
+        # 6. ユーザーの total_points カウンターキャッシュを更新
+        @user.update!(total_points: @user.point_transactions.sum(:points))
+
+        # 7. 付与したポイント数を返す
         total_awarded
       end
     end

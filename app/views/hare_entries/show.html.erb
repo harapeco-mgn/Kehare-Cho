@@ -29,7 +29,7 @@
     <%# 写真表示 %>
     <% if @hare_entry.photo.attached? %>
       <div class="mb-8">
-        <%= image_tag @hare_entry.photo.variant(resize_to_limit: [600, 600]), class: "w-full max-w-2xl rounded-xl border-2 border-gray-200 shadow-md" %>
+        <%= image_tag cloudinary_photo_url(@hare_entry.photo, resize_to_limit: [600, 600]), class: "w-full max-w-2xl rounded-xl border-2 border-gray-200 shadow-md" %>
       </div>
     <% end %>
 

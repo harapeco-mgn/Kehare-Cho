@@ -39,13 +39,17 @@
             </div>
             <% if entry.photo.attached? %>
               <div class="mb-3">
-                <%= image_tag entry.photo.variant(resize_to_limit: [200, 200]), class: "rounded-lg border-2 border-gray-200 shadow-sm" %>
+                <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [200, 200]), class: "rounded-lg border-2 border-gray-200 shadow-sm" %>
               </div>
             <% end %>
             <p class="text-gray-800 whitespace-pre-wrap leading-relaxed group-hover:text-gray-900"><%= entry.body %></p>
           </div>
         <% end %>
       <% end %>
+    </div>
+    <%# ページネーション %>
+    <div class="mt-8 flex justify-center">
+      <%= paginate @hare_entries %>
     </div>
   <% else %>
     <%# 空状態 %>
