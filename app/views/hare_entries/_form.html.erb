@@ -15,7 +15,7 @@
   <div data-controller="character-count">
     <%= f.label :body, "内容", class: "block text-base font-bold text-gray-800 mb-3" %>
     <%= f.text_area :body, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white resize-none text-gray-900 placeholder-gray-500", rows: 6, maxlength: 280, placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）", data: { character_count_target: "input", action: "input->character-count#update" } %>
-    <p class="text-right text-sm mt-1">
+    <p class="text-right text-sm mt-1 text-stone-600">
       残り <span data-character-count-target="count" class="font-semibold text-stone-600">280</span> 文字
     </p>
   </div>
