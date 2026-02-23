@@ -3,7 +3,7 @@ class HareEntriesController < ApplicationController
     before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
 
     def index
-      @hare_entries = current_user.hare_entries.with_attached_photo.includes(:hare_tags).order(occurred_on: :desc).page(params[:page]).per(20)
+      @hare_entries = current_user.hare_entries.with_attached_photo.includes(:hare_tags).order(occurred_on: :desc, created_at: :desc).page(params[:page]).per(20)
       @monthly_points = current_user.monthly_points
       @level = current_user.level
     end
