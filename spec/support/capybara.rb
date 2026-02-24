@@ -16,6 +16,10 @@ if ENV["CI"]
   require "capybara/cuprite"
 
   Capybara.register_driver(:cuprite) do |app|
+    # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
+    # 未設定の場合は Ferrum のデフォルト探索（google-chrome 等）にフォールバック
+    browser_path = ENV.fetch("BROWSER_PATH", nil)
+
     Capybara::Cuprite::Driver.new(
       app,
       window_size: [ 1400, 900 ],
@@ -26,6 +30,7 @@ if ENV["CI"]
         "disable-extensions" => nil,    # 拡張機能を無効化して起動を高速化
         "user-data-dir" => "/tmp/chrome-data" # HOME が書き込み不可の場合の対策
       },
+      browser_path: browser_path,
       headless: true,
       process_timeout: 30,
       timeout: 15
