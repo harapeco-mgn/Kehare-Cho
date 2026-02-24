@@ -18,14 +18,16 @@ class MealSearchesController < ApplicationController
   def create
     if params[:cook_context] == "eat_out"
       # 外食の処理
+      genre = Genre.find(params[:genre_id])
       current_user.meal_searches.create!(
         cook_context: params[:cook_context],
         genre_id: params[:genre_id],
         presented_candidate_names: []
       )
 
-      url = GoogleMapsQueryBuilder.new(params[:genre_id], params[:mood_tag_id]).url
-      redirect_to url, allow_other_host: true
+      @maps_url = GoogleMapsQueryBuilder.new(params[:genre_id], params[:mood_tag_id]).url
+      @genre_label = genre.label
+      render :redirect_to_maps
     else
       # 自炊の処理
       genre_id = params[:genre_id]

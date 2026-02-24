@@ -24,8 +24,8 @@ RSpec.describe "MealSearches", type: :request do
 
       it "気分タグの選択肢が表示される" do
         # seedデータから気分タグを作成
-        mood1 = MoodTag.find_or_create_by(key: "energetic") { |m| m.label = "元気を出したい" }
-        mood2 = MoodTag.find_or_create_by(key: "relaxed") { |m| m.label = "リラックスしたい" }
+        mood1 = MoodTag.find_or_create_by(key: "light") { |m| m.label = "さっぱり" }
+        mood2 = MoodTag.find_or_create_by(key: "rich") { |m| m.label = "こってり" }
 
         get new_meal_search_path
         expect(response.body).to include(mood1.label)
@@ -269,56 +269,64 @@ RSpec.describe "MealSearches", type: :request do
 
   describe "POST /meal_searches (外食選択時)" do
     let(:genre) { Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" } }
-    let(:mood) { MoodTag.find_or_create_by(key: "energetic") { |m| m.label = "がっつり食べたい" } }
+    let(:mood) { MoodTag.find_or_create_by(key: "hearty") { |m| m.label = "がっつり" } }
 
     context "ログイン済みユーザーの場合" do
       before { sign_in user }
 
       context "外食を選択した場合" do
-        it "Google Mapsにリダイレクトする" do
+        it "中間ページ（200）を返す" do
           post meal_searches_path, params: {
             cook_context: "eat_out",
             genre_id: genre.id
           }
 
-          expect(response).to have_http_status(:redirect)
-          expect(response.location).to include("google.com/maps/search/")
+          expect(response).to have_http_status(:ok)
         end
 
-        it "リダイレクト先のURLにapi=1パラメータが含まれる" do
+        it "中間ページに Google Maps の URL が含まれる" do
           post meal_searches_path, params: {
             cook_context: "eat_out",
             genre_id: genre.id
           }
 
-          expect(response.location).to include("api=1")
+          expect(response.body).to include("google.com/maps/search/")
         end
 
-        it "リダイレクト先のURLにジャンル名が含まれる" do
+        it "中間ページに api=1 パラメータが含まれる" do
           post meal_searches_path, params: {
             cook_context: "eat_out",
             genre_id: genre.id
           }
 
-          expect(response.location).to include(CGI.escape("和食"))
+          expect(response.body).to include("api=1")
         end
 
-        it "リダイレクト先のURLに「惣菜」が含まれる" do
+        it "中間ページにジャンル名が含まれる" do
           post meal_searches_path, params: {
             cook_context: "eat_out",
             genre_id: genre.id
           }
 
-          expect(response.location).to include(CGI.escape("惣菜"))
+          expect(response.body).to include(CGI.escape("和食"))
         end
 
-        it "リダイレクト先のURLに「定食」が含まれる" do
+        it "中間ページに「惣菜」が含まれる" do
           post meal_searches_path, params: {
             cook_context: "eat_out",
             genre_id: genre.id
           }
 
-          expect(response.location).to include(CGI.escape("定食"))
+          expect(response.body).to include(CGI.escape("惣菜"))
+        end
+
+        it "中間ページに「定食」が含まれる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response.body).to include(CGI.escape("定食"))
         end
 
         it "検索ログ（MealSearch）が作成される" do
@@ -359,15 +367,24 @@ RSpec.describe "MealSearches", type: :request do
           expect(session[:meal_candidates]).to be_nil
         end
 
+        it "中間ページにローディングメッセージが含まれる" do
+          post meal_searches_path, params: {
+            cook_context: "eat_out",
+            genre_id: genre.id
+          }
+
+          expect(response.body).to include("近くのお店を探しています")
+        end
+
         context "気分タグも指定した場合" do
-          it "リダイレクト先のURLに気分タグのキーワードが含まれる" do
+          it "中間ページに気分タグのキーワードが含まれる" do
             post meal_searches_path, params: {
               cook_context: "eat_out",
               genre_id: genre.id,
               mood_tag_id: mood.id
             }
 
-            expect(response.location).to include(CGI.escape("ボリューム"))
+            expect(response.body).to include(CGI.escape("がっつり"))
           end
         end
       end
