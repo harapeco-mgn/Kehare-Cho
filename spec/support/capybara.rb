@@ -2,7 +2,8 @@
 #
 # 環境別の使い分け：
 #   CI（GitHub Actions / ubuntu-latest）
-#     → Cuprite（CDP で Chrome と直接通信。ChromeDriver 不要で 20〜40% 高速）
+#     → Selenium headless Chrome
+#       browser-actions/setup-chrome がインストールした Chrome + ChromeDriver を使用
 #   ローカル（WSL2 + Docker）
 #     → Selenium Remote（selenium/standalone-chrome コンテナに接続）
 #       WSL2 カーネルの seccomp 制限により Chrome を直接起動できないため、
@@ -12,34 +13,27 @@ Capybara.default_max_wait_time = 3
 Capybara.server = :puma, { Silent: true }
 
 if ENV["CI"]
-  # ─── CI 環境: Cuprite ────────────────────────────────────────────────────
-  require "capybara/cuprite"
+  # ─── CI 環境: Selenium headless Chrome ───────────────────────────────────
+  require "selenium/webdriver"
 
-  Capybara.register_driver(:cuprite) do |app|
+  Capybara.register_driver(:selenium_chrome_headless) do |app|
+    options = Selenium::WebDriver::Chrome::Options.new
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")            # CI の実行環境で必要
+    options.add_argument("--disable-dev-shm-usage") # /dev/shm が小さい環境向け
+    options.add_argument("--disable-gpu")           # ヘッドレスの安定性向上
+    options.add_argument("--window-size=1400,900")
+
     # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
-    # 未設定の場合は Ferrum のデフォルト探索（google-chrome 等）にフォールバック
-    browser_path = ENV.fetch("BROWSER_PATH", nil)
+    chrome_path = ENV.fetch("BROWSER_PATH", nil)
+    options.binary = chrome_path if chrome_path
 
-    Capybara::Cuprite::Driver.new(
-      app,
-      window_size: [ 1400, 900 ],
-      browser_options: {
-        "no-sandbox" => nil,            # CI の root 実行環境で必要
-        "disable-dev-shm-usage" => nil, # /dev/shm が小さい環境向け
-        "disable-gpu" => nil,           # ヘッドレスの安定性向上
-        "disable-extensions" => nil,    # 拡張機能を無効化して起動を高速化
-        "user-data-dir" => "/tmp/chrome-data" # HOME が書き込み不可の場合の対策
-      },
-      browser_path: browser_path,
-      headless: true,
-      process_timeout: 30,
-      timeout: 15
-    )
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
   end
 
   RSpec.configure do |config|
     config.before(:each, type: :system) do
-      driven_by :cuprite
+      driven_by :selenium_chrome_headless
     end
   end
 

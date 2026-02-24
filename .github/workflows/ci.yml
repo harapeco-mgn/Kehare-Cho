@@ -127,9 +127,9 @@ jobs:
         id: setup-chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Export Chrome path for Ferrum/Cuprite
-        # Ferrum は google-chrome / chromium-browser を探すが、setup-chrome は "chrome" という
-        # バイナリ名でインストールするため BROWSER_PATH で明示的にパスを渡す
+      - name: Export Chrome path for Selenium
+        # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
+        # Selenium の options.binary に渡すことで正しい Chrome バイナリを使用する
         run: echo "BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> $GITHUB_ENV
 
       - name: Prepare test database
