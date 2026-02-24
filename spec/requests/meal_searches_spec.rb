@@ -281,7 +281,9 @@ RSpec.describe "MealSearches", type: :request do
             genre_id: genre.id
           }
 
-          expect(response).to redirect_to(eat_out_redirect_meal_searches_path)
+          expect(response).to have_http_status(:found)
+          expect(response.location).to include(eat_out_redirect_meal_searches_path)
+          expect(response.location).to include("token=")
         end
 
         it "セッションに Maps URL が保存される" do
@@ -290,7 +292,9 @@ RSpec.describe "MealSearches", type: :request do
             genre_id: genre.id
           }
 
-          expect(session[:eat_out_redirect_url]).to include("google.com/maps/search/")
+          # トークンベースのキーでセッションに保存される
+          payload = session.to_h.select { |k, _| k.start_with?("eat_out_redirect_") }.values.first
+          expect(payload["url"]).to include("google.com/maps/search/")
         end
 
         it "セッションにジャンル名が保存される" do
@@ -299,7 +303,8 @@ RSpec.describe "MealSearches", type: :request do
             genre_id: genre.id
           }
 
-          expect(session[:eat_out_genre_label]).to eq("和食")
+          payload = session.to_h.select { |k, _| k.start_with?("eat_out_redirect_") }.values.first
+          expect(payload["genre_label"]).to eq("和食")
         end
 
         it "検索ログ（MealSearch）が作成される" do
@@ -367,46 +372,41 @@ RSpec.describe "MealSearches", type: :request do
             cook_context: "eat_out",
             genre_id: genre.id
           }
+          # リダイレクト先（トークン付きURL）へ follow する
+          follow_redirect!
         end
 
         it "200を返す" do
-          get eat_out_redirect_meal_searches_path
           expect(response).to have_http_status(:ok)
         end
 
         it "中間ページに Google Maps の URL が含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include("google.com/maps/search/")
         end
 
         it "中間ページに api=1 パラメータが含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include("api=1")
         end
 
         it "中間ページにジャンル名（URLエンコード）が含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include(CGI.escape("和食"))
         end
 
         it "中間ページに「惣菜」が含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include(CGI.escape("惣菜"))
         end
 
         it "中間ページに「定食」が含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include(CGI.escape("定食"))
         end
 
         it "中間ページにローディングメッセージが含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include("近くのお店を探しています")
         end
 
-        it "表示後はセッションから Maps URL が削除される" do
-          get eat_out_redirect_meal_searches_path
-          expect(session[:eat_out_redirect_url]).to be_nil
+        it "表示後はセッションからトークンキーが削除される" do
+          remaining = session.to_h.select { |k, _| k.start_with?("eat_out_redirect_") }
+          expect(remaining).to be_empty
         end
       end
 
@@ -417,10 +417,10 @@ RSpec.describe "MealSearches", type: :request do
             genre_id: genre.id,
             mood_tag_id: mood.id
           }
+          follow_redirect!
         end
 
         it "中間ページに気分タグのキーワードが含まれる" do
-          get eat_out_redirect_meal_searches_path
           expect(response.body).to include(CGI.escape("がっつり"))
         end
       end
