@@ -15,6 +15,15 @@ class MealSearchesController < ApplicationController
     @moods = MoodTag.all
   end
 
+  def eat_out_redirect
+    payload = session.delete("eat_out_redirect_#{params[:token]}")
+    return redirect_to new_meal_search_path if payload.nil?
+
+    @maps_url = payload["url"]
+    @genre_label = payload["genre_label"]
+    render :redirect_to_maps
+  end
+
   def create
     if params[:cook_context] == "eat_out"
       # 外食の処理
@@ -25,9 +34,12 @@ class MealSearchesController < ApplicationController
         presented_candidate_names: []
       )
 
-      @maps_url = GoogleMapsQueryBuilder.new(params[:genre_id], params[:mood_tag_id]).url
-      @genre_label = genre.label
-      render :redirect_to_maps
+      token = SecureRandom.urlsafe_base64(8)
+      session["eat_out_redirect_#{token}"] = {
+        "url" => GoogleMapsQueryBuilder.new(params[:genre_id], params[:mood_tag_id]).url,
+        "genre_label" => genre.label
+      }
+      redirect_to eat_out_redirect_meal_searches_path(token: token)
     else
       # 自炊の処理
       genre_id = params[:genre_id]
