@@ -35,20 +35,52 @@ RSpec.describe GoogleMapsQueryBuilder do
     end
 
     context "ジャンルIDと気分タグIDを指定した場合" do
-      it "URLに気分タグのキーワードが含まれる（energetic）" do
+      it "URLに気分タグのキーワードが含まれる（light → さっぱり）" do
         genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
-        mood = MoodTag.find_or_create_by(key: "energetic") { |m| m.label = "がっつり食べたい" }
+        mood = MoodTag.find_or_create_by(key: "light") { |m| m.label = "さっぱり" }
         builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
 
-        expect(builder.url).to include(CGI.escape("ボリューム"))
+        expect(builder.url).to include(CGI.escape("さっぱり"))
       end
 
-      it "URLに気分タグのキーワードが含まれる（relaxed）" do
+      it "URLに気分タグのキーワードが含まれる（rich → こってり）" do
         genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
-        mood = MoodTag.find_or_create_by(key: "relaxed") { |m| m.label = "リラックスしたい" }
+        mood = MoodTag.find_or_create_by(key: "rich") { |m| m.label = "こってり" }
+        builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
+
+        expect(builder.url).to include(CGI.escape("こってり"))
+      end
+
+      it "URLに気分タグのキーワードが含まれる（warm → あったかい）" do
+        genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
+        mood = MoodTag.find_or_create_by(key: "warm") { |m| m.label = "あったかい" }
+        builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
+
+        expect(builder.url).to include(CGI.escape("あったかい"))
+      end
+
+      it "URLに気分タグのキーワードが含まれる（hearty → がっつり）" do
+        genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
+        mood = MoodTag.find_or_create_by(key: "hearty") { |m| m.label = "がっつり" }
+        builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
+
+        expect(builder.url).to include(CGI.escape("がっつり"))
+      end
+
+      it "URLに気分タグのキーワードが含まれる（healthy → ヘルシー）" do
+        genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
+        mood = MoodTag.find_or_create_by(key: "healthy") { |m| m.label = "ヘルシー" }
         builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
 
         expect(builder.url).to include(CGI.escape("ヘルシー"))
+      end
+
+      it "URLに気分タグのキーワードが含まれる（easy → 簡単）" do
+        genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
+        mood = MoodTag.find_or_create_by(key: "easy") { |m| m.label = "簡単" }
+        builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
+
+        expect(builder.url).to include(CGI.escape("簡単"))
       end
     end
 
@@ -72,10 +104,10 @@ RSpec.describe GoogleMapsQueryBuilder do
 
     it "気分タグがある場合、キーワードが追加される" do
       genre = Genre.find_or_create_by(key: "japanese") { |g| g.label = "和食" }
-      mood = MoodTag.find_or_create_by(key: "energetic") { |m| m.label = "がっつり食べたい" }
+      mood = MoodTag.find_or_create_by(key: "hearty") { |m| m.label = "がっつり" }
       builder = GoogleMapsQueryBuilder.new(genre.id, mood.id)
 
-      expect(builder.query).to eq(CGI.escape("和食 惣菜 定食 ボリューム"))
+      expect(builder.query).to eq(CGI.escape("和食 惣菜 定食 がっつり"))
     end
 
     it "特殊文字が正しくエスケープされる" do

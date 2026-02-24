@@ -20,10 +20,18 @@ class GoogleMapsQueryBuilder
 
     def mood_keyword
       case @mood.key
-      when "energetic"
-        "ボリューム"
-      when "relaxed"
+      when "light"
+        "さっぱり"
+      when "rich"
+        "こってり"
+      when "warm"
+        "あったかい"
+      when "hearty"
+        "がっつり"
+      when "healthy"
         "ヘルシー"
+      when "easy"
+        "簡単"
       end
     end
 end
