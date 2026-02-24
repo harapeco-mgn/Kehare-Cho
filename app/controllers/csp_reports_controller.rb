@@ -1,7 +1,6 @@
 class CspReportsController < ApplicationController
-  # CSP 違反レポートは認証不要（ブラウザが直接 POST するため）
-  skip_before_action :authenticate_user!
   # ブラウザが送信する JSON は CSRF トークンを含まないためスキップ
+  # authenticate_user! は ApplicationController には未登録（各コントローラーで個別に呼ぶため不要）
   skip_before_action :verify_authenticity_token
 
   def create
