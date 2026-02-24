@@ -4,6 +4,7 @@
 #   CI（GitHub Actions / ubuntu-latest）
 #     → Selenium headless Chrome
 #       browser-actions/setup-chrome がインストールした Chrome + ChromeDriver を使用
+#       BROWSER_PATH / CHROMEDRIVER_PATH 環境変数で明示指定（バージョン不一致を防ぐ）
 #   ローカル（WSL2 + Docker）
 #     → Selenium Remote（selenium/standalone-chrome コンテナに接続）
 #       WSL2 カーネルの seccomp 制限により Chrome を直接起動できないため、
@@ -28,7 +29,15 @@ if ENV["CI"]
     chrome_path = ENV.fetch("BROWSER_PATH", nil)
     options.binary = chrome_path if chrome_path
 
-    Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+    # CHROMEDRIVER_PATH が設定されている場合は明示的に ChromeDriver を指定
+    # PATH に古い chromedriver がある場合のバージョン不一致を防ぐ
+    chromedriver_path = ENV.fetch("CHROMEDRIVER_PATH", nil)
+    service = Selenium::WebDriver::Service.chrome(path: chromedriver_path) if chromedriver_path
+
+    driver_options = { browser: :chrome, options: options }
+    driver_options[:service] = service if service
+
+    Capybara::Selenium::Driver.new(app, **driver_options)
   end
 
   RSpec.configure do |config|
