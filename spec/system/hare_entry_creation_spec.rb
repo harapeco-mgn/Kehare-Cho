@@ -22,6 +22,9 @@ RSpec.describe "ハレ投稿作成", type: :system do
     fill_in "内容", with: "一覧確認用の投稿"
     click_button "記録する"
 
+    # 作成成功 → 詳細ページにリダイレクト
+    expect(page).to have_text("ハレを記録しました！")
+
     visit hare_entries_path
 
     expect(page).to have_text("一覧確認用の投稿")

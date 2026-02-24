@@ -106,6 +106,10 @@ group :test do
   # 並列テスト実行（CPU 数に応じた線形スケール）[https://github.com/grosser/parallel_tests]
   gem "parallel_tests"
 
+  # system spec（Selenium）での use_transactional_fixtures 問題を回避するため truncation 戦略を使用
+  # Selenium はブラウザ経由で別 DB 接続からアクセスするため、transactional fixtures だとデータが見えない
+  gem "database_cleaner-active_record"
+
   # RSpec matchers for common Rails functionality [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers"
 
