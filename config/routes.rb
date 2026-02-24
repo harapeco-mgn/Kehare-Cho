@@ -30,5 +30,9 @@ Rails.application.routes.draw do
 
   get "calendar", to: "calendar#index"
   get "calendar/:date", to: "calendar#show", as: :calendar_date
-  resources :meal_searches, only: [ :index, :new, :create ]
+  resources :meal_searches, only: [ :index, :new, :create ] do
+    collection do
+      get :eat_out_redirect
+    end
+  end
 end
