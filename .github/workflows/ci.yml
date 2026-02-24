@@ -90,7 +90,11 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/kehare_cho_test
+      # DATABASE_URL は未設定とし、database.yml の ERB 展開 + TEST_ENV_NUMBER で
+      # 並列ワーカーごとに異なるDB名（kehare_cho_test, kehare_cho_test2, ...）を使用
+      DB_HOST: localhost
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
 
     steps:
       - name: Checkout code
@@ -117,11 +121,14 @@ jobs:
       - name: Build CSS assets
         run: yarn build:css
 
-      - name: Prepare database
-        run: bin/rails db:prepare
+      - name: Set up Chrome (for system specs)
+        uses: browser-actions/setup-chrome@v1
 
-      - name: Run RSpec tests
-        run: bundle exec rspec
+      - name: Prepare databases (parallel_tests)
+        run: bin/rails parallel:create && bin/rails parallel:prepare
+
+      - name: Run RSpec tests (parallel)
+        run: bundle exec parallel_rspec spec/
 
       - name: Upload coverage to PR
         if: github.event_name == 'pull_request'

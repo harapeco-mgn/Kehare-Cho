@@ -82,6 +82,9 @@ group :development, :test do
 
   # テストデータ作成 [https://github.com/thoughtbot/factory_bot_rails]
   gem "factory_bot_rails"
+
+  # テスト高速化ツール（let_it_be, before_all, ファクトリプロファイリング）[https://github.com/test-prof/test-prof]
+  gem "test-prof"
 end
 
 group :development do
@@ -95,7 +98,17 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
+
+  # Selenium より 20〜40% 高速な headless Chrome ドライバ（CDP 直接通信）[https://github.com/rubycdp/cuprite]
+  # CI 環境（Ubuntu ネイティブ Chrome）で使用
+  gem "cuprite"
+
+  # ローカル Docker 環境のシステムスペックで selenium/standalone-chrome コンテナに接続するため
+  # WSL2 では Chrome を直接起動できない（seccomp 制限）ため、リモートドライバーで回避
   gem "selenium-webdriver"
+
+  # 並列テスト実行（CPU 数に応じた線形スケール）[https://github.com/grosser/parallel_tests]
+  gem "parallel_tests"
 
   # RSpec matchers for common Rails functionality [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers"
