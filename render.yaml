@@ -1,0 +1,38 @@
+# Render デプロイ設定（IaC: Infrastructure as Code）
+# ドキュメント: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: kehare-cho
+    runtime: docker
+    # Docker ランタイムではビルド・起動は Dockerfile が担うため空に設定
+    buildCommand: ""
+    startCommand: ""
+    # 新バージョンのコンテナを起動する前にマイグレーションを実行する
+    # （docker-entrypoint にも db:migrate があるが、preDeployCommand で先行実行することで
+    #   古いコードが稼働したままスキーマを安全に更新できる）
+    preDeployCommand: "bundle exec rails db:migrate"
+    healthCheckPath: /up
+    envVars:
+      # 秘密情報: Render の Web UI で手動設定（sync: false = コードに値を書かない）
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: APP_HOST
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      # 固定値: 本番環境設定
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_LOG_LEVEL
+        value: info
