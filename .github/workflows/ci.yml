@@ -126,11 +126,11 @@ jobs:
       - name: Set up Chrome (for system specs)
         uses: browser-actions/setup-chrome@v1
 
-      - name: Prepare databases (parallel_tests)
-        run: bin/rails parallel:create && bin/rails parallel:prepare
+      - name: Prepare test database
+        run: bin/rails db:create db:schema:load
 
-      - name: Run RSpec tests (parallel)
-        run: bundle exec parallel_rspec spec/
+      - name: Run RSpec tests
+        run: bundle exec rspec spec/
 
       - name: Upload coverage to PR
         if: github.event_name == 'pull_request'
