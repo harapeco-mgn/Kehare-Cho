@@ -20,9 +20,10 @@ if ENV["CI"]
   Capybara.register_driver(:selenium_chrome_headless) do |app|
     options = Selenium::WebDriver::Chrome::Options.new
     options.add_argument("--headless=new")
-    options.add_argument("--no-sandbox")            # CI の実行環境で必要
-    options.add_argument("--disable-dev-shm-usage") # /dev/shm が小さい環境向け
-    options.add_argument("--disable-gpu")           # ヘッドレスの安定性向上
+    options.add_argument("--no-sandbox")              # CI の実行環境で必要
+    options.add_argument("--disable-setuid-sandbox")  # Chromium でのクラッシュ対策
+    options.add_argument("--disable-dev-shm-usage")   # /dev/shm が小さい環境向け
+    options.add_argument("--disable-gpu")             # ヘッドレスの安定性向上
     options.add_argument("--window-size=1400,900")
 
     # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定

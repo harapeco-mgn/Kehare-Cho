@@ -130,7 +130,10 @@ jobs:
       - name: Export Chrome path for Selenium
         # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
         # ChromeDriver は Selenium Manager が BROWSER_PATH のバージョンに合わせて自動管理する
-        run: echo "BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> $GITHUB_ENV
+        run: |
+          echo "BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> $GITHUB_ENV
+          # PATH に残る古い chromedriver（ubuntu デフォルト）を削除してバージョン不一致を防ぐ
+          sudo rm -f /usr/bin/chromedriver
 
       - name: Prepare test database
         run: bin/rails db:create db:schema:load
