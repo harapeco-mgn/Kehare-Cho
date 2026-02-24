@@ -40,6 +40,19 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      selenium:
+        condition: service_started
+
+  # ローカル開発用 Chrome コンテナ
+  # WSL2 では Chrome を直接起動できない（seccomp 制限）ため、コンテナ化された Chrome に接続
+  # テスト実行: docker compose exec web bundle exec rspec spec/system/
+  selenium:
+    image: selenium/standalone-chrome:latest
+    shm_size: '2gb'
+    environment:
+      SE_VNC_NO_PASSWORD: "1"
+    ports:
+      - "4444:4444"
 
 volumes:
   bundle_data:

@@ -23,7 +23,7 @@ require 'rspec/rails'
 # directory. Alternatively, in the individual `*_spec.rb` files, manually
 # require only the support files necessary.
 #
-# Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
+Rails.root.glob('spec/support/**/*.rb').sort_by(&:to_s).each { |f| require f }
 
 # Ensures that the test database schema matches the current schema file.
 # If there are pending migrations it will invoke `db:test:prepare` to
@@ -43,10 +43,29 @@ RSpec.configure do |config|
     Rails.root.join('spec/fixtures')
   ]
 
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
+  # system spec では DatabaseCleaner が DB のクリーンアップを担うため false に設定。
+  # Selenium はブラウザプロセス経由で別の DB 接続からアクセスするため、
+  # use_transactional_fixtures = true のままだとトランザクション内のデータが見えず認証失敗する。
+  # model / request spec では transaction 戦略で高速なクリーンアップを維持する。
+  config.use_transactional_fixtures = false
+
+  # DatabaseCleaner: model/request spec は transaction、system spec は truncation
+  config.before(:suite) do
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do |example|
+    if example.metadata[:type] == :system
+      DatabaseCleaner.strategy = :truncation
+    else
+      DatabaseCleaner.strategy = :transaction
+    end
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 
   # Devise test helpers
   config.include Devise::Test::IntegrationHelpers, type: :request

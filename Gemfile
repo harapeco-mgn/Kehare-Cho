@@ -82,6 +82,9 @@ group :development, :test do
 
   # テストデータ作成 [https://github.com/thoughtbot/factory_bot_rails]
   gem "factory_bot_rails"
+
+  # テスト高速化ツール（let_it_be, before_all, ファクトリプロファイリング）[https://github.com/test-prof/test-prof]
+  gem "test-prof"
 end
 
 group :development do
@@ -95,7 +98,17 @@ end
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
+
+  # CI（headless Chrome）とローカル Docker（selenium/standalone-chrome リモート）の両方で使用
+  # WSL2 では Chrome を直接起動できない（seccomp 制限）ため、ローカルはリモートドライバーで回避
   gem "selenium-webdriver"
+
+  # 並列テスト実行（CPU 数に応じた線形スケール）[https://github.com/grosser/parallel_tests]
+  gem "parallel_tests"
+
+  # system spec（Selenium）での use_transactional_fixtures 問題を回避するため truncation 戦略を使用
+  # Selenium はブラウザ経由で別 DB 接続からアクセスするため、transactional fixtures だとデータが見えない
+  gem "database_cleaner-active_record"
 
   # RSpec matchers for common Rails functionality [https://github.com/thoughtbot/shoulda-matchers]
   gem "shoulda-matchers"

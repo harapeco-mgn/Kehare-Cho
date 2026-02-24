@@ -90,7 +90,13 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/kehare_cho_test
+      # DATABASE_URL は未設定とし、database.yml の ERB 展開 + TEST_ENV_NUMBER で
+      # 並列ワーカーごとに異なるDB名（kehare_cho_test, kehare_cho_test2, ...）を使用
+      DB_HOST: localhost
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      # parallel:create / parallel:prepare で Rails の初期化が必要なため設定（テスト用ダミー値）
+      SECRET_KEY_BASE: "ci_dummy_secret_key_base_for_test_environment_only"
 
     steps:
       - name: Checkout code
@@ -117,11 +123,23 @@ jobs:
       - name: Build CSS assets
         run: yarn build:css
 
-      - name: Prepare database
-        run: bin/rails db:prepare
+      - name: Set up Chrome (for system specs)
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Export Chrome path for Selenium
+        # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
+        # ChromeDriver は Selenium Manager が BROWSER_PATH のバージョンに合わせて自動管理する
+        run: |
+          echo "BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> $GITHUB_ENV
+          # PATH に残る古い chromedriver（ubuntu デフォルト）を削除してバージョン不一致を防ぐ
+          sudo rm -f /usr/bin/chromedriver
+
+      - name: Prepare test database
+        run: bin/rails db:create db:schema:load
 
       - name: Run RSpec tests
-        run: bundle exec rspec
+        run: bundle exec rspec spec/
 
       - name: Upload coverage to PR
         if: github.event_name == 'pull_request'

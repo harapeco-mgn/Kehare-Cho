@@ -44,6 +44,9 @@ test.md
 # Test coverage
 /coverage/
 
+# RSpec: --only-failures / --next-failure 用のステータスファイル（ローカル専用）
+/spec/examples.txt
+
 # Editor/OS
 .DS_Store
 Thumbs.db
