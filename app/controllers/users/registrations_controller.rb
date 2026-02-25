@@ -12,5 +12,9 @@ module Users
         end
       end
     end
+
+    def after_sign_up_path_for(resource)
+      how_to_use_path
+    end
   end
 end
