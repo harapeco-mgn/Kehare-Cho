@@ -125,7 +125,7 @@ jobs:
 
       - name: Set up Chrome (for system specs)
         id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
 
       - name: Export Chrome path for Selenium
         # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
