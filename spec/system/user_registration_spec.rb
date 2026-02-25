@@ -17,8 +17,9 @@ RSpec.describe "ユーザー登録", type: :system do
 
     click_button "アカウント登録"
 
-    # 登録成功 → ホーム画面にリダイレクト＋フラッシュ
+    # 登録成功 → 使い方ページにリダイレクト＋フラッシュ
+    expect(page).to have_current_path(how_to_use_path)
     expect(page).to have_text("ようこそケハレ帖へ！")
-    expect(page).to have_text("こんにちは、新規ユーザー さん")
+    expect(page).to have_text("ケハレ帖の使い方")
   end
 end

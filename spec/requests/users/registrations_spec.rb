@@ -26,9 +26,9 @@ RSpec.describe "Users::Registrations", type: :request do
         }.to change(User, :count).by(1)
       end
 
-      it "root_path にリダイレクトされる" do
+      it "how_to_use_path にリダイレクトされる" do
         post user_registration_path, params: valid_params
-        expect(response).to redirect_to(root_path)
+        expect(response).to redirect_to(how_to_use_path)
       end
 
       it "ログイン状態になる" do
