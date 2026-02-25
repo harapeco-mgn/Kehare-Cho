@@ -90,12 +90,9 @@ jobs:
 
     env:
       RAILS_ENV: test
-      # DATABASE_URL は未設定とし、database.yml の ERB 展開 + TEST_ENV_NUMBER で
-      # 並列ワーカーごとに異なるDB名（kehare_cho_test, kehare_cho_test2, ...）を使用
       DB_HOST: localhost
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
-      # parallel:create / parallel:prepare で Rails の初期化が必要なため設定（テスト用ダミー値）
       SECRET_KEY_BASE: "ci_dummy_secret_key_base_for_test_environment_only"
 
     steps:
@@ -108,8 +105,90 @@ jobs:
           bundler-cache: true
           bundle-without: production
 
+      - name: Cache apt packages
+        id: cache-libvips
+        uses: actions/cache@v5
+        with:
+          path: /var/cache/apt/archives/*.deb
+          key: apt-libvips-${{ runner.os }}
+          restore-keys: |
+            apt-libvips-
+
       - name: Install libvips for image processing
-        run: sudo apt-get update -qq && sudo apt-get install -y libvips-dev
+        run: sudo apt-get update -qq && sudo apt-get install -y libvips-dev --no-install-recommends
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+          cache: yarn
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build CSS assets
+        run: yarn build:css
+
+      - name: Prepare test database
+        run: bin/rails db:create db:schema:load
+
+      - name: Run RSpec unit tests (models/requests/services/helpers)
+        run: bundle exec rspec spec/ --exclude-pattern "spec/system/**"
+
+      - name: Upload coverage to PR
+        if: github.event_name == 'pull_request'
+        uses: romeovs/lcov-reporter-action@v0.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./coverage/lcov.info
+
+  test_system:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      RAILS_ENV: test
+      DB_HOST: localhost
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      SECRET_KEY_BASE: "ci_dummy_secret_key_base_for_test_environment_only"
+      # system spec は unit spec と別ジョブのため coverage threshold チェックをスキップ
+      SKIP_COVERAGE_CHECK: "true"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          bundle-without: production
+
+      - name: Cache apt packages
+        id: cache-libvips
+        uses: actions/cache@v5
+        with:
+          path: /var/cache/apt/archives/*.deb
+          key: apt-libvips-${{ runner.os }}
+          restore-keys: |
+            apt-libvips-
+
+      - name: Install libvips for image processing
+        run: sudo apt-get update -qq && sudo apt-get install -y libvips-dev --no-install-recommends
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
@@ -128,22 +207,12 @@ jobs:
         uses: browser-actions/setup-chrome@v2
 
       - name: Export Chrome path for Selenium
-        # setup-chrome は "chrome" という名前でインストールするため BROWSER_PATH で明示指定
-        # ChromeDriver は Selenium Manager が BROWSER_PATH のバージョンに合わせて自動管理する
         run: |
           echo "BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> $GITHUB_ENV
-          # PATH に残る古い chromedriver（ubuntu デフォルト）を削除してバージョン不一致を防ぐ
           sudo rm -f /usr/bin/chromedriver
 
       - name: Prepare test database
         run: bin/rails db:create db:schema:load
 
-      - name: Run RSpec tests
-        run: bundle exec rspec spec/
-
-      - name: Upload coverage to PR
-        if: github.event_name == 'pull_request'
-        uses: romeovs/lcov-reporter-action@v0.4.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          lcov-file: ./coverage/lcov.info
+      - name: Run RSpec system tests
+        run: bundle exec rspec spec/system/
