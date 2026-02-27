@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_020607) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_025756) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -70,10 +70,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_020607) do
     t.integer "awarded_points", default: 0, null: false
     t.text "body", null: false
     t.datetime "created_at", null: false
+    t.vector "embedding", limit: 768
     t.date "occurred_on", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.integer "visibility", default: 0, null: false
+    t.index ["embedding"], name: "index_hare_entries_on_embedding", opclass: :vector_cosine_ops, using: :hnsw
     t.index ["occurred_on"], name: "index_hare_entries_on_occurred_on"
     t.index ["user_id"], name: "index_hare_entries_on_user_id"
     t.index ["visibility"], name: "index_hare_entries_on_visibility"
@@ -104,6 +106,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_020607) do
   create_table "meal_candidates", force: :cascade do |t|
     t.integer "cook_context", default: 0, null: false
     t.datetime "created_at", null: false
+    t.vector "embedding", limit: 768
     t.bigint "genre_id", null: false
     t.boolean "is_active", default: true, null: false
     t.integer "minutes_max"
@@ -113,6 +116,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_020607) do
     t.string "search_hint"
     t.datetime "updated_at", null: false
     t.index ["cook_context"], name: "index_meal_candidates_on_cook_context"
+    t.index ["embedding"], name: "index_meal_candidates_on_embedding", opclass: :vector_cosine_ops, using: :hnsw
     t.index ["genre_id", "name"], name: "index_meal_candidates_on_genre_id_and_name", unique: true
     t.index ["genre_id"], name: "index_meal_candidates_on_genre_id"
     t.index ["minutes_max"], name: "index_meal_candidates_on_minutes_max"
@@ -123,6 +127,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_020607) do
   create_table "meal_searches", force: :cascade do |t|
     t.integer "cook_context"
     t.datetime "created_at", null: false
+    t.vector "embedding", limit: 768
     t.integer "genre_id"
     t.integer "meal_mode"
     t.integer "mood_id"
@@ -130,6 +135,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_020607) do
     t.integer "required_minutes"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["embedding"], name: "index_meal_searches_on_embedding", opclass: :vector_cosine_ops, using: :hnsw
     t.index ["user_id"], name: "index_meal_searches_on_user_id"
   end
 

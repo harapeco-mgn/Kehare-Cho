@@ -69,6 +69,13 @@ RSpec.configure do |config|
       DatabaseCleaner.strategy = :transaction
     end
     DatabaseCleaner.start
+
+    # RubyLLM.embed のグローバルスタブ
+    # before_save コールバックが実際の Gemini API を呼ばないようにする
+    # EmbeddingService.generate はそのまま実行され、その内部の RubyLLM.embed のみ差し替える
+    # embedding_service_spec.rb 内では個別に expect(...).to receive で上書きするため問題なし
+    dummy_embedding = instance_double(RubyLLM::Embedding, vectors: Array.new(768, 0.1))
+    allow(RubyLLM).to receive(:embed).and_return(dummy_embedding)
   end
 
   config.after(:each) do
