@@ -55,6 +55,7 @@
     <%# 入力フォーム %>
     <div class="border-t border-gray-100 p-3">
       <%= form_with url: chat_messages_path(@chat), method: :post,
+                    scope: :message,
                     data: { action: "submit->chat#submit" },
                     class: "flex items-end gap-2" do |f| %>
         <%= f.text_area :content,
