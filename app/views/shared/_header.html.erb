@@ -15,8 +15,9 @@
         <li><%= link_to "ハレ投稿", new_hare_entry_path, class: "#{current_page?(new_hare_entry_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
         <li><%= link_to "プロフィール", profile_path, class: "#{current_page?(profile_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
         <li>
+          <%# data-turbo="false" をフォーム要素に設定し Turbo のインターセプトを防ぐ %>
           <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
-                        data: { turbo: false },
+                        form: { "data-turbo" => "false" },
                         class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0 w-full mt-1" %>
         </li>
       </ul>
@@ -37,9 +38,10 @@
   </div>
 
   <%# ログアウトボタン %>
+  <%# data-turbo="false" をフォーム要素に設定し Turbo の302リダイレクト未処理を防ぐ %>
   <div class="navbar-end hidden lg:flex">
     <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
-                  data: { turbo: false },
+                  form: { "data-turbo" => "false" },
                   class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
   </div>
 </header>
