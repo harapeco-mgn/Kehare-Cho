@@ -52,6 +52,14 @@ RSpec.configure do |config|
   # DatabaseCleaner: model/request spec は transaction、system spec は truncation
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
+    # テスト環境では GEMINI_API_KEY が未設定のためダミーキーを注入する
+    # （テスト中に実際の API 呼び出しは行わないため、設定値が存在すれば十分）
+    ENV["GEMINI_API_KEY"] ||= "dummy_key_for_test"
+    RubyLLM.configure { |c| c.gemini_api_key = ENV.fetch("GEMINI_API_KEY", nil) }
+    # schema:load ではマイグレーション内のデータ挿入が実行されないため、
+    # LLM モデル情報をテスト DB に手動でロードする
+    RubyLLM.models.load_from_json!
+    Model.save_to_database
   end
 
   config.before(:each) do |example|

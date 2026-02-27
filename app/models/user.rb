@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :hare_entries, dependent: :destroy
   has_many :point_transactions, dependent: :destroy
   has_many :meal_searches, dependent: :destroy
+  has_many :chats, dependent: :destroy
 
   validates :nickname, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :nickname, length: { maximum: 20 }, allow_nil: true
