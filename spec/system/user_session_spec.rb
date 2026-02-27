@@ -24,8 +24,10 @@ RSpec.describe "ログイン / ログアウト", type: :system do
     click_button "ログイン"
     expect(page).to have_text("こんにちは")
 
-    # ヘッダーのログアウトボタンをクリック（デスクトップレイアウト）
-    click_button "ログアウト"
+    # ヘッダーのログアウトボタンをクリック（デスクトップレイアウトを明示）
+    within(".navbar-end") do
+      click_button "ログアウト"
+    end
 
     # ログアウト成功 → ルートページ（LP）にリダイレクト＋フラッシュ
     # devise.ja.yml の signed_out キー: "ログアウトしました。またお待ちしています"
