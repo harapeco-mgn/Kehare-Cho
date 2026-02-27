@@ -29,6 +29,9 @@ Rails.application.routes.draw do
     root "home#index", as: :authenticated_root
     resource :profile, only: [ :show, :edit, :update ]
     resources :hare_entries
+    resources :chats, only: [ :new, :create, :show ] do
+      resources :messages, only: [ :create ]
+    end
   end
 
   get "calendar", to: "calendar#index"
