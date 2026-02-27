@@ -19,13 +19,15 @@
   <%# メッセージ一覧 %>
   <div class="bg-white rounded-2xl shadow-sm flex flex-col" style="height: calc(100vh - 240px); min-height: 400px;">
     <div class="flex-1 overflow-y-auto p-4 space-y-4" data-chat-target="messages">
-      <% if @messages.empty? %>
+      <%# システムプロンプトメッセージはユーザーに表示しない %>
+      <% display_messages = @messages.reject { |m| m.role == "system" } %>
+      <% if display_messages.empty? %>
         <div class="flex flex-col items-center justify-center h-full text-center py-8">
           <div class="text-4xl mb-3">💬</div>
           <p class="text-gray-500 text-sm">最初のメッセージを送ってみましょう</p>
         </div>
       <% else %>
-        <% @messages.each do |message| %>
+        <% display_messages.each do |message| %>
           <% if message.role == "user" %>
             <%# ユーザーメッセージ（右寄せ） %>
             <div class="flex justify-end">
