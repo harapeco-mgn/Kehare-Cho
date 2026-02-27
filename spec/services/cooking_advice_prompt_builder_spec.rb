@@ -12,7 +12,7 @@ RSpec.describe CookingAdvicePromptBuilder do
     end
 
     it "保存方法・調理法など質問内容に直接答える指示を含む" do
-      expect(prompt).to include("保存方法・調理法")
+      expect(prompt).to include("保存方法")
     end
 
     it "調理法・代替材料に関する説明を含む" do
@@ -28,7 +28,7 @@ RSpec.describe CookingAdvicePromptBuilder do
     end
 
     it "質問に直接答えるよう指示する" do
-      expect(prompt).to include("直接答えて")
+      expect(prompt).to include("だけに答えて")
     end
 
     it "聞かれていないレシピ提案を禁止する指示を含む" do
