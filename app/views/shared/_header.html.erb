@@ -15,7 +15,9 @@
         <li><%= link_to "ハレ投稿", new_hare_entry_path, class: "#{current_page?(new_hare_entry_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
         <li><%= link_to "プロフィール", profile_path, class: "#{current_page?(profile_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
         <li>
-          <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0 w-full mt-1" %>
+          <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
+                        data: { turbo: false },
+                        class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0 w-full mt-1" %>
         </li>
       </ul>
     </div>
@@ -36,6 +38,8 @@
 
   <%# ログアウトボタン %>
   <div class="navbar-end hidden lg:flex">
-    <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
+    <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
+                  data: { turbo: false },
+                  class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
   </div>
 </header>
