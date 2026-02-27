@@ -64,6 +64,11 @@ gem "image_processing", "~> 1.2"
 gem "active_storage_validations"
 gem "cloudinary"  # 画像ストレージ・CDN（全環境で使用）
 
+# AI / LLM 連携 [https://github.com/crmne/ruby_llm]
+gem "ruby_llm"
+# pgvector を ActiveRecord で扱う（ベクトル類似検索）[https://github.com/ankane/neighbor]
+gem "neighbor"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

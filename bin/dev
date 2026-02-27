@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# gosu でユーザー降格後に HOME が / になる場合があるため明示的に設定
+export HOME="${HOME:-/tmp}"
+if [ "$HOME" = "/" ]; then
+  export HOME=/tmp
+fi
+
 # Gemfile に変更があった場合のみ bundle install を実行
 # bundle_data volume にキャッシュがあるため、通常は即座に終わる
 bundle check > /dev/null 2>&1 || bundle install
