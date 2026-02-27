@@ -14,10 +14,10 @@ RSpec.describe EmbeddingService do
       expect(result.length).to eq(768)
     end
 
-    it "text-embedding-004 モデルを使用する" do
+    it "gemini-embedding-001 モデルを使用する" do
       expect(RubyLLM).to receive(:embed).with(
         "テストテキスト",
-        model: "text-embedding-004"
+        model: "gemini-embedding-001"
       ).and_return(
         instance_double(RubyLLM::Embedding, vectors: dummy_vector)
       )
@@ -28,7 +28,7 @@ RSpec.describe EmbeddingService do
     it "nil を渡しても空文字として処理する" do
       expect(RubyLLM).to receive(:embed).with(
         "",
-        model: "text-embedding-004"
+        model: "gemini-embedding-001"
       ).and_return(
         instance_double(RubyLLM::Embedding, vectors: dummy_vector)
       )
