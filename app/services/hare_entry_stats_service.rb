@@ -1,5 +1,5 @@
 class HareEntryStatsService
-  ENOUGH_DATA_THRESHOLD = 30
+  ENOUGH_DATA_THRESHOLD = 10
   PERIOD_DAYS = 30
 
   def initialize(user)
@@ -49,7 +49,11 @@ class HareEntryStatsService
     (total_points.to_f / entry_count).round
   end
 
+  def unique_days_count
+    @unique_days_count ||= @entries.select(:occurred_on).distinct.count
+  end
+
   def enough_data?
-    entry_count >= ENOUGH_DATA_THRESHOLD
+    unique_days_count >= ENOUGH_DATA_THRESHOLD
   end
 end

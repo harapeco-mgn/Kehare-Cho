@@ -99,15 +99,36 @@ RSpec.describe HareEntryStatsService do
     end
   end
 
+  describe "#unique_days_count" do
+    it "直近30日のユニークな記録日数を返す" do
+      # 同じ日に複数記録しても1日としてカウント
+      2.times { create(:hare_entry, user: user, occurred_on: 1.day.ago) }
+      create(:hare_entry, user: user, occurred_on: 2.days.ago)
+      expect(service.unique_days_count).to eq(2)
+    end
+
+    it "30日より前の記録は含まない" do
+      create(:hare_entry, user: user, occurred_on: 31.days.ago)
+      expect(service.unique_days_count).to eq(0)
+    end
+  end
+
   describe "#enough_data?" do
-    it "30件未満の場合はfalseを返す" do
-      29.times { create(:hare_entry, user: user, occurred_on: 1.day.ago) }
+    it "ユニーク日数が10未満の場合はfalseを返す" do
+      9.times { |i| create(:hare_entry, user: user, occurred_on: (i + 1).days.ago) }
       expect(service.enough_data?).to be false
     end
 
-    it "30件以上の場合はtrueを返す" do
-      30.times { create(:hare_entry, user: user, occurred_on: 1.day.ago) }
+    it "ユニーク日数が10以上の場合はtrueを返す" do
+      10.times { |i| create(:hare_entry, user: user, occurred_on: (i + 1).days.ago) }
       expect(service.enough_data?).to be true
+    end
+
+    it "同じ日に複数記録してもユニーク日数でカウントする" do
+      # 9日分 + 同じ日に2件 = ユニーク9日 → false
+      9.times { |i| create(:hare_entry, user: user, occurred_on: (i + 1).days.ago) }
+      create(:hare_entry, user: user, occurred_on: 1.day.ago)
+      expect(service.enough_data?).to be false
     end
   end
 end
