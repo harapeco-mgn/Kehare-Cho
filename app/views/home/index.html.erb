@@ -77,9 +77,10 @@
       </div>
 
       <%# 下部リンク（控えめ） %>
-      <div class="flex gap-4 justify-center text-sm">
+      <div class="flex gap-4 justify-center text-sm flex-wrap">
         <%= link_to "ハレ一覧", hare_entries_path, class: "text-gray-600 hover:text-gray-800 underline" %>
         <%= link_to "献立ログ", meal_searches_path, class: "text-gray-600 hover:text-gray-800 underline" %>
+        <%= link_to "AI相談", new_chat_path, class: "text-gray-600 hover:text-gray-800 underline" %>
         <%= link_to "使い方", how_to_use_path, class: "text-gray-600 hover:text-gray-800 underline" %>
       </div>
     </main>
