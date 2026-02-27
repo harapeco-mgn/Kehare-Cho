@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   authenticate :user do
     root "home#index", as: :authenticated_root
     resource :profile, only: [ :show, :edit, :update ]
+    resource :reflection, only: [ :show ]
     resources :hare_entries
     resources :chats, only: [ :new, :create, :show ] do
       resources :messages, only: [ :create ]

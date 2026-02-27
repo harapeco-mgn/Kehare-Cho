@@ -1,0 +1,71 @@
+<main class="max-w-2xl mx-auto p-4 md:p-8">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-800 mb-1">📖 食生活レポート</h1>
+      <p class="text-gray-600 text-sm">直近30日間の記録から集計しています</p>
+    </div>
+    <%= link_to "ホーム", home_path, class: "text-gray-500 hover:text-gray-700 text-sm font-medium" %>
+  </div>
+
+  <%# 記録統計カード %>
+  <div class="grid grid-cols-3 gap-3 mb-6">
+    <div class="bg-white rounded-2xl shadow-sm p-4 text-center">
+      <p class="text-3xl font-bold text-orange-500"><%= @stats.entry_count %></p>
+      <p class="text-xs text-gray-500 mt-1">記録数</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm p-4 text-center">
+      <p class="text-3xl font-bold text-orange-500"><%= @stats.recording_rate %><span class="text-lg font-bold">%</span></p>
+      <p class="text-xs text-gray-500 mt-1">記録率</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm p-4 text-center">
+      <p class="text-3xl font-bold text-orange-500"><%= @stats.current_streak %><span class="text-lg font-bold">日</span></p>
+      <p class="text-xs text-gray-500 mt-1">🔥 連続記録</p>
+    </div>
+  </div>
+
+  <%# タグランキング %>
+  <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-3">🏷️ よく使ったタグ TOP3</h2>
+    <% if @stats.tag_ranking.empty? %>
+      <p class="text-sm text-gray-400">まだタグをつけた記録がありません</p>
+    <% else %>
+      <% @stats.tag_ranking.each_with_index do |(label, count), i| %>
+        <div class="flex items-center gap-3 mb-2 last:mb-0">
+          <span class="text-xs text-gray-400 w-4 flex-shrink-0"><%= i + 1 %>位</span>
+          <span class="text-sm text-gray-700 flex-1">#<%= label %></span>
+          <div class="flex items-center gap-2">
+            <div class="bg-orange-200 rounded-full h-2" style="width: <%= [count * 8, 80].min %>px; min-width: 16px;"></div>
+            <span class="text-xs text-gray-500 w-8 text-right"><%= count %>回</span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%# ポイントカード %>
+  <div class="grid grid-cols-2 gap-3 mb-6">
+    <div class="bg-white rounded-2xl shadow-sm p-4 text-center">
+      <p class="text-3xl font-bold text-orange-500"><%= @stats.total_points %><span class="text-lg font-bold">pt</span></p>
+      <p class="text-xs text-gray-500 mt-1">累計ポイント</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm p-4 text-center">
+      <p class="text-3xl font-bold text-orange-500"><%= @stats.average_points %><span class="text-lg font-bold">pt</span></p>
+      <p class="text-xs text-gray-500 mt-1">平均/記録</p>
+    </div>
+  </div>
+
+  <%# AI分析 - Coming Soon %>
+  <div class="bg-white rounded-2xl shadow-sm p-5">
+    <h2 class="text-sm font-semibold text-gray-700 mb-3">🤖 AI 傾向分析</h2>
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 text-center">
+      <p class="text-2xl mb-2">✨</p>
+      <p class="text-sm font-semibold text-blue-700 mb-1">AIによる分析を準備中です</p>
+      <p class="text-xs text-blue-500 mb-4">記録を積み重ねると、あなたの食の傾向を分析します</p>
+      <div class="bg-white rounded-lg px-4 py-2 inline-block shadow-sm">
+        <p class="text-xs text-gray-500">
+          現在 <span class="font-bold text-orange-500"><%= @stats.entry_count %>件</span> の記録
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
