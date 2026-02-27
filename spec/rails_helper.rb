@@ -69,6 +69,11 @@ RSpec.configure do |config|
       DatabaseCleaner.strategy = :transaction
     end
     DatabaseCleaner.start
+
+    # EmbeddingService のグローバルスタブ
+    # before_save コールバックが実際の Gemini API を呼ばないようにする
+    # embedding_service_spec.rb 内では個別にモックを上書きしているため問題なし
+    allow(EmbeddingService).to receive(:generate).and_return(Array.new(768, 0.1))
   end
 
   config.after(:each) do
