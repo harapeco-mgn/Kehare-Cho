@@ -1,8 +1,12 @@
 class MealCandidate < ApplicationRecord
+  has_neighbors :embedding
+
   belongs_to :genre
   belongs_to :mood_tag, optional: true
 
   enum :cook_context, { self_cook: 0, eat_out: 1 }
+
+  before_save :generate_embedding, if: :embedding_source_changed?
 
   validates :name, presence: true, uniqueness: { scope: :genre_id }
 
@@ -20,4 +24,15 @@ class MealCandidate < ApplicationRecord
 
     where(mood_tag_id: mood_tag_id).or(where(mood_tag_id: nil))
   }
+
+private
+
+  def generate_embedding
+    source_text = [ name, genre&.label, mood_tag&.label, search_hint ].compact.join(" ")
+    self.embedding = EmbeddingService.generate(source_text)
+  end
+
+  def embedding_source_changed?
+    name_changed? || genre_id_changed? || mood_tag_id_changed? || search_hint_changed?
+  end
 end

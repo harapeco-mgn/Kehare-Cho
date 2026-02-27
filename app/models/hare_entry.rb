@@ -1,4 +1,6 @@
 class HareEntry < ApplicationRecord
+  has_neighbors :embedding
+
   belongs_to :user
   has_many :hare_entry_tags, dependent: :destroy
   has_many :hare_tags, through: :hare_entry_tags
@@ -16,4 +18,12 @@ class HareEntry < ApplicationRecord
   validates :occurred_on, presence: true
   validates :photo, content_type: %w[image/jpeg image/png image/webp],
                     size: { less_than: 5.megabytes }
+
+  before_save :generate_embedding, if: :body_changed?
+
+private
+
+  def generate_embedding
+    self.embedding = EmbeddingService.generate(body)
+  end
 end
