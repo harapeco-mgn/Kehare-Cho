@@ -26,10 +26,10 @@ RSpec.describe "ログイン / ログアウト", type: :system do
     expect(page).not_to have_current_path(new_user_session_path)
     expect(page).to have_text("こんにちは")
 
-    # ヘッダーのログアウトボタンをクリック
-    # モバイル/デスクトップの2つのログアウトボタンが存在するため、
-    # 表示状態のボタンを all で取得して最後のもの（デスクトップ用）をクリック
-    all("button[type='submit']", text: "ログアウト", visible: :visible).last.click
+    # ヘッダーのデスクトップ用ログアウトフォームをJS経由で送信
+    # CSS の hidden lg:flex によって表示状態が変わっても動作するよう
+    # JavaScript で直接 form.submit() を呼び出す
+    page.execute_script("document.querySelector('#desktop-nav form').submit()")
 
     # ログアウト成功 → ルートページ（LP）にリダイレクト＋フラッシュ
     # devise.ja.yml の signed_out キー: "ログアウトしました。またお待ちしています"

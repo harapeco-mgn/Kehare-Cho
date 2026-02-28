@@ -43,7 +43,7 @@
 
   <%# ログアウトボタン %>
   <%# data-turbo="false" をフォーム要素に設定し Turbo の302リダイレクト未処理を防ぐ %>
-  <div class="navbar-end hidden lg:flex">
+  <div id="desktop-nav" class="navbar-end hidden lg:flex">
     <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
                   form: { "data-turbo" => "false" },
                   class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
