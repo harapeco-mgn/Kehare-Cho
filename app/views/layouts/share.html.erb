@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= content_for?(:title) ? yield(:title) : "ケハレ帖" %></title>
+
+    <%# OGP メタタグ %>
+    <meta property="og:title" content="<%= content_for?(:og_title) ? yield(:og_title) : "ケハレ帖" %>">
+    <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを" %>">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="<%= request.url %>">
+    <% if content_for?(:og_image) %>
+      <meta property="og:image" content="<%= yield(:og_image) %>">
+    <% end %>
+    <meta name="twitter:card" content="summary">
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="bg-orange-50 min-h-screen">
+    <%= yield %>
+  </body>
+</html>

@@ -37,6 +37,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :share do
+    resources :hare_entries, only: [ :show ], param: :token
+  end
+
   get "calendar", to: "calendar#index"
   get "calendar/:date", to: "calendar#show", as: :calendar_date
   resources :meal_searches, only: [ :index, :new, :create ] do

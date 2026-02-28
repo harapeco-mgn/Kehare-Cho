@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_035141) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_28_030109) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -72,11 +72,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_035141) do
     t.datetime "created_at", null: false
     t.vector "embedding", limit: 768
     t.date "occurred_on", null: false
+    t.string "share_token"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.integer "visibility", default: 0, null: false
     t.index ["embedding"], name: "index_hare_entries_on_embedding", opclass: :vector_cosine_ops, using: :hnsw
     t.index ["occurred_on"], name: "index_hare_entries_on_occurred_on"
+    t.index ["share_token"], name: "index_hare_entries_on_share_token", unique: true
     t.index ["user_id"], name: "index_hare_entries_on_user_id"
     t.index ["visibility"], name: "index_hare_entries_on_visibility"
   end
