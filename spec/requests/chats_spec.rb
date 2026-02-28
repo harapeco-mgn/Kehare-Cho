@@ -78,10 +78,10 @@ RSpec.describe "Chats", type: :request do
       context "meal_consultation タイプで料理名を含む AI メッセージがある場合" do
         let(:content) do
           <<~TEXT
-            #### 1. 鶏むね肉と野菜のポン酢炒め
-            特徴: さっぱりしています。
-            #### 2. 豆腐とわかめの味噌汁
-            特徴: ヘルシーです。
+            **1. 鶏むね肉と野菜のポン酢炒め**
+            *   特徴: さっぱりしています。
+            **2. 豆腐とわかめの味噌汁**
+            *   特徴: ヘルシーです。
           TEXT
         end
         let!(:ai_message) { chat.messages.create!(role: "assistant", content: content) }
