@@ -76,53 +76,122 @@
         </div>
       </div>
 
-      <%# 最近のハレ投稿 %>
-      <% if @recent_hare_entries.any? %>
-        <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="font-bold text-gray-800">最近のハレ</h3>
-            <%= link_to "すべて見る", hare_entries_path, class: "text-xs text-orange-500 hover:text-orange-600" %>
-          </div>
-          <div class="space-y-3">
-            <% @recent_hare_entries.each do |entry| %>
-              <%= link_to hare_entry_path(entry), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors block" do %>
-                <%= app_icon("sparkles", css_class: "w-5 h-5 mt-0.5 text-yellow-400 flex-shrink-0") %>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm text-gray-800 line-clamp-2"><%= entry.body.truncate(60) %></p>
-                  <p class="text-xs text-gray-400 mt-1"><%= l(entry.occurred_on, format: :long) %></p>
-                </div>
-                <span class="text-xs text-orange-500 font-semibold whitespace-nowrap">+<%= entry.awarded_points %>pt</span>
-              <% end %>
-            <% end %>
-          </div>
+      <%# 直近の記録（週間カレンダー） %>
+      <div class="bg-white rounded-2xl shadow-sm p-5 mb-6" data-controller="week-calendar">
+        <%# ヘッダー %>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-gray-800 flex items-center gap-2">
+            <%= app_icon("calendar", css_class: "w-5 h-5 text-[#C87941]") %>
+            直近の記録
+          </h3>
+          <%= link_to "すべて見る", hare_entries_path, class: "text-xs text-[#C87941] font-bold hover:underline" %>
         </div>
-      <% end %>
 
-      <%# 今月のカレンダー %>
-      <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
-        <h3 class="font-bold text-gray-800 mb-4">今月のハレカレンダー</h3>
-        <%# 曜日ヘッダー %>
-        <div class="grid grid-cols-7 text-center text-xs text-gray-400 mb-2">
-          <% %w[日 月 火 水 木 金 土].each do |day| %>
-            <div><%= day %></div>
-          <% end %>
-        </div>
-        <%# 日付グリッド %>
-        <div class="grid grid-cols-7 text-center text-xs gap-y-1">
-          <%# 月初の曜日までの空白 %>
-          <% first_day = Date.current.beginning_of_month %>
-          <% first_day.wday.times do %>
-            <div></div>
-          <% end %>
-          <%# 今月の全日付 %>
-          <% (first_day..Date.current.end_of_month).each do |date| %>
-            <% active = @calendar_dates.include?(date) %>
-            <div class="flex items-center justify-center h-7 w-7 mx-auto rounded-full <%= active ? 'bg-orange-400 text-white font-bold' : (date == Date.current ? 'border border-orange-300 text-orange-500' : 'text-gray-500') %>">
-              <%= date.day %>
+        <%# 週間カレンダー行 %>
+        <%
+          week_start = Date.current.beginning_of_week(:sunday)
+          week_days  = (week_start..(week_start + 6)).to_a
+          day_names  = %w[日 月 火 水 木 金 土]
+        %>
+        <div class="flex justify-between items-start gap-1 overflow-x-auto pb-2">
+          <% week_days.each_with_index do |date, i| %>
+            <% entry    = @week_entries[date] %>
+            <% is_today = date == Date.current %>
+            <div class="flex flex-col items-center min-w-[2.75rem] <%= entry ? 'cursor-pointer' : '' %>"
+                 <% if entry %>
+                   data-action="mouseenter->week-calendar#show mouseleave->week-calendar#reset"
+                   data-week-calendar-entry-id-param="<%= entry.id %>"
+                 <% end %>>
+
+              <%# 曜日名 %>
+              <span class="text-xs mb-1 <%= is_today ? 'text-[#C87941] font-bold' : 'text-gray-400' %>">
+                <%= day_names[i] %>
+              </span>
+
+              <%# 日付円 %>
+              <% if is_today %>
+                <%# 今日：塗りつぶしオレンジ %>
+                <div class="w-10 h-10 rounded-full bg-[#C87941] text-white flex items-center justify-center shadow-md ring-2 ring-offset-1 ring-[#C87941]/40">
+                  <span class="font-bold text-sm"><%= date.day %></span>
+                </div>
+              <% elsif entry %>
+                <%# 記録あり：オレンジ枠、ホバーで少し大きく %>
+                <div class="w-10 h-10 rounded-full bg-[#FFF4E5] border-2 border-[#C87941] flex items-center justify-center hover:bg-[#FFE8C8] hover:scale-105 transition-all">
+                  <span class="font-bold text-sm text-[#C87941]"><%= date.day %></span>
+                </div>
+              <% elsif date > Date.current %>
+                <%# 未来 %>
+                <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-300">
+                  <span class="font-bold text-sm"><%= date.day %></span>
+                </div>
+              <% else %>
+                <%# 過去（記録なし） %>
+                <div class="w-10 h-10 rounded-full bg-[#F5F0EA] flex items-center justify-center text-gray-400">
+                  <span class="font-bold text-sm"><%= date.day %></span>
+                </div>
+              <% end %>
+
+              <%# インジケータードット：今日または記録あり %>
+              <% if is_today || entry %>
+                <span class="w-1.5 h-1.5 rounded-full mt-1 block <%= is_today ? 'bg-[#C87941]' : 'bg-[#C87941]/60' %>"></span>
+              <% else %>
+                <span class="w-1.5 h-1.5 mt-1 block"></span>
+              <% end %>
             </div>
           <% end %>
         </div>
-        <p class="text-xs text-gray-400 mt-3 text-right">今月のハレ: <%= @calendar_dates.size %>回</p>
+
+        <%# エントリープレビューエリア %>
+        <div class="mt-4 border-t border-[#EBE5D9] pt-4">
+          <%# デフォルト表示：最新エントリー %>
+          <div data-week-calendar-target="defaultPreview">
+            <% if @recent_hare_entries.any? %>
+              <% latest = @recent_hare_entries.first %>
+              <%= link_to hare_entry_path(latest), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFF9F0] transition-colors block group" do %>
+                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#FFF0D4] flex items-center justify-center text-[#C87941]">
+                  <%= app_icon("sparkles", css_class: "w-5 h-5") %>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <% if latest.hare_tags.any? %>
+                    <div class="flex flex-wrap gap-1 mb-1">
+                      <% latest.hare_tags.first(2).each do |tag| %>
+                        <span class="text-xs font-bold bg-[#FFF0D4] text-[#C87941] px-2 py-0.5 rounded-full"><%= tag.label %></span>
+                      <% end %>
+                    </div>
+                  <% end %>
+                  <p class="text-sm font-medium text-gray-800 group-hover:text-[#C87941] transition-colors"><%= truncate(latest.body, length: 60) %></p>
+                  <p class="text-xs text-gray-400 mt-1"><%= l(latest.occurred_on, format: :long) %></p>
+                </div>
+              <% end %>
+            <% else %>
+              <p class="text-sm text-gray-400 text-center py-4">ハレ記録はまだありません</p>
+            <% end %>
+          </div>
+
+          <%# 各日エントリー（ホバー時に切り替え表示） %>
+          <% @week_entries.each do |_date, entry| %>
+            <div data-week-calendar-target="entryPreview"
+                 data-entry-id="<%= entry.id %>"
+                 class="hidden">
+              <%= link_to hare_entry_path(entry), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFF9F0] transition-colors block group" do %>
+                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#FFF0D4] flex items-center justify-center text-[#C87941]">
+                  <%= app_icon("sparkles", css_class: "w-5 h-5") %>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <% if entry.hare_tags.any? %>
+                    <div class="flex flex-wrap gap-1 mb-1">
+                      <% entry.hare_tags.first(2).each do |tag| %>
+                        <span class="text-xs font-bold bg-[#FFF0D4] text-[#C87941] px-2 py-0.5 rounded-full"><%= tag.label %></span>
+                      <% end %>
+                    </div>
+                  <% end %>
+                  <p class="text-sm font-medium text-gray-800 group-hover:text-[#C87941] transition-colors"><%= truncate(entry.body, length: 60) %></p>
+                  <p class="text-xs text-gray-400 mt-1"><%= l(entry.occurred_on, format: :long) %></p>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
 
       <%# ナビゲーションカード %>
