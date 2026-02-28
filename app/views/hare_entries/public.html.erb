@@ -1,45 +1,46 @@
-<div class="container mx-auto px-4 py-8">
-  <div class="max-w-3xl mx-auto">
-    <!-- ヘッダー -->
-    <div class="mb-6">
-      <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">みんなのハレ</h1>
-      <p class="text-gray-600">他のユーザーのハレ投稿を見てみましょう</p>
-    </div>
+<main class="max-w-3xl mx-auto px-4 py-8 font-zen">
+  <%# ヘッダー %>
+  <div class="mb-6">
+    <h1 class="text-2xl md:text-3xl font-bold text-[#4A4036] mb-1 tracking-wide">みんなのハレ</h1>
+    <p class="text-[#8D7B68] text-sm">他のユーザーのハレ投稿を見てみましょう</p>
+  </div>
 
-    <!-- 投稿一覧 -->
-    <% if @hare_entries.any? %>
-      <div class="space-y-4">
-        <% @hare_entries.each do |entry| %>
-          <div class="card bg-white shadow-md">
-            <div class="card-body">
-              <!-- ユーザー情報 -->
-              <div class="flex items-center mb-3">
+  <%# 投稿一覧 %>
+  <% if @hare_entries.any? %>
+    <div class="space-y-4">
+      <% @hare_entries.each do |entry| %>
+        <div class="bg-[#FFFCF5] rounded-2xl shadow-sm border border-[#E8E0D0] overflow-hidden">
+          <div class="flex">
+            <div class="w-1 bg-gradient-to-b from-[#8EA084] to-[#A8BCA3] flex-shrink-0"></div>
+            <div class="flex-1 p-5">
+              <%# ユーザー情報 %>
+              <div class="flex items-center mb-4">
                 <div class="avatar">
-                  <div class="w-10 rounded-full">
-                    <%= image_tag level_image_url(entry.user.level), alt: entry.user.display_name, class: "rounded-full" %>
+                  <div class="w-10 h-10 rounded-full border-2 border-[#E8E0D0] overflow-hidden">
+                    <%= image_tag level_image_url(entry.user.level), alt: entry.user.display_name, class: "w-full h-full object-cover" %>
                   </div>
                 </div>
                 <div class="ml-3">
-                  <p class="font-semibold text-gray-800"><%= entry.user.display_name %></p>
-                  <p class="text-sm text-gray-500"><%= l(entry.occurred_on, format: :long) %></p>
+                  <p class="font-bold text-[#4A4036] text-sm"><%= entry.user.display_name %></p>
+                  <p class="text-xs text-[#8D7B68]"><%= l(entry.occurred_on, format: :long) %></p>
                 </div>
               </div>
 
-              <!-- 投稿内容 -->
-              <p class="text-gray-700 mb-3 break-words"><%= entry.body %></p>
+              <%# 投稿内容 %>
+              <p class="text-[#4A4036] mb-3 break-words leading-relaxed"><%= entry.body %></p>
 
-              <!-- 写真 -->
+              <%# 写真 %>
               <% if entry.photo.attached? %>
                 <div class="mb-3">
-                  <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [600, 600]), class: "rounded-lg max-h-96 max-w-full w-auto mx-auto" %>
+                  <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [600, 600]), class: "rounded-xl max-h-96 max-w-full w-auto mx-auto border border-[#E8E0D0]" %>
                 </div>
               <% end %>
 
-              <!-- タグ -->
+              <%# タグ %>
               <% if entry.hare_tags.any? %>
                 <div class="flex flex-wrap gap-2">
                   <% entry.hare_tags.each do |tag| %>
-                    <span class="badge badge-accent">
+                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#EEF2EB] text-[#5A7055] border border-[#C6D4C0]">
                       <%= tag.label %>
                     </span>
                   <% end %>
@@ -47,18 +48,19 @@
               <% end %>
             </div>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
+    </div>
 
-      <!-- ページネーション -->
-      <div class="mt-8 flex justify-center">
-        <%= paginate @hare_entries %>
-      </div>
-    <% else %>
-      <!-- 投稿がない場合 -->
-      <div class="text-center py-12">
-        <p class="text-gray-500 text-lg">まだ公開されている投稿がありません</p>
-      </div>
-    <% end %>
-  </div>
-</div>
+    <%# ページネーション %>
+    <div class="mt-8 flex justify-center">
+      <%= paginate @hare_entries %>
+    </div>
+  <% else %>
+    <%# 投稿がない場合 %>
+    <div class="bg-[#FFFCF5] rounded-3xl shadow-sm border-2 border-dashed border-[#E8E0D0] text-center py-16">
+      <p class="text-[#8D7B68] text-lg">まだ公開されている投稿がありません</p>
+      <p class="text-[#B8AFA5] text-sm mt-2">最初のハレをシェアしてみましょう</p>
+    </div>
+  <% end %>
+</main>
