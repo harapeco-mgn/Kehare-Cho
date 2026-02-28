@@ -14,7 +14,7 @@
     <%# 投稿者・日付 %>
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">✨</span>
+        <%= app_icon("sparkles", css_class: "w-8 h-8 text-yellow-400") %>
         <div>
           <p class="font-semibold text-gray-800"><%= @hare_entry.user.display_name %></p>
           <p class="text-sm text-gray-500"><%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %></p>

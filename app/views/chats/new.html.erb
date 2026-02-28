@@ -2,7 +2,7 @@
   <div class="flex items-center justify-between mb-6">
     <div>
       <h1 class="text-2xl font-bold text-gray-800 mb-1">AI 献立相談</h1>
-      <p class="text-gray-600 text-sm">何でもお気軽に相談してください ✨</p>
+      <p class="text-gray-600 text-sm flex items-center gap-1">何でもお気軽に相談してください <%= app_icon("sparkles", css_class: "w-4 h-4 text-yellow-400") %></p>
     </div>
     <%= link_to "ホーム", home_path, class: "text-gray-500 hover:text-gray-700 text-sm font-medium" %>
   </div>
@@ -15,14 +15,14 @@
           <label class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-200 rounded-xl hover:border-green-300 transition-colors has-[:checked]:border-green-400 has-[:checked]:bg-green-50">
             <%= f.radio_button :conversation_type, "meal_consultation", class: "text-green-500 w-4 h-4" %>
             <div>
-              <div class="font-semibold text-gray-800">🍚 献立相談</div>
+              <div class="font-semibold text-gray-800 flex items-center gap-1.5"><%= app_icon("utensils", css_class: "w-5 h-5 text-green-600") %> 献立相談</div>
               <div class="text-sm text-gray-500">今日のごはんを一緒に決めます</div>
             </div>
           </label>
           <label class="flex items-center gap-3 cursor-pointer p-4 border-2 border-gray-200 rounded-xl hover:border-orange-300 transition-colors has-[:checked]:border-orange-400 has-[:checked]:bg-orange-50">
             <%= f.radio_button :conversation_type, "cooking_advice", class: "text-orange-500 w-4 h-4" %>
             <div>
-              <div class="font-semibold text-gray-800">👨‍🍳 料理アドバイス</div>
+              <div class="font-semibold text-gray-800 flex items-center gap-1.5"><%= app_icon("chef-hat", css_class: "w-5 h-5 text-orange-500") %> 料理アドバイス</div>
               <div class="text-sm text-gray-500">レシピや調理のコツを教えます</div>
             </div>
           </label>

@@ -2,14 +2,14 @@
   <%# ページヘッダー %>
   <div class="text-center mb-8">
     <h1 class="text-3xl font-bold text-gray-800 mb-2">どうやって相談する？</h1>
-    <p class="text-gray-600">2種類の献立サポートから選んでください 🍚</p>
+    <p class="text-gray-600 flex items-center justify-center gap-1">2種類の献立サポートから選んでください <%= app_icon("utensils", css_class: "w-5 h-5 text-green-600") %></p>
   </div>
 
   <%# 選択カード %>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <%# かんたん献立カード %>
     <div class="bg-[#7A9D7E] rounded-3xl p-6 md:p-8 shadow-lg flex flex-col min-h-[220px]">
-      <div class="text-4xl mb-3">📋</div>
+      <div class="mb-3"><%= app_icon("clipboard-list", css_class: "w-10 h-10 text-white/80") %></div>
       <h2 class="text-white text-xl font-bold mb-2">かんたん献立</h2>
       <p class="text-white/90 text-sm leading-relaxed mb-6 flex-1">
         フォームで条件（ジャンル・気分・時間）を選ぶと、おすすめの献立をすぐに提案します。
@@ -22,7 +22,7 @@
 
     <%# AI献立相談カード %>
     <div class="bg-gradient-to-br from-[#5B7FA6] to-[#4A6E95] rounded-3xl p-6 md:p-8 shadow-lg flex flex-col min-h-[220px]">
-      <div class="text-4xl mb-3">🤖</div>
+      <div class="mb-3"><%= app_icon("bot", css_class: "w-10 h-10 text-white/80") %></div>
       <h2 class="text-white text-xl font-bold mb-2">AI献立相談</h2>
       <p class="text-white/90 text-sm leading-relaxed mb-6 flex-1">
         AIと会話しながらじっくり相談。料理のアドバイスや食材の使い方も聞けます。

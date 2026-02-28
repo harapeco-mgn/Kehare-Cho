@@ -64,6 +64,9 @@ gem "image_processing", "~> 1.2"
 gem "active_storage_validations"
 gem "cloudinary"  # 画像ストレージ・CDN（全環境で使用）
 
+# SVG アイコンライブラリ Lucide Icons [https://github.com/kgiszczak/lucide-rails]
+gem "lucide-rails"
+
 # AI / LLM 連携 [https://github.com/crmne/ruby_llm]
 gem "ruby_llm"
 # pgvector を ActiveRecord で扱う（ベクトル類似検索）[https://github.com/ankane/neighbor]
