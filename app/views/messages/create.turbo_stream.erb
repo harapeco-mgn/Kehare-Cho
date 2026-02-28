@@ -1,0 +1,8 @@
+<%# ユーザーメッセージをメッセージ一覧の末尾に追加 %>
+<%= turbo_stream.append "messages", partial: "messages/user_message", locals: { message: @message } %>
+
+<%# AI のタイピングインジケーターを追加 %>
+<%= turbo_stream.append "messages", partial: "messages/typing_indicator" %>
+
+<%# テキストエリアの入力内容をクリア %>
+<%= turbo_stream.update "message_input", "" %>

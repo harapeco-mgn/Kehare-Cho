@@ -9,10 +9,14 @@ class MessagesController < ApplicationController
     # 最初のメッセージ時にシステムプロンプトを設定（RAG コンテキスト注入）
     inject_system_prompt(content) if @chat.messages.none?
 
-    @chat.ask(content)
-    redirect_to chat_path(@chat)
-  rescue RubyLLM::RateLimitError
-    redirect_to chat_path(@chat), alert: "AIが混み合っています。少し時間をおいてから再度お試しください。"
+    # ユーザーメッセージを即時保存し、AI 応答生成をジョブにキュー投入
+    @message = @chat.create_user_message(content)
+    GenerateAiResponseJob.perform_later(@chat.id, current_user.id)
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to chat_path(@chat) }
+    end
   end
 
 private

@@ -6,6 +6,9 @@
   }
 %>
 
+<%# リアルタイム更新のための ActionCable 購読を設定 %>
+<%= turbo_stream_from @chat %>
+
 <main class="max-w-2xl mx-auto p-4 md:p-8" data-controller="chat">
   <%# ヘッダー %>
   <div class="flex items-center justify-between mb-4">
@@ -18,7 +21,7 @@
 
   <%# メッセージ一覧 %>
   <div class="bg-white rounded-2xl shadow-sm flex flex-col" style="height: calc(100vh - 240px); min-height: 400px;">
-    <div class="flex-1 overflow-y-auto p-4 space-y-4" data-chat-target="messages">
+    <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4" data-chat-target="messages">
       <%# システムプロンプトメッセージはユーザーに表示しない %>
       <% display_messages = @messages.reject { |m| m.role == "system" } %>
       <% if display_messages.empty? %>
@@ -42,39 +45,9 @@
       <% else %>
         <% display_messages.each do |message| %>
           <% if message.role == "user" %>
-            <%# ユーザーメッセージ（右寄せ） %>
-            <div class="flex justify-end">
-              <div class="max-w-xs md:max-w-sm bg-green-500 text-white rounded-2xl rounded-br-sm px-4 py-3">
-                <p class="text-sm whitespace-pre-wrap"><%= message.content %></p>
-                <p class="text-xs text-green-100 mt-1 text-right"><%= message.created_at.strftime("%H:%M") %></p>
-              </div>
-            </div>
+            <%= render "messages/user_message", message: message %>
           <% elsif message.role == "assistant" %>
-            <%# AI メッセージ（左寄せ） %>
-            <div class="flex items-start gap-2">
-              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-yellow-300 flex items-center justify-center flex-shrink-0 mt-1">
-                <span class="text-sm">🤖</span>
-              </div>
-              <div class="max-w-xs md:max-w-sm">
-                <div class="bg-gray-100 rounded-2xl rounded-bl-sm px-4 py-3">
-                  <p class="text-sm text-gray-800 whitespace-pre-wrap"><%= message.content %></p>
-                  <p class="text-xs text-gray-400 mt-1"><%= message.created_at.strftime("%H:%M") %></p>
-                </div>
-                <% if @chat.meal_consultation? %>
-                  <% dish_names = message.extract_dish_names %>
-                  <% if dish_names.any? %>
-                    <div class="mt-2 flex flex-col gap-1">
-                      <% dish_names.each do |dish_name| %>
-                        <%= link_to new_hare_entry_path(body: dish_name),
-                                    class: "inline-block text-xs text-green-700 hover:text-green-900 border border-green-400 rounded-lg px-3 py-1.5 hover:bg-green-50 transition-colors" do %>
-                          ✍️ <%= dish_name %>
-                        <% end %>
-                      <% end %>
-                    </div>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
+            <%= render "messages/assistant_message", message: message, chat: @chat %>
           <% end %>
         <% end %>
       <% end %>
@@ -87,6 +60,7 @@
                     data: { action: "submit->chat#submit" },
                     class: "flex items-end gap-2" do |f| %>
         <%= f.text_area :content,
+                        id: "message_input",
                         placeholder: "メッセージを入力... (Ctrl+Enter で送信)",
                         rows: 1,
                         class: "flex-1 resize-none overflow-hidden border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent",
@@ -95,6 +69,7 @@
                           action: "input->chat#resize keydown->chat#handleKeydown"
                         } %>
         <%= f.submit "送信",
+                     id: "chat_submit_btn",
                      class: "bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-3 rounded-xl text-sm transition-colors flex-shrink-0 disabled:opacity-50 cursor-pointer",
                      data: { chat_target: "submit" } %>
       <% end %>
