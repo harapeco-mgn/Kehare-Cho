@@ -296,6 +296,69 @@
         </div>
       </section>
 
+      <%# スクリーンショットセクション %>
+      <section class="py-16 px-4 bg-[#FEF7ED]">
+        <div class="max-w-5xl mx-auto">
+          <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">
+            こんな画面です
+          </h2>
+          <p class="text-center text-gray-600 mb-12 text-lg">
+            シンプルで使いやすい画面で、毎日の食事記録を楽しく続けられます。
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+            <%# ホーム画面 %>
+            <div class="flex flex-col items-center">
+              <div class="relative mb-6">
+                <%# スマホフレーム %>
+                <div class="w-56 rounded-[2rem] border-4 border-gray-800 shadow-2xl overflow-hidden">
+                  <div class="bg-gray-800 h-6 flex items-center justify-center">
+                    <div class="w-16 h-1.5 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <%= image_tag "screenshots/home.png", alt: "ホーム画面", class: "w-full block" %>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">ホーム画面</h3>
+              <p class="text-gray-600 text-center text-sm leading-relaxed">
+                レベルの成長やカレンダーで<br>毎日の積み重ねが一目でわかる
+              </p>
+            </div>
+
+            <%# ハレ記録フォーム %>
+            <div class="flex flex-col items-center">
+              <div class="relative mb-6">
+                <div class="w-56 rounded-[2rem] border-4 border-gray-800 shadow-2xl overflow-hidden">
+                  <div class="bg-gray-800 h-6 flex items-center justify-center">
+                    <div class="w-16 h-1.5 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <%= image_tag "screenshots/hare_entry.png", alt: "ハレ記録フォーム", class: "w-full block" %>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">ハレ記録フォーム</h3>
+              <p class="text-gray-600 text-center text-sm leading-relaxed">
+                タグを選んでひとこと書くだけ。<br>1分以内に記録完了
+              </p>
+            </div>
+
+            <%# 献立提案 %>
+            <div class="flex flex-col items-center">
+              <div class="relative mb-6">
+                <div class="w-56 rounded-[2rem] border-4 border-gray-800 shadow-2xl overflow-hidden">
+                  <div class="bg-gray-800 h-6 flex items-center justify-center">
+                    <div class="w-16 h-1.5 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <%= image_tag "screenshots/meal_search.png", alt: "かんたん献立提案", class: "w-full block" %>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">かんたん献立提案</h3>
+              <p class="text-gray-600 text-center text-sm leading-relaxed">
+                外食 or 自炊を選ぶだけで<br>今日のごはんを提案
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <%# ベネフィットセクション %>
       <section class="py-16 px-4 bg-[#FEF7ED]">
         <div class="max-w-4xl mx-auto">
