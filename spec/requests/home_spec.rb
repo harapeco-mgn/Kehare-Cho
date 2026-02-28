@@ -243,7 +243,7 @@ RSpec.describe "Home", type: :request do
       it "ヘッダーが表示される" do
         get root_path
         expect(response.body).to include("カレンダー")
-        expect(response.body).to include("献立相談")
+        expect(response.body).to include("かんたん献立")
         expect(response.body).to include("ハレ投稿")
         expect(response.body).to include("プロフィール")
         expect(response.body).to include("ログアウト")

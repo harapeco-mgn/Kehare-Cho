@@ -19,11 +19,11 @@
     </div>
   </div>
 
-  <!-- 2. 献立相談 -->
+  <!-- 2. かんたん献立 -->
   <div class="card bg-white shadow-xl mb-6">
     <div class="card-body prose prose-gray max-w-none text-gray-900">
-      <h2>🍳 献立相談機能</h2>
-      <p>「今日は何を食べよう？」そんなときは、献立相談を使ってみましょう。</p>
+      <h2>🍳 かんたん献立機能</h2>
+      <p>「今日は何を食べよう？」そんなときは、かんたん献立を使ってみましょう。</p>
       <ol>
         <li><strong>食事のジャンルを選ぶ</strong>：和食、洋食、中華など、気分に合わせて選択</li>
         <li><strong>候補が3つ表示される</strong>：ランダムにおすすめの献立が提案されます</li>
@@ -84,13 +84,13 @@
       <h2>🚀 始め方</h2>
       <ol>
         <li><strong>アカウント登録</strong>：メールアドレスとパスワードで簡単登録</li>
-        <li><strong>献立相談で今日のごはんを考える</strong>：気軽に試してみましょう</li>
+        <li><strong>かんたん献立で今日のごはんを考える</strong>：気軽に試してみましょう</li>
         <li><strong>ハレを見つけたら投稿</strong>：「ちょっと特別」を記録</li>
         <li><strong>カレンダーで振り返る</strong>：1週間、1か月の記録を楽しむ</li>
       </ol>
       <% if user_signed_in? %>
         <div class="text-center mt-4">
-          <%= link_to "献立相談を始める", new_meal_search_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white border-0" %>
+          <%= link_to "かんたん献立を始める", new_meal_search_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white border-0" %>
         </div>
       <% else %>
         <div class="text-center mt-4">
@@ -117,7 +117,7 @@
 
       <h3>Q3. レシピは載っていないの？</h3>
       <p>
-        <strong>A.</strong> ケハレ帖はレシピデータベースを持っていません。献立相談で候補を提案し、Google検索に誘導する形でレシピや食材を探せます。
+        <strong>A.</strong> ケハレ帖はレシピデータベースを持っていません。かんたん献立で候補を提案し、Google検索に誘導する形でレシピや食材を探せます。
       </p>
     </div>
   </div>

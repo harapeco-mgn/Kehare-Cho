@@ -143,9 +143,9 @@ RSpec.describe "Pages", type: :request do
         expect(response.body).to include('今日のごはんに、小さなハレを。')
       end
 
-      it '献立相談機能の説明が表示される' do
+      it 'かんたん献立機能の説明が表示される' do
         get how_to_use_path
-        expect(response.body).to include('献立相談機能')
+        expect(response.body).to include('かんたん献立機能')
       end
 
       it 'ハレ投稿機能の説明が表示される' do
@@ -194,9 +194,9 @@ RSpec.describe "Pages", type: :request do
         expect(response.body).to include('ケハレ帖の使い方')
       end
 
-      it 'ログイン時は献立相談を始めるボタンが表示される' do
+      it 'ログイン時はかんたん献立を始めるボタンが表示される' do
         get how_to_use_path
-        expect(response.body).to include('献立相談を始める')
+        expect(response.body).to include('かんたん献立を始める')
       end
     end
   end

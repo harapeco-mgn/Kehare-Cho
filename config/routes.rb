@@ -41,6 +41,8 @@ Rails.application.routes.draw do
     resources :hare_entries, only: [ :show ], param: :token
   end
 
+  get "meal_guide", to: "meal_guide#index"
+
   get "calendar", to: "calendar#index"
   get "calendar/:date", to: "calendar#show", as: :calendar_date
   resources :meal_searches, only: [ :index, :new, :create ] do

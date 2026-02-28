@@ -12,7 +12,7 @@ RSpec.describe "共通レイアウト", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("ホーム")
         expect(response.body).to include("カレンダー")
-        expect(response.body).to include("献立相談")
+        expect(response.body).to include("かんたん献立")
         expect(response.body).to include("ハレ投稿")
         expect(response.body).to include("プロフィール")
         expect(response.body).to include("ログアウト")
