@@ -16,10 +16,9 @@ RSpec.describe "献立提案（自炊）", type: :system do
     # sr-only なラジオボタンはラベルクリックで操作
     find('label', text: '自炊する').click
 
-    # 所要時間・ジャンルを選択
-    # form_with url: 指定のため、Rails がプレフィックスを付与しない
-    # セレクトボックスの id は "required_minutes", "genre_id" になる
-    select '30',        from: 'required_minutes'
+    # 所要時間をラジオボタン（ラベルクリック）で選択
+    find('label', text: '30分').click
+    # ジャンルをセレクトボックスで選択
     select genre.label, from: 'genre_id'
 
     click_button '候補を見る'

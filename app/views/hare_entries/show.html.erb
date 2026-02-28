@@ -1,65 +1,113 @@
-<main class="max-w-3xl mx-auto p-4 md:p-8">
+<main class="max-w-3xl mx-auto p-4 md:p-8 font-zen">
   <%# 戻るリンク %>
   <div class="mb-6">
-    <%= link_to "← 一覧に戻る", hare_entries_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
+    <%= link_to hare_entries_path, class: "inline-flex items-center gap-1 text-[#8D7B68] hover:text-[#C87941] font-medium transition-colors" do %>
+      <%= app_icon("arrow-left", css_class: "w-4 h-4") %> 一覧に戻る
+    <% end %>
   </div>
 
-  <%# メインカード %>
-  <div class="bg-white rounded-2xl shadow-sm p-5 md:p-8">
-    <%# ヘッダー情報 %>
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 pb-4 border-b border-gray-100">
-      <div class="flex items-center gap-3">
-        <%= app_icon("sparkles", css_class: "w-8 h-8 text-yellow-400") %>
-        <p class="text-lg font-medium text-gray-700">
-          <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
-        </p>
-      </div>
-      <% if @hare_entry.public_post? %>
-        <span class="px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">公開</span>
-      <% else %>
-        <span class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-semibold">非公開</span>
-      <% end %>
+  <%# ノート風メインカード %>
+  <div class="relative bg-[#FFFCF5] rounded-3xl shadow-md border-2 border-[#E8E0D0] overflow-hidden">
+
+    <%# 罫線背景 %>
+    <div class="absolute inset-0 pointer-events-none"
+         style="background-image: repeating-linear-gradient(transparent, transparent calc(2.5rem - 1px), #EBE5D9 2.5rem);"></div>
+
+    <%# 穴パンチ装飾（左側） %>
+    <div class="absolute top-0 left-5 flex flex-col gap-10 pt-8 h-full pointer-events-none z-20">
+      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
     </div>
 
-    <%# 本文 %>
-    <div class="mb-8">
-      <p class="whitespace-pre-wrap text-lg leading-relaxed text-gray-800"><%= @hare_entry.body %></p>
-    </div>
+    <%# コンテンツ本体 %>
+    <div class="relative z-10 p-8 pl-14">
 
-    <%# 写真表示 %>
-    <% if @hare_entry.photo.attached? %>
-      <div class="mb-8">
-        <%= image_tag cloudinary_photo_url(@hare_entry.photo, resize_to_limit: [600, 600]), class: "w-full max-w-2xl rounded-xl border-2 border-gray-200 shadow-md" %>
-      </div>
-    <% end %>
-
-    <%# アクションボタン %>
-    <div class="flex flex-wrap gap-3 pt-6 border-t border-gray-100">
-      <%= link_to "編集", edit_hare_entry_path(@hare_entry), class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-6 py-2.5 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-sm" %>
-      <%= button_to "削除",
-        hare_entry_path(@hare_entry),
-        method: :delete,
-        data: { turbo_confirm: "この記録を削除しますか？" },
-        class: "bg-red-500 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-red-600 transition-colors shadow-sm"
-        %>
-      <% if @hare_entry.public_post? && @hare_entry.share_token.present? %>
-        <div data-controller="clipboard"
-             data-clipboard-text-value="<%= share_hare_entry_url(@hare_entry.share_token) %>">
-          <button data-action="click->clipboard#copy"
-                  data-clipboard-target="button"
-                  class="px-6 py-2.5 bg-blue-100 text-blue-700 rounded-full font-semibold hover:bg-blue-200 transition-colors">
-            <%= app_icon("link", css_class: "w-4 h-4 inline-block") %> 共有URLをコピー
-          </button>
-          <span data-clipboard-target="feedback"
-                class="hidden ml-2 text-sm text-green-600 font-medium">コピーしました！</span>
+      <%# ヘッダー: 日付 + スタンプバッジ %>
+      <div class="flex justify-between items-start mb-6 pb-4" style="border-bottom: 1px solid #EBE5D9;">
+        <div>
+          <p class="text-xs font-bold text-[#C87941] tracking-widest uppercase mb-1">
+            <%= l(@hare_entry.occurred_on, format: "%A") %>
+          </p>
+          <%# スクリーンリーダー・テスト用の完全な日付 %>
+          <time class="sr-only" datetime="<%= @hare_entry.occurred_on.iso8601 %>">
+            <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
+          </time>
+          <div class="flex items-baseline gap-2" aria-hidden="true">
+            <span class="text-5xl font-bold text-[#4A4036]"><%= @hare_entry.occurred_on.day %></span>
+            <span class="text-xl text-[#4A4036] opacity-60">日</span>
+            <span class="text-base text-[#8D7B68]"><%= @hare_entry.occurred_on.strftime('%Y年%-m月') %></span>
+          </div>
         </div>
-        <%= link_to "𝕏 でシェア",
-          "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: share_hare_entry_url(@hare_entry.share_token) }.to_query,
-          target: "_blank",
-          rel: "noopener noreferrer",
-          class: "px-6 py-2.5 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors" %>
+        <%# スタンプ風バッジ %>
+        <% if @hare_entry.public_post? %>
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-16 h-16 rounded-full border-2 border-[#C87941]/50 flex items-center justify-center rotate-6 bg-white/80 shadow-sm">
+              <%= app_icon("sparkles", css_class: "w-7 h-7 text-[#C87941]") %>
+            </div>
+            <span class="text-xs font-bold text-[#C87941] rotate-3">公開中</span>
+          </div>
+        <% else %>
+          <div class="flex flex-col items-center gap-1">
+            <div class="w-16 h-16 rounded-full border-2 border-[#8EA084]/50 flex items-center justify-center -rotate-3 bg-white/80 shadow-sm">
+              <%= app_icon("lock", css_class: "w-7 h-7 text-[#8EA084]") %>
+            </div>
+            <span class="text-xs font-bold text-[#8EA084] -rotate-2">非公開</span>
+          </div>
+        <% end %>
+      </div>
+
+      <%# 本文 %>
+      <div class="mb-8" style="line-height: 2.5rem;">
+        <p class="whitespace-pre-wrap text-[#4A4036] text-lg"><%= @hare_entry.body %></p>
+      </div>
+
+      <%# 写真表示 %>
+      <% if @hare_entry.photo.attached? %>
+        <div class="mb-8">
+          <%= image_tag cloudinary_photo_url(@hare_entry.photo, resize_to_limit: [600, 600]),
+              class: "w-full max-w-2xl rounded-2xl border-2 border-[#E8E0D0] shadow-md" %>
+        </div>
       <% end %>
-      <%= link_to "一覧に戻る", hare_entries_path, class: "px-6 py-2.5 text-gray-600 hover:text-gray-800 font-semibold" %>
+
+      <%# アクションボタン %>
+      <div class="flex flex-wrap gap-3 pt-4 mt-4" style="border-top: 1px solid #EBE5D9;">
+        <%= link_to edit_hare_entry_path(@hare_entry),
+            class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+          <%= app_icon("pencil", css_class: "w-4 h-4 mr-1") %> 編集
+        <% end %>
+        <%= button_to hare_entry_path(@hare_entry),
+          method: :delete,
+          data: { turbo_confirm: "この記録を削除しますか？" },
+          class: "btn btn-error rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+          <%= app_icon("trash-2", css_class: "w-4 h-4 mr-1") %> 削除
+        <% end %>
+        <% if @hare_entry.public_post? && @hare_entry.share_token.present? %>
+          <div data-controller="clipboard"
+               data-clipboard-text-value="<%= share_hare_entry_url(@hare_entry.share_token) %>">
+            <button data-action="click->clipboard#copy"
+                    data-clipboard-target="button"
+                    class="btn btn-outline border-[#8EA084] text-[#8EA084] hover:bg-[#8EA084] hover:text-white rounded-full transition-all">
+              <%= app_icon("link", css_class: "w-4 h-4 mr-1") %> URLをコピー
+            </button>
+            <span data-clipboard-target="feedback"
+                  class="hidden ml-2 text-sm text-[#8EA084] font-medium">コピーしました！</span>
+          </div>
+          <%= link_to "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: share_hare_entry_url(@hare_entry.share_token) }.to_query,
+            target: "_blank",
+            rel: "noopener noreferrer",
+            class: "btn bg-black text-white border-0 rounded-full hover:bg-gray-800 transition-all" do %>
+            𝕏 でシェア
+          <% end %>
+        <% end %>
+        <%= link_to hare_entries_path, class: "btn btn-ghost rounded-full text-[#8D7B68] hover:text-[#4A4036] transition-colors" do %>
+          一覧に戻る
+        <% end %>
+      </div>
+
     </div>
   </div>
 </main>

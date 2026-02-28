@@ -1,25 +1,31 @@
-<main class="max-w-5xl mx-auto p-4 md:p-8">
+<main class="max-w-5xl mx-auto p-4 md:p-8 font-zen">
   <%# ページタイトル %>
-  <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">あなたのハレ一覧</h1>
+  <h1 class="text-2xl md:text-3xl font-bold text-[#4A4036] mb-6 tracking-wide">あなたのハレ一覧</h1>
 
-  <%# 今月のポイントとレベル表示（Stitch 風カード） %>
-  <div class="bg-white rounded-2xl shadow-sm p-6 mb-8">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <p class="text-xs text-orange-600 font-semibold uppercase tracking-wider mb-2">● MONTHLY PROGRESS</p>
-        <div class="flex items-center gap-4 md:gap-8">
-          <div>
-            <p class="text-sm text-gray-500 mb-1">今月のがんばり</p>
-            <p class="text-2xl md:text-3xl font-bold text-orange-500"><%= @monthly_points || 0 %><span class="text-lg text-gray-600">pt</span></p>
-          </div>
-          <div class="h-12 w-px bg-gray-200"></div>
-          <div>
-            <p class="text-sm text-gray-500 mb-1">ハレ度</p>
-            <p class="text-2xl md:text-3xl font-bold text-gray-800">Lv.<%= @level || 0 %></p>
+  <%# 今月のポイントとレベル表示 %>
+  <div class="card bg-[#FFFCF5] shadow-sm border border-[#E8E0D0] mb-8">
+    <div class="card-body">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-xs text-[#C87941] font-bold uppercase tracking-widest mb-2">● MONTHLY PROGRESS</p>
+          <div class="flex items-center gap-4 md:gap-8">
+            <div>
+              <p class="text-sm text-[#8D7B68] mb-1">今月のがんばり</p>
+              <p class="text-2xl md:text-3xl font-bold text-[#C87941]">
+                <%= @monthly_points || 0 %><span class="text-lg text-[#8D7B68]">pt</span>
+              </p>
+            </div>
+            <div class="h-12 w-px bg-[#E8E0D0]"></div>
+            <div>
+              <p class="text-sm text-[#8D7B68] mb-1">ハレ度</p>
+              <p class="text-2xl md:text-3xl font-bold text-[#4A4036]">Lv.<%= @level || 0 %></p>
+            </div>
           </div>
         </div>
+        <div class="mt-3 sm:mt-0">
+          <%= app_icon("flower-2", css_class: "w-10 h-10 md:w-14 md:h-14 text-pink-300") %>
+        </div>
       </div>
-      <div class="mt-3 sm:mt-0"><%= app_icon("flower-2", css_class: "w-8 h-8 md:w-12 md:h-12 text-pink-400") %></div>
     </div>
   </div>
 
@@ -28,21 +34,30 @@
     <div class="space-y-4">
       <% @hare_entries.each do |entry| %>
         <%= link_to hare_entry_path(entry), class: "block group" do %>
-          <div class="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6">
-            <div class="flex items-start justify-between mb-2">
-              <p class="text-sm text-gray-500"><%= entry.occurred_on.strftime('%Y年%-m月%-d日') %></p>
-              <% if entry.public_post? %>
-                <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">公開</span>
-              <% else %>
-                <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">非公開</span>
-              <% end %>
-            </div>
-            <% if entry.photo.attached? %>
-              <div class="mb-3">
-                <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [200, 200]), class: "rounded-lg border-2 border-gray-200 shadow-sm" %>
+          <div class="bg-[#FFFCF5] rounded-2xl shadow-sm border border-[#E8E0D0] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
+            <%# 左側のアクセントライン %>
+            <div class="flex">
+              <div class="w-1 bg-gradient-to-b from-[#C87941] to-[#E8A87C] rounded-l-2xl flex-shrink-0"></div>
+              <div class="flex-1 p-5">
+                <div class="flex items-start justify-between mb-3">
+                  <p class="text-sm text-[#8D7B68]">
+                    <%= app_icon("sparkles", css_class: "w-3.5 h-3.5 inline-block text-[#C87941] mr-1") %>
+                    <%= entry.occurred_on.strftime('%Y年%-m月%-d日') %>
+                  </p>
+                  <% if entry.public_post? %>
+                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#FFF0D4] text-[#C87941] border border-[#F5D5A0]">公開</span>
+                  <% else %>
+                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#F2F0EC] text-[#8D7B68] border border-[#E0D8CC]">非公開</span>
+                  <% end %>
+                </div>
+                <% if entry.photo.attached? %>
+                  <div class="mb-3">
+                    <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [200, 200]), class: "rounded-xl border border-[#E8E0D0] shadow-sm" %>
+                  </div>
+                <% end %>
+                <p class="text-[#4A4036] whitespace-pre-wrap leading-relaxed group-hover:text-[#2D2520] transition-colors"><%= entry.body %></p>
               </div>
-            <% end %>
-            <p class="text-gray-800 whitespace-pre-wrap leading-relaxed group-hover:text-gray-900"><%= entry.body %></p>
+            </div>
           </div>
         <% end %>
       <% end %>
@@ -53,10 +68,24 @@
     </div>
   <% else %>
     <%# 空状態 %>
-    <div class="text-center py-20 bg-white rounded-2xl shadow-sm">
-      <div class="flex justify-center mb-4"><%= app_icon("sparkles", css_class: "w-16 h-16 text-yellow-400") %></div>
-      <p class="text-gray-600 text-lg mb-6">まだハレの記録がありません。<br>最初の一歩を踏み出しましょう！</p>
-      <%= link_to "記録する", new_hare_entry_path, class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-8 py-3 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-md inline-block" %>
+    <div class="bg-[#FFFCF5] rounded-3xl shadow-sm border-2 border-dashed border-[#E8E0D0] text-center py-20 px-8">
+      <div class="flex justify-center mb-4">
+        <%= app_icon("sparkles", css_class: "w-16 h-16 text-[#F5C49A]") %>
+      </div>
+      <p class="text-[#8D7B68] text-lg mb-2 font-medium">まだハレの記録がありません</p>
+      <p class="text-[#B8AFA5] text-sm mb-8">最初の「小さなハレ」を見つけましょう</p>
+      <%= link_to new_hare_entry_path,
+          class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all rounded-full px-8" do %>
+        <%= app_icon("plus", css_class: "w-4 h-4 mr-1") %> 記録する
+      <% end %>
     </div>
   <% end %>
+
+  <%# FABボタン（モバイル） %>
+  <div class="fixed bottom-6 right-6 md:hidden z-50">
+    <%= link_to new_hare_entry_path,
+        class: "w-14 h-14 bg-[#C87941] text-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#B06A35] hover:scale-110 transition-all" do %>
+      <%= app_icon("plus", css_class: "w-6 h-6") %>
+    <% end %>
+  </div>
 </main>

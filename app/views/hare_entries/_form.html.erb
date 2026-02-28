@@ -1,79 +1,116 @@
 <%= form_with model: hare_entry, local: true, class: "space-y-6" do |f| %>
   <%# エラーメッセージ %>
   <% if hare_entry.errors.any? %>
-    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded">
-      <p class="font-bold text-red-700 mb-2"><%= hare_entry.errors.count %>件の入力エラーがあります</p>
-      <ul class="list-disc list-inside text-red-600 text-sm space-y-1">
-        <% hare_entry.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <%# 内容入力 %>
-  <div data-controller="character-count">
-    <%= f.label :body, "内容", class: "block text-base font-bold text-gray-800 mb-3" %>
-    <%= f.text_area :body, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white resize-none text-gray-900 placeholder-gray-500", rows: 6, maxlength: 280, placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）", data: { character_count_target: "input", action: "input->character-count#update" } %>
-    <p class="text-right text-sm mt-1 text-stone-600">
-      残り <span data-character-count-target="count" class="font-semibold text-stone-600">280</span> 文字
-    </p>
-  </div>
-
-  <%# 日付入力 %>
-  <div>
-    <%= f.label :occurred_on, "日付", class: "block text-base font-bold text-gray-800 mb-3" %>
-    <%= f.date_field :occurred_on, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900" %>
-  </div>
-
-  <%# タグ選択 %>
-  <% if local_assigns[:hare_tags]&.any? %>
-    <div>
-      <%= f.label :hare_tag_ids, "タグ（複数選択可）", class: "block text-base font-bold text-gray-800 mb-3" %>
-      <div class="flex flex-wrap gap-3">
-        <%= f.collection_check_boxes(:hare_tag_ids, hare_tags, :id, :label) do |b| %>
-          <label class="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-orange-50 rounded-full cursor-pointer transition-colors border-2 border-gray-300 hover:border-orange-400">
-            <%= b.check_box(class: "rounded text-orange-500 focus:ring-orange-400") %>
-            <span class="text-sm font-medium text-gray-800"><%= b.text %></span>
-          </label>
-        <% end %>
+    <div role="alert" class="alert alert-error rounded-2xl">
+      <div>
+        <p class="font-bold"><%= hare_entry.errors.count %>件の入力エラーがあります</p>
+        <ul class="list-disc list-inside text-sm space-y-1 mt-1">
+          <% hare_entry.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
     </div>
   <% end %>
 
+  <%# 内容入力 %>
+  <fieldset class="fieldset" data-controller="character-count">
+    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">内容</legend>
+    <label class="sr-only" for="hare_entry_body">内容</label>
+    <%= f.text_area :body,
+        class: "textarea w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] placeholder-[#C4B8AA] transition-colors",
+        rows: 6,
+        maxlength: 280,
+        placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）",
+        data: { character_count_target: "input", action: "input->character-count#update" } %>
+    <p class="fieldset-label text-right text-[#B8AFA5]">
+      残り <span data-character-count-target="count" class="font-semibold text-[#8D7B68]">280</span> 文字
+    </p>
+  </fieldset>
+
+  <%# 日付入力 %>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">日付</legend>
+    <%= f.date_field :occurred_on,
+        class: "input w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] transition-colors" %>
+  </fieldset>
+
+  <%# タグ選択 %>
+  <% if local_assigns[:hare_tags]&.any? %>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">タグ（複数選択可）</legend>
+      <%
+        tag_icons = {
+          'homemade_meal'       => 'cooking-pot',
+          'seasonal_ingredient' => 'leaf',
+          'new_recipe'          => 'book-open',
+          'colorful_dish'       => 'palette',
+          'plating'             => 'sparkles',
+          'local_specialty'     => 'map-pin',
+          'unusual_ingredient'  => 'gem',
+          'cooking_tool'        => 'utensils',
+          'preserved_food'      => 'archive',
+          'outdoor_meal'        => 'store',
+        }
+      %>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <%= f.collection_check_boxes(:hare_tag_ids, hare_tags, :id, :label) do |b| %>
+          <label class="cursor-pointer">
+            <%= b.check_box(class: "peer sr-only") %>
+            <div class="flex flex-col items-center gap-2 p-4 rounded-2xl border-2
+                        border-[#E8E0D0] bg-[#FAFAF7]
+                        peer-checked:border-[#C87941] peer-checked:bg-[#FFF5E9]
+                        hover:border-[#D4C4B0] transition-all select-none">
+              <%= app_icon(tag_icons.fetch(b.object.key, 'tag'), css_class: "w-7 h-7 text-[#C87941]") %>
+              <span class="text-xs font-semibold text-[#4A4036] text-center leading-snug"><%= b.text %></span>
+            </div>
+          </label>
+        <% end %>
+      </div>
+    </fieldset>
+  <% end %>
+
   <%# 公開設定 %>
-  <div>
-    <%= f.label :visibility, "公開設定", class: "block text-base font-bold text-gray-800 mb-3" %>
-    <%= f.select :visibility, HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] }, {}, class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900" %>
-  </div>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">公開設定</legend>
+    <%= f.select :visibility,
+        HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] },
+        {},
+        class: "select w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] transition-colors" %>
+  </fieldset>
 
   <%# 写真アップロード %>
-  <div data-controller="image-preview">
-    <%= f.label :photo, "写真", class: "block text-base font-bold text-gray-800 mb-3" %>
-    <%= f.file_field :photo, accept: "image/jpeg,image/png,image/webp", class: "w-full px-4 py-3 bg-gray-50 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400 focus:bg-white text-gray-900", data: { image_preview_target: "input", action: "change->image-preview#preview" } %>
-    <p class="text-sm text-gray-600 mt-2">JPEG、PNG、WebP形式（最大5MB）</p>
+  <fieldset class="fieldset" data-controller="image-preview">
+    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">写真</legend>
+    <%= f.file_field :photo,
+        accept: "image/jpeg,image/png,image/webp",
+        class: "file-input w-full bg-[#FFFCF5] border-[#E8E0D0] rounded-xl text-[#4A4036]",
+        data: { image_preview_target: "input", action: "change->image-preview#preview" } %>
+    <p class="fieldset-label text-[#B8AFA5]">JPEG、PNG、WebP形式（最大5MB）</p>
 
     <%# プレビューエリア %>
     <div data-image-preview-target="previewContainer" class="mt-4 hidden">
-      <img data-image-preview-target="preview" class="max-w-full md:max-w-md rounded-xl border-2 border-gray-300 shadow-sm">
+      <img data-image-preview-target="preview" class="max-w-full md:max-w-md rounded-xl border border-[#E8E0D0] shadow-sm">
     </div>
 
     <%# 既存の写真表示と削除チェックボックス %>
     <% if hare_entry.photo.attached? %>
       <div class="mt-4">
-        <p class="text-sm font-bold text-gray-800 mb-2">現在の写真</p>
-        <%= image_tag cloudinary_photo_url(hare_entry.photo, resize_to_limit: [200, 200]), class: "max-w-full md:max-w-md rounded-xl border-2 border-gray-300 shadow-sm" %>
-        <label class="flex items-center gap-2 mt-3">
-          <%= f.check_box :remove_photo, class: "rounded text-red-500 focus:ring-red-400" %>
-          <span class="text-sm font-medium text-gray-800">写真を削除する</span>
+        <p class="text-sm font-bold text-[#4A4036] mb-2">現在の写真</p>
+        <%= image_tag cloudinary_photo_url(hare_entry.photo, resize_to_limit: [200, 200]), class: "max-w-full md:max-w-md rounded-xl border border-[#E8E0D0] shadow-sm" %>
+        <label class="flex items-center gap-2 mt-3 cursor-pointer">
+          <%= f.check_box :remove_photo, class: "checkbox checkbox-error checkbox-sm" %>
+          <span class="text-sm font-medium text-[#4A4036]">写真を削除する</span>
         </label>
       </div>
     <% end %>
-  </div>
+  </fieldset>
 
   <%# ボタン %>
   <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
-    <%= f.submit submit_label, class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-6 md:px-8 py-3 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-md w-full sm:w-auto" %>
-    <%= link_to "キャンセル", cancel_path, class: "px-6 md:px-8 py-3 text-gray-600 hover:text-gray-800 font-semibold text-center" %>
+    <%= f.submit submit_label,
+        class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all rounded-full w-full sm:w-auto px-8 font-zen font-bold" %>
+    <%= link_to "キャンセル", cancel_path,
+        class: "btn btn-ghost rounded-full text-[#8D7B68] hover:text-[#4A4036] w-full sm:w-auto text-center transition-colors" %>
   </div>
 <% end %>

@@ -1,5 +1,13 @@
 <% flash.each do |type, message| %>
-  <div class="alert alert-<%= type == 'notice' ? 'success' : 'error' %> mb-4">
-    <span><%= message %></span>
-  </div>
+  <% if type == 'notice' %>
+    <div class="mx-4 mt-3 px-4 py-3 bg-[#F0F7F1] border border-[#8EA084] rounded-2xl text-[#3D5E42] text-sm flex items-center gap-2">
+      <%= app_icon("circle-check", css_class: "w-4 h-4 text-[#8EA084] flex-shrink-0") %>
+      <span><%= message %></span>
+    </div>
+  <% else %>
+    <div class="mx-4 mt-3 px-4 py-3 bg-[#FDF3F0] border border-[#C87941]/50 rounded-2xl text-[#6B3A2A] text-sm flex items-center gap-2">
+      <%= app_icon("alert-circle", css_class: "w-4 h-4 text-[#C87941] flex-shrink-0") %>
+      <span><%= message %></span>
+    </div>
+  <% end %>
 <% end %>
