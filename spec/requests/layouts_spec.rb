@@ -70,8 +70,8 @@ RSpec.describe "共通レイアウト", type: :request do
       it "ログイン済みヘッダーが表示されず、未ログイン時ヘッダーが表示される" do
         get root_path
         expect(response).to have_http_status(:ok)
-        # ログイン済みヘッダー特有の要素が表示されない
-        expect(response.body).not_to include("ホーム")
+        # ログイン済みヘッダー特有の要素が表示されない（LP本文に「ホーム画面」が含まれるため href で判定）
+        expect(response.body).not_to include('href="/home"')
         expect(response.body).not_to include("ハレ投稿")
         expect(response.body).not_to include("プロフィール")
         expect(response.body).not_to include("ログアウト")
