@@ -53,6 +53,11 @@
           <span data-clipboard-target="feedback"
                 class="hidden ml-2 text-sm text-green-600 font-medium">コピーしました！</span>
         </div>
+        <%= link_to "𝕏 でシェア",
+          "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: share_hare_entry_url(@hare_entry.share_token) }.to_query,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          class: "px-6 py-2.5 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors" %>
       <% end %>
       <%= link_to "一覧に戻る", hare_entries_path, class: "px-6 py-2.5 text-gray-600 hover:text-gray-800 font-semibold" %>
     </div>

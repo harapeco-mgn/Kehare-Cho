@@ -47,8 +47,17 @@
     <% end %>
   </div>
 
+  <%# シェアボタン %>
+  <div class="flex justify-center mt-6">
+    <%= link_to "𝕏 でシェア",
+      "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: request.url }.to_query,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      class: "px-6 py-2.5 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors" %>
+  </div>
+
   <%# フッター %>
-  <div class="text-center mt-8 text-sm text-gray-500">
+  <div class="text-center mt-6 text-sm text-gray-500">
     <p>ケハレ帖 — 日常の食事に小さなハレを</p>
   </div>
 </main>
