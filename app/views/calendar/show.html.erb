@@ -1,53 +1,28 @@
-<main class="max-w-4xl mx-auto p-4 md:p-8">
-  <%# ページヘッダー %>
-  <div class="mb-8">
-    <div class="flex items-center gap-2 md:gap-3 mb-4">
-      <%= app_icon("calendar", css_class: "w-6 h-6 md:w-10 md:h-10 text-orange-400") %>
-      <h1 class="text-xl md:text-3xl font-bold text-gray-800">
-        <%= @date.strftime("%Y年%-m月%-d日") %> のハレ投稿
-      </h1>
-    </div>
+<%# turbo-frame 外のナビ（直接アクセス時のみ表示、フレーム経由時は無視される） %>
+<div class="max-w-2xl mx-auto px-4 pt-6 pb-2 font-zen flex items-center gap-3">
+  <%= link_to "← 月へ戻る", calendar_path,
+      class: "text-[#8D7B68] hover:text-[#C87941] font-medium transition-colors text-sm" %>
+  <span class="text-[#D6CCB8]">|</span>
+  <%= link_to "新規投稿", new_hare_entry_path,
+      class: "bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white px-4 py-1.5 rounded-full font-semibold text-sm hover:opacity-90 transition-opacity shadow-sm" %>
+</div>
 
-    <%# ナビゲーションボタン %>
-    <div class="flex gap-3">
-      <%= link_to "← 月へ戻る", calendar_path, class: "text-gray-600 hover:text-gray-800 font-medium" %>
-      <%= link_to "新規投稿", new_hare_entry_path, class: "bg-gradient-to-r from-orange-400 to-orange-300 text-white px-6 py-2.5 rounded-full font-semibold hover:from-orange-500 hover:to-orange-400 transition-colors shadow-sm" %>
-    </div>
-  </div>
+<div class="max-w-2xl mx-auto px-4 pb-8 font-zen">
+  <turbo-frame id="calendar-detail">
+    <% if @hare_entries.any? %>
+      <%= render "calendar/entry_detail", entry: @hare_entries.first, date: @date %>
 
-  <%# ハレ投稿一覧 %>
-  <% if @hare_entries.empty? %>
-    <div class="text-center py-20 bg-white rounded-2xl shadow-sm">
-      <div class="flex justify-center mb-4"><%= app_icon("sparkles", css_class: "w-16 h-16 text-yellow-400") %></div>
-      <p class="text-gray-600 text-lg mb-2">この日はまだハレがありません</p>
-      <p class="text-sm text-gray-500">小さなハレを見つけたら、記録してみましょう</p>
-    </div>
-  <% else %>
-    <div class="space-y-4">
-      <% @hare_entries.each do |entry| %>
-        <div class="bg-white rounded-2xl shadow-sm p-6 hover:shadow-md transition-shadow">
-          <%= link_to hare_entry_path(entry), class: "block group" do %>
-            <p class="text-gray-800 text-lg leading-relaxed mb-3 group-hover:text-gray-900"><%= entry.body %></p>
-          <% end %>
-
-          <%# タグがあれば表示 %>
-          <% if entry.hare_tags.any? %>
-            <div class="flex flex-wrap gap-2 mb-3">
-              <% entry.hare_tags.each do |tag| %>
-                <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold"><%= tag.label %></span>
-              <% end %>
-            </div>
-          <% end %>
-
-          <%# ポイントがあれば表示 %>
-          <% if entry.awarded_points&.positive? %>
-            <div class="flex items-center gap-1 text-orange-600">
-              <%= app_icon("sparkles", css_class: "w-4 h-4 text-yellow-400") %>
-              <p class="text-sm font-semibold">+<%= entry.awarded_points %> ポイント</p>
-            </div>
-          <% end %>
+      <%# 複数の投稿がある場合の案内 %>
+      <% if @hare_entries.size > 1 %>
+        <div class="mt-3 text-center">
+          <p class="text-xs text-[#8D7B68]">
+            この日は他に <%= @hare_entries.size - 1 %> 件の記録があります →
+            <%= link_to "すべて見る", hare_entries_path, class: "text-[#C87941] font-bold hover:underline" %>
+          </p>
         </div>
       <% end %>
-    </div>
-  <% end %>
-</main>
+    <% else %>
+      <%= render "calendar/entry_empty", date: @date %>
+    <% end %>
+  </turbo-frame>
+</div>

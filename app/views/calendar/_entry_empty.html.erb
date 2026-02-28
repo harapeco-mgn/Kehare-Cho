@@ -1,0 +1,16 @@
+<%# エントリー空状態パネル
+    locals: date (Date or nil) %>
+<div class="bg-[#FFFCF5] rounded-3xl shadow-sm border-2 border-dashed border-[#E8E0D0]
+            flex flex-col items-center justify-center min-h-[420px] p-8 text-center">
+  <%= app_icon("flower-2", css_class: "w-16 h-16 text-[#D6CCB8] mb-4") %>
+  <% if defined?(date) && date %>
+    <p class="text-[#4A4036] text-lg font-semibold mb-1">この日はまだハレがありません</p>
+    <p class="text-[#B8AFA5] text-sm mb-6">小さな「ちょっと特別」を記録してみましょう</p>
+    <%= link_to new_hare_entry_path,
+        class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all font-bold" do %>
+      <%= app_icon("plus", css_class: "w-4 h-4 mr-1") %> ハレを記録する
+    <% end %>
+  <% else %>
+    <p class="text-[#8D7B68] text-base">日付をクリックすると<br>その日の記録が表示されます</p>
+  <% end %>
+</div>
