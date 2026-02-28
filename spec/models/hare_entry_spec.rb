@@ -119,6 +119,28 @@ RSpec.describe HareEntry, type: :model do
     end
   end
 
+  describe 'share_token' do
+    context '公開投稿を作成した場合' do
+      it 'share_token が自動生成されること' do
+        hare_entry = HareEntry.create!(user: user, body: 'テスト', occurred_on: Date.today, visibility: :public_post)
+        expect(hare_entry.share_token).to be_present
+      end
+
+      it 'share_token が一意であること' do
+        entry1 = HareEntry.create!(user: user, body: 'テスト1', occurred_on: Date.today, visibility: :public_post)
+        entry2 = HareEntry.create!(user: user, body: 'テスト2', occurred_on: Date.today, visibility: :public_post)
+        expect(entry1.share_token).not_to eq(entry2.share_token)
+      end
+    end
+
+    context '非公開投稿を作成した場合' do
+      it 'share_token が生成されないこと' do
+        hare_entry = HareEntry.create!(user: user, body: 'テスト', occurred_on: Date.today, visibility: :private_post)
+        expect(hare_entry.share_token).to be_nil
+      end
+    end
+  end
+
   describe 'enums' do
     it 'defines visibility enum' do
       expect(HareEntry.visibilities).to eq({ 'public_post' => 0, 'private_post' => 1 })

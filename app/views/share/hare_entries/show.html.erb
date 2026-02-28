@@ -1,0 +1,63 @@
+<% content_for :title, "#{@hare_entry.user.display_name}さんのハレ記録 | ケハレ帖" %>
+<% content_for :og_title, "#{@hare_entry.user.display_name}さんのハレ記録" %>
+<% content_for :og_description, @hare_entry.body.truncate(100) %>
+
+<main class="max-w-2xl mx-auto p-4 md:p-8">
+  <%# ヘッダー %>
+  <div class="text-center mb-8">
+    <h1 class="text-2xl font-bold text-orange-600">ケハレ帖</h1>
+    <p class="text-sm text-gray-500 mt-1">日常の食事に小さなハレを</p>
+  </div>
+
+  <%# 投稿カード %>
+  <div class="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+    <%# 投稿者・日付 %>
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 pb-4 border-b border-gray-100">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">✨</span>
+        <div>
+          <p class="font-semibold text-gray-800"><%= @hare_entry.user.display_name %></p>
+          <p class="text-sm text-gray-500"><%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %></p>
+        </div>
+      </div>
+    </div>
+
+    <%# 本文 %>
+    <div class="mb-6">
+      <p class="whitespace-pre-wrap text-lg leading-relaxed text-gray-800"><%= @hare_entry.body %></p>
+    </div>
+
+    <%# 写真 %>
+    <% if @hare_entry.photo.attached? %>
+      <div class="mb-6">
+        <%= image_tag cloudinary_photo_url(@hare_entry.photo, resize_to_limit: [600, 600]),
+          class: "w-full max-w-2xl rounded-xl border-2 border-gray-200 shadow-md" %>
+      </div>
+    <% end %>
+
+    <%# タグ %>
+    <% if @hare_entry.hare_tags.any? %>
+      <div class="flex flex-wrap gap-2">
+        <% @hare_entry.hare_tags.each do |tag| %>
+          <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-medium">
+            <%= tag.label %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <%# シェアボタン %>
+  <div class="flex justify-center mt-6">
+    <%= link_to "𝕏 でシェア",
+      "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: request.url }.to_query,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      class: "px-6 py-2.5 bg-black text-white rounded-full font-semibold hover:bg-gray-800 transition-colors" %>
+  </div>
+
+  <%# フッター %>
+  <div class="text-center mt-6 text-sm text-gray-500">
+    <p>ケハレ帖 — 日常の食事に小さなハレを</p>
+  </div>
+</main>
