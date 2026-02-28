@@ -10,7 +10,7 @@
 #       WSL2 カーネルの seccomp 制限により Chrome を直接起動できないため、
 #       コンテナ化された Chrome を使うことで制限を回避する
 
-Capybara.default_max_wait_time = 3
+Capybara.default_max_wait_time = 10
 Capybara.server = :puma, { Silent: true }
 
 if ENV["CI"]

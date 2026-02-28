@@ -22,6 +22,8 @@ RSpec.describe "ログイン / ログアウト", type: :system do
     fill_in "メールアドレス", with: user.email
     fill_in "パスワード",     with: "password"
     click_button "ログイン"
+    # ログインフォームから離れたことを確認してからホーム画面の内容を検証
+    expect(page).not_to have_current_path(new_user_session_path)
     expect(page).to have_text("こんにちは")
 
     # ヘッダーのログアウトボタンをクリック
