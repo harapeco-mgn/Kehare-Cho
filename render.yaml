@@ -31,7 +31,11 @@ services:
         sync: false
       - key: MAIL_FROM
         sync: false
+      - key: GEMINI_API_KEY
+        sync: false
       # 固定値: 本番環境設定
+      - key: SOLID_QUEUE_IN_PUMA
+        value: "true"
       - key: RAILS_ENV
         value: production
       - key: RAILS_LOG_LEVEL
