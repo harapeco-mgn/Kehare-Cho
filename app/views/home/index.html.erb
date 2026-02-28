@@ -39,7 +39,7 @@
 
       <%# メインアクションカード（2つ横並び・Stitch完全再現） %>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <%# 献立相談カード（深緑） %>
+        <%# かんたん献立カード（深緑） %>
         <div class="bg-[#7A9D7E] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
           <%# 背景の丸（装飾）+ 絵文字 %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
@@ -52,7 +52,7 @@
 
             <%# ボタン %>
             <div class="mt-auto flex justify-end">
-              <%= link_to "相談する", new_meal_search_path, class: "bg-white text-[#7A9D7E] px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
+              <%= link_to "相談する", meal_guide_path, class: "bg-white text-[#7A9D7E] px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
             </div>
           </div>
         </div>
@@ -194,10 +194,10 @@
             ケハレ帖でできること
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <%# 献立相談 %>
+            <%# かんたん献立 %>
             <div class="bg-gradient-to-br from-[#7A9D7E] to-[#6B8D6E] rounded-3xl p-8 text-white shadow-lg">
               <div class="text-5xl mb-4">🍚</div>
-              <h3 class="text-2xl font-bold mb-3">献立相談</h3>
+              <h3 class="text-2xl font-bold mb-3">かんたん献立</h3>
               <p class="text-white/90 leading-relaxed">
                 「今日は何を作ろう？」そんな迷いを解決。
                 あなたの好みに合わせた献立を提案します。
