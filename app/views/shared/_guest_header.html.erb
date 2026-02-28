@@ -1,35 +1,37 @@
-<header class="navbar bg-white shadow-md">
+<header class="navbar bg-[#FFFCF5] shadow-sm border-b border-[#E8E0D0] font-zen">
   <%# モバイル: ハンバーガー + アプリ名 %>
   <div class="navbar-start">
     <div class="dropdown">
-      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden text-[#4A4036]">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
         </svg>
       </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52">
-        <li><%= link_to "使い方", how_to_use_path, class: "text-gray-700 hover:text-orange-600" %></li>
-        <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "text-gray-700 hover:text-orange-600" %></li>
-        <li><%= link_to "ログイン", new_user_session_path, class: "text-gray-700 hover:text-orange-600" %></li>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-md bg-[#FFFCF5] border border-[#E8E0D0] rounded-2xl w-52">
+        <li><%= link_to "使い方", how_to_use_path, class: "text-[#4A4036] hover:text-[#C87941] rounded-xl" %></li>
+        <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "text-[#4A4036] hover:text-[#C87941] rounded-xl" %></li>
+        <li><%= link_to "ログイン", new_user_session_path, class: "text-[#4A4036] hover:text-[#C87941] rounded-xl" %></li>
         <li>
-          <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0 w-full mt-1" %>
+          <%= link_to "新規登録", new_user_registration_path,
+                class: "btn bg-[#C87941] hover:bg-[#A8602F] text-white btn-sm border-0 w-full mt-1 rounded-xl" %>
         </li>
       </ul>
     </div>
-    <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-gray-900" %>
+    <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-[#4A4036] tracking-wider" %>
   </div>
 
   <%# デスクトップ: 横並びメニュー %>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 space-x-2">
-      <li><%= link_to "使い方", how_to_use_path, class: "btn btn-ghost btn-sm text-gray-700 hover:text-orange-600" %></li>
-      <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "btn btn-ghost btn-sm text-gray-700 hover:text-orange-600" %></li>
-      <li><%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost btn-sm text-gray-700 hover:text-orange-600" %></li>
+      <li><%= link_to "使い方", how_to_use_path, class: "btn btn-ghost btn-sm text-[#8D7B68] hover:text-[#C87941] rounded-xl" %></li>
+      <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "btn btn-ghost btn-sm text-[#8D7B68] hover:text-[#C87941] rounded-xl" %></li>
+      <li><%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost btn-sm text-[#8D7B68] hover:text-[#C87941] rounded-xl" %></li>
     </ul>
   </div>
 
   <%# 新規登録ボタン %>
   <div class="navbar-end hidden lg:flex">
-    <%= link_to "新規登録", new_user_registration_path, class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
+    <%= link_to "新規登録", new_user_registration_path,
+          class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] hover:opacity-90 text-white btn-sm border-0 rounded-full shadow-sm" %>
   </div>
 </header>
