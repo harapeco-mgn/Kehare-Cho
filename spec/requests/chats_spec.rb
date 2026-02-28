@@ -75,6 +75,49 @@ RSpec.describe "Chats", type: :request do
         expect(response.body).to include("新しい相談")
       end
 
+      context "meal_consultation タイプで料理名を含む AI メッセージがある場合" do
+        let(:content) do
+          <<~TEXT
+            **1. 鶏むね肉と野菜のポン酢炒め**
+            *   特徴: さっぱりしています。
+            **2. 豆腐とわかめの味噌汁**
+            *   特徴: ヘルシーです。
+          TEXT
+        end
+        let!(:ai_message) { chat.messages.create!(role: "assistant", content: content) }
+
+        it "料理名ごとのボタンが表示される" do
+          get chat_path(chat)
+          expect(response.body).to include("鶏むね肉と野菜のポン酢炒め")
+          expect(response.body).to include("豆腐とわかめの味噌汁")
+        end
+
+        it "各料理名がフォームへのリンクになっている" do
+          get chat_path(chat)
+          expect(response.body).to include(new_hare_entry_path(body: "鶏むね肉と野菜のポン酢炒め"))
+          expect(response.body).to include(new_hare_entry_path(body: "豆腐とわかめの味噌汁"))
+        end
+      end
+
+      context "meal_consultation タイプで料理名がない AI メッセージ（会話的な返答）の場合" do
+        let!(:ai_message) { chat.messages.create!(role: "assistant", content: "承知しました！どんな食材がありますか？") }
+
+        it "ハレ記録フォームへのボタンが表示されない" do
+          get chat_path(chat)
+          expect(response.body).not_to include(new_hare_entry_path(body: ""))
+        end
+      end
+
+      context "cooking_advice タイプの場合" do
+        let!(:cooking_chat) { create(:chat, user: user, conversation_type: :cooking_advice) }
+        let!(:ai_message) { cooking_chat.messages.create!(role: "assistant", content: "#### 1. 鶏肉の塩炒め\n特徴: 簡単です。") }
+
+        it "ハレ記録フォームへのリンクが表示されない" do
+          get chat_path(cooking_chat)
+          expect(response.body).not_to include(new_hare_entry_path(body: "鶏肉の塩炒め"))
+        end
+      end
+
       context "他ユーザーのチャット" do
         let(:other_user) { create(:user) }
         let!(:other_chat) { create(:chat, user: other_user) }
