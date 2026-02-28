@@ -9,7 +9,7 @@
     <%# ヘッダー情報 %>
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 pb-4 border-b border-gray-100">
       <div class="flex items-center gap-3">
-        <span class="text-3xl">✨</span>
+        <%= app_icon("sparkles", css_class: "w-8 h-8 text-yellow-400") %>
         <p class="text-lg font-medium text-gray-700">
           <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
         </p>
@@ -48,7 +48,7 @@
           <button data-action="click->clipboard#copy"
                   data-clipboard-target="button"
                   class="px-6 py-2.5 bg-blue-100 text-blue-700 rounded-full font-semibold hover:bg-blue-200 transition-colors">
-            🔗 共有URLをコピー
+            <%= app_icon("link", css_class: "w-4 h-4 inline-block") %> 共有URLをコピー
           </button>
           <span data-clipboard-target="feedback"
                 class="hidden ml-2 text-sm text-green-600 font-medium">コピーしました！</span>

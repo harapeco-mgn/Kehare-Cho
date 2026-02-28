@@ -41,9 +41,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <%# かんたん献立カード（深緑） %>
         <div class="bg-[#7A9D7E] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
-          <%# 背景の丸（装飾）+ 絵文字 %>
+          <%# 背景の丸（装飾）+ アイコン %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
-            <div class="text-5xl">🍚</div>
+            <div><%= app_icon("utensils", css_class: "w-14 h-14 text-white/80") %></div>
           </div>
 
           <div class="relative z-10 flex flex-col flex-1">
@@ -59,9 +59,9 @@
 
         <%# ハレ記録カード（オレンジ） %>
         <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
-          <%# 背景の丸（装飾）+ 絵文字 %>
+          <%# 背景の丸（装飾）+ アイコン %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
-            <div class="text-5xl">✨</div>
+            <div><%= app_icon("sparkles", css_class: "w-14 h-14 text-white/80") %></div>
           </div>
 
           <div class="relative z-10 flex flex-col flex-1">
@@ -86,7 +86,7 @@
           <div class="space-y-3">
             <% @recent_hare_entries.each do |entry| %>
               <%= link_to hare_entry_path(entry), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors block" do %>
-                <span class="text-xl mt-0.5">✨</span>
+                <%= app_icon("sparkles", css_class: "w-5 h-5 mt-0.5 text-yellow-400 flex-shrink-0") %>
                 <div class="flex-1 min-w-0">
                   <p class="text-sm text-gray-800 line-clamp-2"><%= entry.body.truncate(60) %></p>
                   <p class="text-xs text-gray-400 mt-1"><%= l(entry.occurred_on, format: :long) %></p>
@@ -128,7 +128,7 @@
       <%# ナビゲーションカード %>
       <div class="grid grid-cols-2 gap-3">
         <%= link_to hare_entries_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
-          <span class="text-2xl">✨</span>
+          <%= app_icon("sparkles", css_class: "w-6 h-6 text-yellow-400 flex-shrink-0") %>
           <div class="flex-1">
             <p class="font-semibold text-sm text-gray-800">ハレ一覧</p>
             <p class="text-xs text-gray-400">過去の記録を見る</p>
@@ -137,7 +137,7 @@
         <% end %>
 
         <%= link_to meal_searches_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
-          <span class="text-2xl">🍚</span>
+          <%= app_icon("utensils", css_class: "w-6 h-6 text-green-600 flex-shrink-0") %>
           <div class="flex-1">
             <p class="font-semibold text-sm text-gray-800">献立ログ</p>
             <p class="text-xs text-gray-400">相談履歴を見る</p>
@@ -146,7 +146,7 @@
         <% end %>
 
         <%= link_to new_chat_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
-          <span class="text-2xl">🤖</span>
+          <%= app_icon("bot", css_class: "w-6 h-6 text-blue-500 flex-shrink-0") %>
           <div class="flex-1">
             <p class="font-semibold text-sm text-gray-800">AI相談</p>
             <p class="text-xs text-gray-400">料理の悩みを相談</p>
@@ -155,7 +155,7 @@
         <% end %>
 
         <%= link_to how_to_use_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
-          <span class="text-2xl">📖</span>
+          <%= app_icon("book-open", css_class: "w-6 h-6 text-orange-400 flex-shrink-0") %>
           <div class="flex-1">
             <p class="font-semibold text-sm text-gray-800">使い方</p>
             <p class="text-xs text-gray-400">アプリの説明</p>
@@ -196,7 +196,7 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <%# かんたん献立 %>
             <div class="bg-gradient-to-br from-[#7A9D7E] to-[#6B8D6E] rounded-3xl p-8 text-white shadow-lg">
-              <div class="text-5xl mb-4">🍚</div>
+              <div class="mb-4"><%= app_icon("utensils", css_class: "w-12 h-12 text-white/80") %></div>
               <h3 class="text-2xl font-bold mb-3">かんたん献立</h3>
               <p class="text-white/90 leading-relaxed">
                 「今日は何を作ろう？」そんな迷いを解決。
@@ -206,7 +206,7 @@
 
             <%# ハレ記録 %>
             <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-8 text-white shadow-lg">
-              <div class="text-5xl mb-4">✨</div>
+              <div class="mb-4"><%= app_icon("sparkles", css_class: "w-12 h-12 text-white/80") %></div>
               <h3 class="text-2xl font-bold mb-3">ハレ記録</h3>
               <p class="text-white/90 leading-relaxed">
                 ちょっとした工夫や嬉しかったことを記録。
@@ -216,7 +216,7 @@
 
             <%# カレンダー %>
             <div class="bg-gradient-to-br from-[#E8A87C] to-[#D99B6E] rounded-3xl p-8 text-white shadow-lg">
-              <div class="text-5xl mb-4">📅</div>
+              <div class="mb-4"><%= app_icon("calendar", css_class: "w-12 h-12 text-white/80") %></div>
               <h3 class="text-2xl font-bold mb-3">ハレ度カレンダー</h3>
               <p class="text-white/90 leading-relaxed">
                 あなたの「ハレ度」を可視化。
@@ -236,7 +236,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white rounded-2xl p-6 shadow-sm">
               <div class="flex items-start gap-4">
-                <div class="text-3xl">👨‍🍳</div>
+                <div><%= app_icon("chef-hat", css_class: "w-8 h-8 text-orange-500") %></div>
                 <div>
                   <h3 class="font-bold text-lg text-gray-900 mb-2">料理初心者の方</h3>
                   <p class="text-gray-700">献立の悩みを解決し、楽しく料理を続けられます。</p>
@@ -246,7 +246,7 @@
 
             <div class="bg-white rounded-2xl p-6 shadow-sm">
               <div class="flex items-start gap-4">
-                <div class="text-3xl">🏠</div>
+                <div><%= app_icon("house", css_class: "w-8 h-8 text-orange-500") %></div>
                 <div>
                   <h3 class="font-bold text-lg text-gray-900 mb-2">一人暮らしの方</h3>
                   <p class="text-gray-700">毎日の食事を記録し、自炊のモチベーションを維持。</p>
@@ -256,7 +256,7 @@
 
             <div class="bg-white rounded-2xl p-6 shadow-sm">
               <div class="flex items-start gap-4">
-                <div class="text-3xl">📈</div>
+                <div><%= app_icon("trending-up", css_class: "w-8 h-8 text-orange-500") %></div>
                 <div>
                   <h3 class="font-bold text-lg text-gray-900 mb-2">成長を実感したい方</h3>
                   <p class="text-gray-700">小さな工夫を積み重ね、「ハレ度」として可視化。</p>
@@ -266,7 +266,7 @@
 
             <div class="bg-white rounded-2xl p-6 shadow-sm">
               <div class="flex items-start gap-4">
-                <div class="text-3xl">💡</div>
+                <div><%= app_icon("lightbulb", css_class: "w-8 h-8 text-orange-500") %></div>
                 <div>
                   <h3 class="font-bold text-lg text-gray-900 mb-2">日常を楽しみたい方</h3>
                   <p class="text-gray-700">ちょっとした工夫で、毎日の食事が特別に。</p>
