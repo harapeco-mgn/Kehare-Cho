@@ -76,12 +76,92 @@
         </div>
       </div>
 
-      <%# 下部リンク（控えめ） %>
-      <div class="flex gap-4 justify-center text-sm flex-wrap">
-        <%= link_to "ハレ一覧", hare_entries_path, class: "text-gray-600 hover:text-gray-800 underline" %>
-        <%= link_to "献立ログ", meal_searches_path, class: "text-gray-600 hover:text-gray-800 underline" %>
-        <%= link_to "AI相談", new_chat_path, class: "text-gray-600 hover:text-gray-800 underline" %>
-        <%= link_to "使い方", how_to_use_path, class: "text-gray-600 hover:text-gray-800 underline" %>
+      <%# 最近のハレ投稿 %>
+      <% if @recent_hare_entries.any? %>
+        <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-bold text-gray-800">最近のハレ</h3>
+            <%= link_to "すべて見る", hare_entries_path, class: "text-xs text-orange-500 hover:text-orange-600" %>
+          </div>
+          <div class="space-y-3">
+            <% @recent_hare_entries.each do |entry| %>
+              <%= link_to hare_entry_path(entry), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors block" do %>
+                <span class="text-xl mt-0.5">✨</span>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm text-gray-800 line-clamp-2"><%= entry.body.truncate(60) %></p>
+                  <p class="text-xs text-gray-400 mt-1"><%= l(entry.occurred_on, format: :long) %></p>
+                </div>
+                <span class="text-xs text-orange-500 font-semibold whitespace-nowrap">+<%= entry.awarded_points %>pt</span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# 今月のカレンダー %>
+      <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
+        <h3 class="font-bold text-gray-800 mb-4">今月のハレカレンダー</h3>
+        <%# 曜日ヘッダー %>
+        <div class="grid grid-cols-7 text-center text-xs text-gray-400 mb-2">
+          <% %w[日 月 火 水 木 金 土].each do |day| %>
+            <div><%= day %></div>
+          <% end %>
+        </div>
+        <%# 日付グリッド %>
+        <div class="grid grid-cols-7 text-center text-xs gap-y-1">
+          <%# 月初の曜日までの空白 %>
+          <% first_day = Date.current.beginning_of_month %>
+          <% first_day.wday.times do %>
+            <div></div>
+          <% end %>
+          <%# 今月の全日付 %>
+          <% (first_day..Date.current.end_of_month).each do |date| %>
+            <% active = @calendar_dates.include?(date) %>
+            <div class="flex items-center justify-center h-7 w-7 mx-auto rounded-full <%= active ? 'bg-orange-400 text-white font-bold' : (date == Date.current ? 'border border-orange-300 text-orange-500' : 'text-gray-500') %>">
+              <%= date.day %>
+            </div>
+          <% end %>
+        </div>
+        <p class="text-xs text-gray-400 mt-3 text-right">今月のハレ: <%= @calendar_dates.size %>回</p>
+      </div>
+
+      <%# ナビゲーションカード %>
+      <div class="grid grid-cols-2 gap-3">
+        <%= link_to hare_entries_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
+          <span class="text-2xl">✨</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm text-gray-800">ハレ一覧</p>
+            <p class="text-xs text-gray-400">過去の記録を見る</p>
+          </div>
+          <span class="text-gray-300">›</span>
+        <% end %>
+
+        <%= link_to meal_searches_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
+          <span class="text-2xl">🍚</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm text-gray-800">献立ログ</p>
+            <p class="text-xs text-gray-400">相談履歴を見る</p>
+          </div>
+          <span class="text-gray-300">›</span>
+        <% end %>
+
+        <%= link_to new_chat_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
+          <span class="text-2xl">🤖</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm text-gray-800">AI相談</p>
+            <p class="text-xs text-gray-400">料理の悩みを相談</p>
+          </div>
+          <span class="text-gray-300">›</span>
+        <% end %>
+
+        <%= link_to how_to_use_path, class: "bg-white rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow" do %>
+          <span class="text-2xl">📖</span>
+          <div class="flex-1">
+            <p class="font-semibold text-sm text-gray-800">使い方</p>
+            <p class="text-xs text-gray-400">アプリの説明</p>
+          </div>
+          <span class="text-gray-300">›</span>
+        <% end %>
       </div>
     </main>
   <% else %>
