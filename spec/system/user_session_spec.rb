@@ -24,10 +24,10 @@ RSpec.describe "ログイン / ログアウト", type: :system do
     click_button "ログイン"
     expect(page).to have_text("こんにちは")
 
-    # ヘッダーのログアウトボタンをクリック（デスクトップレイアウトを明示）
-    within(".navbar-end") do
-      click_button "ログアウト"
-    end
+    # ヘッダーのログアウトボタンをクリック
+    # モバイル/デスクトップの2つのログアウトボタンが存在するため、
+    # 表示状態のボタンを all で取得して最後のもの（デスクトップ用）をクリック
+    all("button[type='submit']", text: "ログアウト", visible: :visible).last.click
 
     # ログアウト成功 → ルートページ（LP）にリダイレクト＋フラッシュ
     # devise.ja.yml の signed_out キー: "ログアウトしました。またお待ちしています"
