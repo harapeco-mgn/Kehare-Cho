@@ -254,7 +254,7 @@ RSpec.describe "MealSearches", type: :request do
         end
 
         it "空状態のメッセージが表示される" do
-          expect(response.body).to include("まだ献立相談のログがありません")
+          expect(response.body).to include("まだかんたん献立のログがありません")
         end
       end
     end
