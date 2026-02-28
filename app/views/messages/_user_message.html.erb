@@ -1,6 +1,6 @@
 <div id="<%= dom_id(message) %>" class="flex justify-end">
-  <div class="max-w-xs md:max-w-sm bg-green-500 text-white rounded-2xl rounded-br-sm px-4 py-3">
+  <div class="max-w-xs md:max-w-sm bg-[#C87941] text-white rounded-2xl rounded-br-sm px-4 py-3">
     <p class="text-sm whitespace-pre-wrap"><%= message.content %></p>
-    <p class="text-xs text-green-100 mt-1 text-right"><%= message.created_at.strftime("%H:%M") %></p>
+    <p class="text-xs text-white/60 mt-1 text-right"><%= message.created_at.strftime("%H:%M") %></p>
   </div>
 </div>
