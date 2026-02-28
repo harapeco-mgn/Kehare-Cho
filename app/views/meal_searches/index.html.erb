@@ -22,11 +22,16 @@
             <p class="text-sm text-gray-600 mb-4">
               ジャンル: <span class="font-semibold"><%= candidate.genre.label %></span>
             </p>
-            <%= link_to "Google で検索",
-                        GoogleSearchQueryBuilder.new(candidate.name).url,
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                        class: "inline-block bg-white text-green-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition-colors shadow-sm" %>
+            <div class="flex flex-col gap-2 mt-2">
+              <%= link_to "Google で検索",
+                          GoogleSearchQueryBuilder.new(candidate.name).url,
+                          target: "_blank",
+                          rel: "noopener noreferrer",
+                          class: "inline-block bg-white text-green-700 px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition-colors shadow-sm text-center" %>
+              <%= link_to "これにした！記録する",
+                          new_hare_entry_path(body: candidate.name),
+                          class: "inline-block bg-orange-400 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-orange-500 transition-colors shadow-sm text-center" %>
+            </div>
           </div>
         <% end %>
       </div>

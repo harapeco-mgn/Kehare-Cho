@@ -12,7 +12,7 @@ class HareEntriesController < ApplicationController
     end
 
     def new
-      @hare_entry = HareEntry.new(occurred_on: Date.today)
+      @hare_entry = HareEntry.new(occurred_on: Date.today, body: params[:body])
       @hare_tags = HareTag.active.sorted
     end
 
