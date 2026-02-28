@@ -296,6 +296,161 @@
         </div>
       </section>
 
+      <%# スクリーンショットセクション %>
+      <section class="py-16 px-4 bg-[#FEF7ED]">
+        <div class="max-w-5xl mx-auto">
+          <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">
+            こんな画面です
+          </h2>
+          <p class="text-center text-gray-600 mb-12 text-lg">
+            シンプルで使いやすい画面で、毎日の食事記録を楽しく続けられます。
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+            <%# ホーム画面 %>
+            <div class="flex flex-col items-center">
+              <div class="relative mb-6">
+                <%# スマホフレーム %>
+                <div class="w-56 bg-white rounded-[2rem] border-4 border-gray-800 shadow-2xl overflow-hidden" style="height: 460px;">
+                  <div class="bg-gray-800 h-6 flex items-center justify-center rounded-t-[1.5rem]">
+                    <div class="w-16 h-1.5 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <%# ホーム画面モックアップ %>
+                  <div class="bg-[#FEF7ED] h-full px-3 pt-3 pb-3 overflow-hidden">
+                    <p class="text-[9px] text-gray-500 mb-1">こんにちは、〇〇さん</p>
+                    <%# レベルカード %>
+                    <div class="bg-white rounded-xl p-2.5 mb-2 shadow-sm">
+                      <p class="text-[7px] text-orange-600 font-bold uppercase mb-1">● CURRENT LEVEL</p>
+                      <p class="text-[11px] font-bold text-gray-800">ハレ度: Lv.3</p>
+                      <p class="text-[8px] text-gray-500 mb-1.5">食卓の花咲き人</p>
+                      <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1">
+                        <div class="bg-gradient-to-r from-orange-400 to-orange-300 h-1.5 rounded-full" style="width: 60%"></div>
+                      </div>
+                      <p class="text-[7px] text-gray-500">あと 40pt で次のレベル！</p>
+                    </div>
+                    <%# アクションカード 2列 %>
+                    <div class="grid grid-cols-2 gap-1.5 mb-2">
+                      <div class="bg-[#7A9D7E] rounded-xl p-2 text-white min-h-[60px] flex flex-col justify-between">
+                        <p class="text-[8px] font-bold">今日のごはん、<br>どうする？</p>
+                        <p class="text-[7px] bg-white/20 rounded-full text-center py-0.5">相談する</p>
+                      </div>
+                      <div class="bg-[#D4845F] rounded-xl p-2 text-white min-h-[60px] flex flex-col justify-between">
+                        <p class="text-[8px] font-bold">今日、いいこと<br>あった？</p>
+                        <p class="text-[7px] bg-white/20 rounded-full text-center py-0.5">記録する</p>
+                      </div>
+                    </div>
+                    <%# カレンダー %>
+                    <div class="bg-white rounded-xl p-2 shadow-sm">
+                      <p class="text-[8px] font-bold text-gray-700 mb-1.5">直近の記録</p>
+                      <div class="flex justify-between">
+                        <% %w[日 月 火 水 木 金 土].each_with_index do |day, i| %>
+                          <div class="flex flex-col items-center">
+                            <span class="text-[6px] text-gray-400 mb-0.5"><%= day %></span>
+                            <div class="w-5 h-5 rounded-full flex items-center justify-center text-[6px] <%= i == 5 ? 'bg-[#C87941] text-white font-bold' : i.odd? ? 'bg-[#FFF0D4] border border-[#C87941] text-[#C87941]' : 'bg-gray-100 text-gray-400' %>">
+                              <%= 22 + i %>
+                            </div>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">ホーム画面</h3>
+              <p class="text-gray-600 text-center text-sm leading-relaxed">
+                レベルの成長やカレンダーで<br>毎日の積み重ねが一目でわかる
+              </p>
+            </div>
+
+            <%# ハレ記録フォーム %>
+            <div class="flex flex-col items-center">
+              <div class="relative mb-6">
+                <div class="w-56 bg-white rounded-[2rem] border-4 border-gray-800 shadow-2xl overflow-hidden" style="height: 460px;">
+                  <div class="bg-gray-800 h-6 flex items-center justify-center rounded-t-[1.5rem]">
+                    <div class="w-16 h-1.5 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <div class="bg-[#FEF7ED] h-full px-3 pt-3 overflow-hidden">
+                    <p class="text-[10px] font-bold text-gray-800 mb-3">今日のハレを記録する</p>
+                    <%# 日付 %>
+                    <div class="bg-white rounded-xl p-2 mb-2 shadow-sm">
+                      <p class="text-[7px] text-gray-500 mb-1">日付</p>
+                      <p class="text-[9px] font-semibold text-gray-800">2026年2月28日（金）</p>
+                    </div>
+                    <%# タグ %>
+                    <div class="bg-white rounded-xl p-2 mb-2 shadow-sm">
+                      <p class="text-[7px] text-gray-500 mb-1">ハレのタグ</p>
+                      <div class="flex flex-wrap gap-1">
+                        <span class="text-[7px] bg-[#FFF0D4] text-[#C87941] px-1.5 py-0.5 rounded-full border border-[#C87941]">手作り</span>
+                        <span class="text-[7px] bg-[#FFF0D4] text-[#C87941] px-1.5 py-0.5 rounded-full border border-[#C87941]">初挑戦</span>
+                        <span class="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">盛り付け</span>
+                        <span class="text-[7px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">旬の食材</span>
+                      </div>
+                    </div>
+                    <%# メモ %>
+                    <div class="bg-white rounded-xl p-2 mb-2 shadow-sm">
+                      <p class="text-[7px] text-gray-500 mb-1">今日のひとこと</p>
+                      <p class="text-[8px] text-gray-700 leading-relaxed">はじめてパスタを手作りしました！こねるのが楽しかった✨</p>
+                    </div>
+                    <%# ポイント %>
+                    <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-xl p-2 text-white">
+                      <p class="text-[7px] mb-0.5">獲得ポイント</p>
+                      <p class="text-[14px] font-bold">+20 pt</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">ハレ記録フォーム</h3>
+              <p class="text-gray-600 text-center text-sm leading-relaxed">
+                タグを選んでひとこと書くだけ。<br>1分以内に記録完了
+              </p>
+            </div>
+
+            <%# 献立提案 %>
+            <div class="flex flex-col items-center">
+              <div class="relative mb-6">
+                <div class="w-56 bg-white rounded-[2rem] border-4 border-gray-800 shadow-2xl overflow-hidden" style="height: 460px;">
+                  <div class="bg-gray-800 h-6 flex items-center justify-center rounded-t-[1.5rem]">
+                    <div class="w-16 h-1.5 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <div class="bg-[#FEF7ED] h-full px-3 pt-3 overflow-hidden">
+                    <p class="text-[10px] font-bold text-gray-800 mb-2">今日のごはん、どうする？</p>
+                    <%# 選択肢 %>
+                    <div class="grid grid-cols-2 gap-1.5 mb-3">
+                      <div class="bg-[#7A9D7E] text-white rounded-xl p-2 text-center shadow-sm">
+                        <p class="text-[8px] font-bold">外食したい</p>
+                        <p class="text-[6px] text-white/80">お店を探す</p>
+                      </div>
+                      <div class="bg-white text-gray-700 rounded-xl p-2 text-center shadow-sm border-2 border-[#7A9D7E]">
+                        <p class="text-[8px] font-bold">自炊したい</p>
+                        <p class="text-[6px] text-gray-500">レシピを見る</p>
+                      </div>
+                    </div>
+                    <%# 提案結果 %>
+                    <div class="bg-white rounded-xl p-2 mb-1.5 shadow-sm">
+                      <p class="text-[7px] text-gray-500 mb-1">おすすめ献立</p>
+                      <p class="text-[9px] font-bold text-gray-800 mb-0.5">親子丼</p>
+                      <p class="text-[7px] text-gray-600">鶏もも肉・卵・玉ねぎで<br>作れる定番レシピ</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-2 mb-1.5 shadow-sm">
+                      <p class="text-[9px] font-bold text-gray-800 mb-0.5">豚汁</p>
+                      <p class="text-[7px] text-gray-600">野菜たっぷりで<br>栄養バランス◎</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-2 shadow-sm">
+                      <p class="text-[9px] font-bold text-gray-800 mb-0.5">ほうれん草のおひたし</p>
+                      <p class="text-[7px] text-gray-600">副菜にぴったり</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 mb-2 text-center">かんたん献立提案</h3>
+              <p class="text-gray-600 text-center text-sm leading-relaxed">
+                外食 or 自炊を選ぶだけで<br>今日のごはんを提案
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <%# ベネフィットセクション %>
       <section class="py-16 px-4 bg-[#FEF7ED]">
         <div class="max-w-4xl mx-auto">
