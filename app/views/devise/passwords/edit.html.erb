@@ -1,34 +1,44 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
-<div class="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4">
-  <div class="card bg-white shadow-xl w-full max-w-md">
-    <div class="card-body">
-      <h2 class="card-title text-2xl text-gray-900 mb-6"><%= t('.change_your_password') %></h2>
+<div class="min-h-screen bg-[#F5F0E8] flex items-center justify-center py-12 px-4 font-zen">
+  <div class="w-full max-w-md">
+    <%# アプリロゴ %>
+    <div class="text-center mb-8">
+      <%= app_icon("flower-2", css_class: "w-10 h-10 text-[#C87941] inline-block mb-2") %>
+      <h1 class="text-2xl font-bold text-[#4A4036] tracking-widest">keharecho</h1>
+      <p class="text-sm text-[#8D7B68] mt-1">日常に小さなハレを</p>
+    </div>
+
+    <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-md p-8">
+      <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= t('.change_your_password') %></h2>
 
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
         <%= f.hidden_field :reset_password_token %>
 
-        <div class="form-control mb-4">
-          <%= f.label :password, t('.new_password'), class: "label text-gray-700 font-semibold" %>
+        <div class="mb-4">
+          <%= f.label :password, t('.new_password'), class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
           <% if @minimum_password_length %>
-            <span class="label-text-alt text-gray-500 mb-1"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></span>
+            <span class="text-xs text-[#8D7B68] mb-1 block"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></span>
           <% end %>
-          <%= f.password_field :password, autofocus: true, autocomplete: "new-password", class: "input input-bordered w-full bg-white text-gray-900 border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" %>
+          <%= f.password_field :password, autofocus: true, autocomplete: "new-password",
+                class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
         </div>
 
-        <div class="form-control mb-4">
-          <%= f.label :password_confirmation, t('.confirm_new_password'), class: "label text-gray-700 font-semibold" %>
-          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input input-bordered w-full bg-white text-gray-900 border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200" %>
+        <div class="mb-4">
+          <%= f.label :password_confirmation, t('.confirm_new_password'), class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
         </div>
 
-        <div class="form-control mt-6">
-          <%= f.submit t('.change_my_password'), class: "btn bg-orange-600 hover:bg-orange-700 text-white w-full border-0" %>
+        <div class="mt-6">
+          <%= f.submit t('.change_my_password'),
+                class: "btn w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
         </div>
       <% end %>
 
-      <div class="mt-6">
+      <div class="mt-6 pt-5 border-t border-[#E8E0D0]">
         <%= render "devise/shared/links" %>
       </div>
     </div>
