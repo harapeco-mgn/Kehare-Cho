@@ -20,12 +20,16 @@ private
   end
 
   def inject_system_prompt(content)
-    rag_context = MealRagRetriever.new(user: current_user, query: content).retrieve
-    system_prompt = MealConsultationPromptBuilder.new(
-      user: current_user,
-      conversation_type: @chat.conversation_type,
-      rag_context: rag_context
-    ).build
+    system_prompt = if @chat.cooking_advice?
+                      CookingAdvicePromptBuilder.new(user: current_user).build
+    else
+                      rag_context = MealRagRetriever.new(user: current_user, query: content).retrieve
+                      MealConsultationPromptBuilder.new(
+                        user: current_user,
+                        conversation_type: @chat.conversation_type,
+                        rag_context: rag_context
+                      ).build
+    end
     @chat.with_instructions(system_prompt)
   end
 end

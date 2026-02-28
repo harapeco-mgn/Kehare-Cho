@@ -7,8 +7,8 @@ RSpec.describe CookingAdvicePromptBuilder do
   describe "#build" do
     let(:prompt) { builder.build }
 
-    it "料理テクニックアドバイザーとしての役割を含む" do
-      expect(prompt).to include("料理テクニックアドバイザー")
+    it "料理テクニック・食材管理アドバイザーとしての役割を含む" do
+      expect(prompt).to include("料理テクニック・食材管理アドバイザー")
     end
 
     it "専門領域（保存方法・調理のコツ）を明示する指示を含む" do
@@ -31,8 +31,8 @@ RSpec.describe CookingAdvicePromptBuilder do
       expect(prompt).to include("直接・具体的に答える")
     end
 
-    it "聞かれていないレシピ提案を禁止する指示を含む" do
-      expect(prompt).to include("聞かれていないレシピ")
+    it "レシピ・献立提案を禁止する指示を含む" do
+      expect(prompt).to include("レシピ/献立/料理提案は一切しない")
     end
 
     it "空文字列を返さない" do
