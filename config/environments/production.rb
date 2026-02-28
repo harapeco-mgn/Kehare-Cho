@@ -87,6 +87,8 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
+    "kehare-cho.com",
+    "www.kehare-cho.com",
     "kehare-cho.onrender.com"
   ]
 
