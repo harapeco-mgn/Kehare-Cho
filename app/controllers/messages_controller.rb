@@ -11,6 +11,8 @@ class MessagesController < ApplicationController
 
     @chat.ask(content)
     redirect_to chat_path(@chat)
+  rescue RubyLLM::RateLimitError
+    redirect_to chat_path(@chat), alert: "AIが混み合っています。少し時間をおいてから再度お試しください。"
   end
 
 private
