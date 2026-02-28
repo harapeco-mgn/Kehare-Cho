@@ -43,6 +43,20 @@ RSpec.describe "HareEntries", type: :request do
         get new_hare_entry_path
         expect(response.body).to include('href="/"')
       end
+
+      context 'bodyパラメータが渡された場合' do
+        it 'bodyの初期値がフォームに表示される' do
+          get new_hare_entry_path(body: 'カレーライス')
+          expect(response.body).to include('カレーライス')
+        end
+      end
+
+      context 'bodyパラメータがない場合' do
+        it 'bodyは空で表示される' do
+          get new_hare_entry_path
+          expect(response).to have_http_status(:success)
+        end
+      end
     end
   end
 
