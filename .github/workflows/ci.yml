@@ -103,7 +103,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          bundle-without: production
 
       - name: Cache apt packages
         id: cache-libvips
@@ -176,7 +175,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          bundle-without: production
 
       - name: Cache apt packages
         id: cache-libvips
