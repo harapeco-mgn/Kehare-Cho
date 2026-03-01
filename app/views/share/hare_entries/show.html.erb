@@ -1,13 +1,18 @@
 <% content_for :title, "#{@hare_entry.user.display_name}さんのハレ記録 | ケハレ帖" %>
 <% content_for :og_title, "#{@hare_entry.user.display_name}さんのハレ記録" %>
 <% content_for :og_description, @hare_entry.body.truncate(100) %>
+<% if @hare_entry.photo.attached? %>
+  <% content_for :og_image, cloudinary_photo_url(@hare_entry.photo, resize_to_limit: [1200, 630]) %>
+<% end %>
 
 <main class="max-w-2xl mx-auto px-4 pt-6 pb-8 font-zen">
   <%# ヘッダー %>
   <div class="text-center mb-8">
     <%= app_icon("flower-2", css_class: "w-8 h-8 text-[#C87941] inline-block mb-2") %>
-    <h1 class="text-2xl font-bold text-[#4A4036]">ケハレ帖</h1>
-    <p class="text-sm text-[#8D7B68] mt-1">日常の食事に小さなハレを</p>
+    <%= link_to root_path, class: "block" do %>
+      <h1 class="text-2xl font-bold text-[#4A4036]">ケハレ帖</h1>
+      <p class="text-sm text-[#8D7B68] mt-1">日常の食事に小さなハレを</p>
+    <% end %>
   </div>
 
   <%# 投稿カード %>
@@ -57,8 +62,28 @@
       class: "px-6 py-2.5 bg-[#4A4036] text-white rounded-full font-semibold hover:bg-[#2E2820] transition-colors shadow-sm" %>
   </div>
 
+  <%# CTA セクション %>
+  <div class="mt-10 bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 text-center">
+    <p class="text-sm text-[#8D7B68] mb-1">あなたも記録してみませんか？</p>
+    <p class="text-lg font-bold text-[#4A4036] mb-5">毎日の食事に、小さなハレを</p>
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <%= link_to "新規登録（無料）", new_user_registration_path,
+        class: "px-6 py-3 bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white rounded-full font-semibold hover:opacity-90 transition-opacity shadow-sm" %>
+      <%= link_to "ログイン", new_user_session_path,
+        class: "px-6 py-3 bg-white border border-[#C87941] text-[#C87941] rounded-full font-semibold hover:bg-orange-50 transition-colors" %>
+    </div>
+    <div class="mt-4">
+      <%= link_to "みんなのハレを見る →", public_hare_entries_path,
+        class: "text-sm text-[#8D7B68] hover:text-[#C87941] underline transition-colors" %>
+    </div>
+  </div>
+
   <%# フッター %>
-  <div class="text-center mt-6 text-sm text-[#8D7B68]">
+  <div class="text-center mt-6 text-sm text-[#8D7B68] space-y-2">
     <p>ケハレ帖 — 日常の食事に小さなハレを</p>
+    <div class="flex justify-center gap-4">
+      <%= link_to "使い方", how_to_use_path, class: "hover:text-[#C87941] transition-colors" %>
+      <%= link_to "プライバシーポリシー", privacy_policy_path, class: "hover:text-[#C87941] transition-colors" %>
+    </div>
   </div>
 </main>
