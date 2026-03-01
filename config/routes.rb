@@ -19,15 +19,17 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
+  # LP・ホーム（認証不要・home_controller 側で状態判定）
   root "home#index"
   get "home", to: "home#index"
 
   # 公開タイムライン（認証不要） - resources より前に配置
   get "hare_entries/public", to: "hare_entries#public", as: :public_hare_entries
 
+  # 認証不要のページ
+  get "meal_guide", to: "meal_guide#index"
+
   authenticate :user do
-    root "home#index", as: :authenticated_root
     resource :profile, only: [ :show, :edit, :update ]
     resource :reflection, only: [ :show ] do
       post :analyze, on: :member
@@ -36,19 +38,16 @@ Rails.application.routes.draw do
     resources :chats, only: [ :new, :create, :show ] do
       resources :messages, only: [ :create ]
     end
+    get "calendar", to: "calendar#index"
+    get "calendar/:date", to: "calendar#show", as: :calendar_date
+    resources :meal_searches, only: [ :index, :new, :create ] do
+      collection do
+        get :eat_out_redirect
+      end
+    end
   end
 
   namespace :share do
     resources :hare_entries, only: [ :show ], param: :token
-  end
-
-  get "meal_guide", to: "meal_guide#index"
-
-  get "calendar", to: "calendar#index"
-  get "calendar/:date", to: "calendar#show", as: :calendar_date
-  resources :meal_searches, only: [ :index, :new, :create ] do
-    collection do
-      get :eat_out_redirect
-    end
   end
 end
