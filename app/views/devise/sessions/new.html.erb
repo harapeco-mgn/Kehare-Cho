@@ -1,5 +1,6 @@
+<% sign_in_label = t('.sign_in') %>
 <%= render layout: "devise/shared/auth_wrapper" do %>
-  <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= t('.sign_in') %></h2>
+  <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= sign_in_label %></h2>
 
   <%# Google でログインボタン %>
   <%= button_to user_google_oauth2_omniauth_authorize_path,
@@ -45,7 +46,7 @@
     <% end %>
 
     <div class="mt-6">
-      <%= f.submit t('.sign_in'),
+      <%= f.submit sign_in_label,
             class: "btn w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
     </div>
   <% end %>

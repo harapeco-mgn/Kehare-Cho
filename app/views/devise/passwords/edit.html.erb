@@ -1,12 +1,16 @@
+<% change_pwd_title = t('.change_your_password') %>
+<% new_pwd_label = t('.new_password') %>
+<% confirm_pwd_label = t('.confirm_new_password') %>
+<% change_my_pwd_label = t('.change_my_password') %>
 <%= render layout: "devise/shared/auth_wrapper" do %>
-  <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= t('.change_your_password') %></h2>
+  <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= change_pwd_title %></h2>
 
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
     <%= f.hidden_field :reset_password_token %>
 
     <div class="mb-4">
-      <%= f.label :password, t('.new_password'), class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
+      <%= f.label :password, new_pwd_label, class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
       <% if @minimum_password_length %>
         <span class="text-xs text-[#8D7B68] mb-1 block"><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></span>
       <% end %>
@@ -15,13 +19,13 @@
     </div>
 
     <div class="mb-4">
-      <%= f.label :password_confirmation, t('.confirm_new_password'), class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
+      <%= f.label :password_confirmation, confirm_pwd_label, class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password",
             class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
     </div>
 
     <div class="mt-6">
-      <%= f.submit t('.change_my_password'),
+      <%= f.submit change_my_pwd_label,
             class: "btn w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
     </div>
   <% end %>
