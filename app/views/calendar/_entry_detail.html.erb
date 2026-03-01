@@ -50,7 +50,7 @@
 
     <%# 本文 %>
     <div class="text-base leading-[2.5rem] text-[#4A4036] whitespace-pre-wrap mb-6">
-      <%= entry.body %>
+      <%= linkify_body(entry.body) %>
     </div>
 
     <%# ポイント %>

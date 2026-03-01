@@ -27,7 +27,7 @@
               </div>
 
               <%# 投稿内容 %>
-              <p class="text-[#4A4036] mb-3 break-words leading-relaxed"><%= entry.body %></p>
+              <p class="text-[#4A4036] mb-3 break-words leading-relaxed"><%= linkify_body(entry.body) %></p>
 
               <%# 写真 %>
               <% if entry.photo.attached? %>

@@ -62,7 +62,7 @@
 
       <%# 本文 %>
       <div class="mb-8" style="line-height: 2.5rem;">
-        <p class="whitespace-pre-wrap text-[#4A4036] text-lg"><%= @hare_entry.body %></p>
+        <p class="whitespace-pre-wrap text-[#4A4036] text-lg"><%= linkify_body(@hare_entry.body) %></p>
       </div>
 
       <%# 写真表示 %>
@@ -96,7 +96,7 @@
             <span data-clipboard-target="feedback"
                   class="hidden ml-2 text-sm text-[#8EA084] font-medium">コピーしました！</span>
           </div>
-          <%= link_to "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: share_hare_entry_url(@hare_entry.share_token) }.to_query,
+          <%= link_to "https://twitter.com/intent/tweet?" + { text: x_share_text(@hare_entry), url: share_hare_entry_url(@hare_entry.share_token) }.to_query,
             target: "_blank",
             rel: "noopener noreferrer",
             class: "btn bg-black text-white border-0 rounded-full hover:bg-gray-800 transition-all" do %>

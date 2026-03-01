@@ -14,7 +14,7 @@ class HareEntry < ApplicationRecord
   scope :publicly_visible, -> { where(visibility: :public_post) }
   scope :recent, -> { order(occurred_on: :desc, created_at: :desc) }
 
-  validates :body, presence: true, length: { maximum: 280 }
+  validates :body, presence: true, length: { maximum: 200 }
   validates :occurred_on, presence: true
   validates :photo, content_type: %w[image/jpeg image/png image/webp],
                     size: { less_than: 5.megabytes }

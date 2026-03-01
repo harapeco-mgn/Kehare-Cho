@@ -35,10 +35,10 @@ RSpec.describe HareEntry, type: :model do
       expect(hare_entry.errors[:body]).to include('を入力してください')
     end
 
-    it 'is invalid when body is longer than 280 characters' do
-      hare_entry = HareEntry.new(user: user, body: 'a' * 281, occurred_on: Date.today)
+    it 'is invalid when body is longer than 200 characters' do
+      hare_entry = HareEntry.new(user: user, body: 'a' * 201, occurred_on: Date.today)
       expect(hare_entry).not_to be_valid
-      expect(hare_entry.errors[:body]).to include('は280文字以内で入力してください')
+      expect(hare_entry.errors[:body]).to include('は200文字以内で入力してください')
     end
 
     it 'is invalid without occurred_on' do
