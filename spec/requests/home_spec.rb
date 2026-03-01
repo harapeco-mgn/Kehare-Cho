@@ -57,8 +57,9 @@ RSpec.describe "Home", type: :request do
         end
 
         context '複数のポイントが存在する場合' do
+          let!(:hare_entry2) { create(:hare_entry, user: user, occurred_on: Time.zone.today.beginning_of_month) }
           let!(:point_transaction2) do
-            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+            create(:point_transaction, user: user, hare_entry: hare_entry2, point_rule: point_rule,
                                        points: 20, awarded_on: Time.zone.today.beginning_of_month)
           end
 
@@ -69,8 +70,9 @@ RSpec.describe "Home", type: :request do
         end
 
         context '先月のポイントがある場合' do
+          let!(:hare_entry_last_month) { create(:hare_entry, user: user, occurred_on: 1.month.ago.to_date) }
           let!(:last_month_transaction) do
-            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+            create(:point_transaction, user: user, hare_entry: hare_entry_last_month, point_rule: point_rule,
                                        points: 100, awarded_on: 1.month.ago)
           end
 
@@ -144,8 +146,9 @@ RSpec.describe "Home", type: :request do
             create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
                                        points: 15, awarded_on: Time.zone.today)
           end
+          let!(:hare_entry2) { create(:hare_entry, user: user, occurred_on: 1.month.ago.to_date) }
           let!(:point_transaction2) do
-            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+            create(:point_transaction, user: user, hare_entry: hare_entry2, point_rule: point_rule,
                                        points: 10, awarded_on: 1.month.ago)
           end
 

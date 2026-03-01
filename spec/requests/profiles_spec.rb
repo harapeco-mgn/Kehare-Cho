@@ -56,11 +56,12 @@ RSpec.describe "Profiles", type: :request do
 
       context 'ポイント履歴が存在する場合' do
         let(:point_rule) { create(:point_rule) }
+        let(:point_rule2) { create(:point_rule) }
         let(:hare_entry) { HareEntry.create!(user: user, body: 'ポイント用投稿', occurred_on: Date.today, visibility: 'private_post') }
 
         before do
           PointTransaction.create!(user: user, hare_entry: hare_entry, point_rule: point_rule, awarded_on: Date.current, points: 100)
-          PointTransaction.create!(user: user, hare_entry: hare_entry, point_rule: point_rule, awarded_on: Date.current, points: 50)
+          PointTransaction.create!(user: user, hare_entry: hare_entry, point_rule: point_rule2, awarded_on: Date.current, points: 50)
         end
 
         it '累計ポイントが表示される' do
