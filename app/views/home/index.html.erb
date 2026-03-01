@@ -1,6 +1,6 @@
 <% if user_signed_in? %>
     <%# ログイン後のホーム画面（Stitch完全コピー） %>
-    <main class="max-w-5xl mx-auto bg-[#FEF7ED] min-h-screen p-4 md:p-8">
+    <main class="max-w-5xl mx-auto bg-wa-bg min-h-screen p-4 md:p-8">
       <%# 挨拶エリア %>
       <div class="mb-6">
         <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-1">こんにちは、<%= current_user.display_name %> さん</h1>
@@ -40,7 +40,7 @@
       <%# メインアクションカード（2つ横並び・Stitch完全再現） %>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <%# かんたん献立カード（深緑） %>
-        <div class="bg-[#7A9D7E] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
+        <div class="bg-moegi-muted rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
           <%# 背景の丸（装飾）+ アイコン %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
             <div><%= app_icon("utensils", css_class: "w-14 h-14 text-white/80") %></div>
@@ -52,13 +52,13 @@
 
             <%# ボタン %>
             <div class="mt-auto flex justify-end">
-              <%= link_to "相談する", meal_guide_path, class: "bg-white text-[#7A9D7E] px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
+              <%= link_to "相談する", meal_guide_path, class: "bg-white text-moegi-muted px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
             </div>
           </div>
         </div>
 
         <%# ハレ記録カード（オレンジ） %>
-        <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
+        <div class="bg-gradient-to-br from-akane to-akane-dark rounded-3xl p-5 md:p-8 shadow-lg relative overflow-hidden min-h-[200px] md:min-h-[240px] flex flex-col">
           <%# 背景の丸（装飾）+ アイコン %>
           <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full flex items-center justify-center">
             <div><%= app_icon("sparkles", css_class: "w-14 h-14 text-white/80") %></div>
@@ -70,7 +70,7 @@
 
             <%# ボタン %>
             <div class="mt-auto flex justify-end">
-              <%= link_to "記録する", new_hare_entry_path, class: "bg-white text-[#D4845F] px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
+              <%= link_to "記録する", new_hare_entry_path, class: "bg-white text-akane px-6 py-2 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors shadow-md" %>
             </div>
           </div>
         </div>
@@ -81,10 +81,10 @@
         <%# ヘッダー %>
         <div class="flex items-center justify-between mb-4">
           <h3 class="font-bold text-gray-800 flex items-center gap-2">
-            <%= app_icon("calendar", css_class: "w-5 h-5 text-[#C87941]") %>
+            <%= app_icon("calendar", css_class: "w-5 h-5 text-kincha") %>
             直近の記録
           </h3>
-          <%= link_to "すべて見る", hare_entries_path, class: "text-xs text-[#C87941] font-bold hover:underline" %>
+          <%= link_to "すべて見る", hare_entries_path, class: "text-xs text-kincha font-bold hover:underline" %>
         </div>
 
         <%# 週間カレンダー行 %>
@@ -99,20 +99,20 @@
                  <% end %>>
 
               <%# 曜日名 %>
-              <span class="text-xs mb-1 <%= is_today ? 'text-[#C87941] font-bold' : 'text-gray-400' %>">
+              <span class="text-xs mb-1 <%= is_today ? 'text-kincha font-bold' : 'text-gray-400' %>">
                 <%= @day_names[i] %>
               </span>
 
               <%# 日付円 %>
               <% if is_today %>
                 <%# 今日：塗りつぶしオレンジ %>
-                <div class="w-10 h-10 rounded-full bg-[#C87941] text-white flex items-center justify-center shadow-md ring-2 ring-offset-1 ring-[#C87941]/40">
+                <div class="w-10 h-10 rounded-full bg-kincha text-white flex items-center justify-center shadow-md ring-2 ring-offset-1 ring-kincha/40">
                   <span class="font-bold text-sm"><%= date.day %></span>
                 </div>
               <% elsif entry %>
                 <%# 記録あり：オレンジ枠、ホバーで少し大きく %>
-                <div class="w-10 h-10 rounded-full bg-[#FFF4E5] border-2 border-[#C87941] flex items-center justify-center hover:bg-[#FFE8C8] hover:scale-105 transition-all">
-                  <span class="font-bold text-sm text-[#C87941]"><%= date.day %></span>
+                <div class="w-10 h-10 rounded-full bg-kincha-faint border-2 border-kincha flex items-center justify-center hover:bg-[#FFE8C8] hover:scale-105 transition-all">
+                  <span class="font-bold text-sm text-kincha"><%= date.day %></span>
                 </div>
               <% elsif date > Date.current %>
                 <%# 未来 %>
@@ -121,14 +121,14 @@
                 </div>
               <% else %>
                 <%# 過去（記録なし） %>
-                <div class="w-10 h-10 rounded-full bg-[#F5F0EA] flex items-center justify-center text-gray-400">
+                <div class="w-10 h-10 rounded-full bg-washi-pale flex items-center justify-center text-gray-400">
                   <span class="font-bold text-sm"><%= date.day %></span>
                 </div>
               <% end %>
 
               <%# インジケータードット：今日または記録あり %>
               <% if is_today || entry %>
-                <span class="w-1.5 h-1.5 rounded-full mt-1 block <%= is_today ? 'bg-[#C87941]' : 'bg-[#C87941]/60' %>"></span>
+                <span class="w-1.5 h-1.5 rounded-full mt-1 block <%= is_today ? 'bg-kincha' : 'bg-kincha/60' %>"></span>
               <% else %>
                 <span class="w-1.5 h-1.5 mt-1 block"></span>
               <% end %>
@@ -137,24 +137,24 @@
         </div>
 
         <%# エントリープレビューエリア %>
-        <div class="mt-4 border-t border-[#EBE5D9] pt-4">
+        <div class="mt-4 border-t border-washi-rule pt-4">
           <%# デフォルト表示：最新エントリー %>
           <div data-week-calendar-target="defaultPreview">
             <% if @recent_hare_entries.any? %>
               <% latest = @recent_hare_entries.first %>
-              <%= link_to hare_entry_path(latest), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFF9F0] transition-colors block group" do %>
-                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#FFF0D4] flex items-center justify-center text-[#C87941]">
+              <%= link_to hare_entry_path(latest), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-washi-hover transition-colors block group" do %>
+                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-kincha-bg flex items-center justify-center text-kincha">
                   <%= app_icon("sparkles", css_class: "w-5 h-5") %>
                 </div>
                 <div class="flex-1 min-w-0">
                   <% if latest.hare_tags.any? %>
                     <div class="flex flex-wrap gap-1 mb-1">
                       <% latest.hare_tags.first(2).each do |tag| %>
-                        <span class="text-xs font-bold bg-[#FFF0D4] text-[#C87941] px-2 py-0.5 rounded-full"><%= tag.label %></span>
+                        <span class="text-xs font-bold bg-kincha-bg text-kincha px-2 py-0.5 rounded-full"><%= tag.label %></span>
                       <% end %>
                     </div>
                   <% end %>
-                  <p class="text-sm font-medium text-gray-800 group-hover:text-[#C87941] transition-colors"><%= truncate(latest.body, length: 60) %></p>
+                  <p class="text-sm font-medium text-gray-800 group-hover:text-kincha transition-colors"><%= truncate(latest.body, length: 60) %></p>
                   <p class="text-xs text-gray-400 mt-1"><%= l(latest.occurred_on, format: :long) %></p>
                 </div>
               <% end %>
@@ -168,19 +168,19 @@
             <div data-week-calendar-target="entryPreview"
                  data-entry-id="<%= entry.id %>"
                  class="hidden">
-              <%= link_to hare_entry_path(entry), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-[#FFF9F0] transition-colors block group" do %>
-                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-[#FFF0D4] flex items-center justify-center text-[#C87941]">
+              <%= link_to hare_entry_path(entry), class: "flex items-start gap-3 p-3 rounded-xl hover:bg-washi-hover transition-colors block group" do %>
+                <div class="flex-shrink-0 w-10 h-10 rounded-lg bg-kincha-bg flex items-center justify-center text-kincha">
                   <%= app_icon("sparkles", css_class: "w-5 h-5") %>
                 </div>
                 <div class="flex-1 min-w-0">
                   <% if entry.hare_tags.any? %>
                     <div class="flex flex-wrap gap-1 mb-1">
                       <% entry.hare_tags.first(2).each do |tag| %>
-                        <span class="text-xs font-bold bg-[#FFF0D4] text-[#C87941] px-2 py-0.5 rounded-full"><%= tag.label %></span>
+                        <span class="text-xs font-bold bg-kincha-bg text-kincha px-2 py-0.5 rounded-full"><%= tag.label %></span>
                       <% end %>
                     </div>
                   <% end %>
-                  <p class="text-sm font-medium text-gray-800 group-hover:text-[#C87941] transition-colors"><%= truncate(entry.body, length: 60) %></p>
+                  <p class="text-sm font-medium text-gray-800 group-hover:text-kincha transition-colors"><%= truncate(entry.body, length: 60) %></p>
                   <p class="text-xs text-gray-400 mt-1"><%= l(entry.occurred_on, format: :long) %></p>
                 </div>
               <% end %>
@@ -230,7 +230,7 @@
     </main>
   <% else %>
     <%# 未ログイン時のLP %>
-    <div class="min-h-screen bg-[#FEF7ED]">
+    <div class="min-h-screen bg-wa-bg">
       <%# ヒーローセクション %>
       <section class="py-20 px-4">
         <div class="max-w-4xl mx-auto text-center">
@@ -259,7 +259,7 @@
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <%# かんたん献立 %>
-            <div class="bg-gradient-to-br from-[#7A9D7E] to-[#6B8D6E] rounded-3xl p-8 text-white shadow-lg">
+            <div class="bg-gradient-to-br from-moegi-muted to-moegi-deep rounded-3xl p-8 text-white shadow-lg">
               <div class="mb-4"><%= app_icon("utensils", css_class: "w-12 h-12 text-white/80") %></div>
               <h3 class="text-2xl font-bold mb-3">かんたん献立</h3>
               <p class="text-white/90 leading-relaxed">
@@ -269,7 +269,7 @@
             </div>
 
             <%# ハレ記録 %>
-            <div class="bg-gradient-to-br from-[#D4845F] to-[#C97D5D] rounded-3xl p-8 text-white shadow-lg">
+            <div class="bg-gradient-to-br from-akane to-akane-dark rounded-3xl p-8 text-white shadow-lg">
               <div class="mb-4"><%= app_icon("sparkles", css_class: "w-12 h-12 text-white/80") %></div>
               <h3 class="text-2xl font-bold mb-3">ハレ記録</h3>
               <p class="text-white/90 leading-relaxed">
@@ -279,7 +279,7 @@
             </div>
 
             <%# カレンダー %>
-            <div class="bg-gradient-to-br from-[#E8A87C] to-[#D99B6E] rounded-3xl p-8 text-white shadow-lg">
+            <div class="bg-gradient-to-br from-kincha-light to-[#D99B6E] rounded-3xl p-8 text-white shadow-lg">
               <div class="mb-4"><%= app_icon("calendar", css_class: "w-12 h-12 text-white/80") %></div>
               <h3 class="text-2xl font-bold mb-3">ハレ度カレンダー</h3>
               <p class="text-white/90 leading-relaxed">
@@ -292,7 +292,7 @@
       </section>
 
       <%# スクリーンショットセクション %>
-      <section class="py-16 px-4 bg-[#FEF7ED]">
+      <section class="py-16 px-4 bg-wa-bg">
         <div class="max-w-5xl mx-auto">
           <h2 class="text-3xl font-bold text-center text-gray-900 mb-4">
             こんな画面です
@@ -355,7 +355,7 @@
       </section>
 
       <%# ベネフィットセクション %>
-      <section class="py-16 px-4 bg-[#FEF7ED]">
+      <section class="py-16 px-4 bg-wa-bg">
         <div class="max-w-4xl mx-auto">
           <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">
             こんな方におすすめ

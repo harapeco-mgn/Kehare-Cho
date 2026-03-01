@@ -13,35 +13,35 @@
   <%# ヘッダー %>
   <div class="flex items-center justify-between mb-4">
     <div>
-      <h1 class="text-xl font-bold text-[#4A4036]"><%= type_labels[@chat.conversation_type] %></h1>
-      <p class="text-xs text-[#8D7B68]"><%= @chat.created_at.strftime("%Y/%m/%d %H:%M") %> 開始</p>
+      <h1 class="text-xl font-bold text-sumi"><%= type_labels[@chat.conversation_type] %></h1>
+      <p class="text-xs text-kogecha"><%= @chat.created_at.strftime("%Y/%m/%d %H:%M") %> 開始</p>
     </div>
     <%= link_to "新しい相談", new_chat_path,
-          class: "text-sm text-[#C87941] hover:text-[#A8602F] font-medium border border-[#E8A87C] rounded-xl px-3 py-1.5 hover:bg-[#FFF5E9] transition-colors" %>
+          class: "text-sm text-kincha hover:text-kincha-brown font-medium border border-kincha-light rounded-xl px-3 py-1.5 hover:bg-washi-warm transition-colors" %>
   </div>
 
   <%# メッセージ一覧 %>
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm flex flex-col" style="height: calc(100vh - 240px); min-height: 400px;">
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm flex flex-col" style="height: calc(100vh - 240px); min-height: 400px;">
     <div id="messages" class="flex-1 overflow-y-auto p-4 space-y-4" data-chat-target="messages">
       <%# システムプロンプトメッセージはユーザーに表示しない %>
       <% display_messages = @messages.reject { |m| m.role == "system" } %>
       <% if display_messages.empty? %>
         <%# チャットタイプに応じたウェルカムメッセージ %>
         <div class="flex items-start gap-2">
-          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#C87941] to-[#E8A87C] flex items-center justify-center flex-shrink-0 mt-1">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-kincha to-kincha-light flex items-center justify-center flex-shrink-0 mt-1">
             <%= app_icon("bot", css_class: "w-4 h-4 text-white") %>
           </div>
-          <div class="max-w-xs md:max-w-sm bg-[#F5EDE0] rounded-2xl rounded-bl-sm px-4 py-3 border border-[#E8D8C0]">
+          <div class="max-w-xs md:max-w-sm bg-washi-gold rounded-2xl rounded-bl-sm px-4 py-3 border border-washi-tan">
             <% if @chat.cooking_advice? %>
-              <p class="text-sm text-[#4A4036]">食材の保存方法・調理法・代替材料など、料理のことなら何でも聞いてください！</p>
-              <p class="text-xs text-[#8D7B68] mt-2">例: 「鶏もものおすすめの保存方法は？」</p>
+              <p class="text-sm text-sumi">食材の保存方法・調理法・代替材料など、料理のことなら何でも聞いてください！</p>
+              <p class="text-xs text-kogecha mt-2">例: 「鶏もものおすすめの保存方法は？」</p>
             <% elsif @chat.meal_consultation? %>
-              <p class="text-sm text-[#4A4036]">今日のごはん、一緒に考えましょう！</p>
-              <p class="text-xs text-[#8D7B68] mt-2">「冷蔵庫に〇〇がある」「疲れてるから簡単なもの」など、気軽に教えてください。</p>
+              <p class="text-sm text-sumi">今日のごはん、一緒に考えましょう！</p>
+              <p class="text-xs text-kogecha mt-2">「冷蔵庫に〇〇がある」「疲れてるから簡単なもの」など、気軽に教えてください。</p>
             <% else %>
-              <p class="text-sm text-[#4A4036] flex items-center gap-1">
+              <p class="text-sm text-sumi flex items-center gap-1">
                 最初のメッセージを送ってみましょう
-                <%= app_icon("message-circle", css_class: "w-4 h-4 text-[#8D7B68]") %>
+                <%= app_icon("message-circle", css_class: "w-4 h-4 text-kogecha") %>
               </p>
             <% end %>
           </div>
@@ -58,7 +58,7 @@
     </div>
 
     <%# 入力フォーム %>
-    <div class="border-t border-[#E8E0D0] p-3">
+    <div class="border-t border-washi-border p-3">
       <%= form_with url: chat_messages_path(@chat), method: :post,
                     scope: :message,
                     data: { action: "submit->chat#submit" },
@@ -67,14 +67,14 @@
                         id: "message_input",
                         placeholder: "メッセージを入力... (Ctrl+Enter で送信)",
                         rows: 1,
-                        class: "flex-1 resize-none overflow-hidden border border-[#D6CCB8] rounded-2xl px-4 py-3 text-sm text-[#4A4036] placeholder-[#B8AFA5] bg-white focus:outline-none focus:ring-2 focus:ring-[#C87941]/30 focus:border-[#C87941]",
+                        class: "flex-1 resize-none overflow-hidden border border-washi-sand rounded-2xl px-4 py-3 text-sm text-sumi placeholder-kogecha-light bg-white focus:outline-none focus:ring-2 focus:ring-kincha/30 focus:border-kincha",
                         data: {
                           chat_target: "input",
                           action: "input->chat#resize keydown->chat#handleKeydown"
                         } %>
         <%= f.submit "送信",
                      id: "chat_submit_btn",
-                     class: "bg-[#C87941] hover:bg-[#A8602F] text-white font-semibold px-4 py-3 rounded-2xl text-sm transition-colors flex-shrink-0 disabled:opacity-50 cursor-pointer shadow-sm",
+                     class: "bg-kincha hover:bg-kincha-brown text-white font-semibold px-4 py-3 rounded-2xl text-sm transition-colors flex-shrink-0 disabled:opacity-50 cursor-pointer shadow-sm",
                      data: { chat_target: "submit" } %>
       <% end %>
     </div>

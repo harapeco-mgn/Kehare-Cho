@@ -10,21 +10,60 @@
   --font-zen: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
 
   /* 和モダンカラーパレット */
-  --color-washi: #FFFCF5;        /* 和紙色（背景） */
-  --color-washi-border: #E8E0D0; /* 和紙ボーダー */
+
+  /* 和紙系（白〜薄ベージュ） */
+  --color-washi: #FFFCF5;        /* 和紙色（メイン背景） */
+  --color-washi-faint: #F9F6EE;  /* 最薄の和紙色 */
+  --color-washi-warm: #FFF5E9;   /* 温かみのある和紙色 */
+  --color-washi-hover: #FFF9F0;  /* ホバー時の薄背景 */
+  --color-washi-pale: #F5F0EA;   /* 淡い和紙色 */
+  --color-washi-cream: #F5F0E8;  /* クリーム色（認証ページ背景） */
+  --color-washi-gold: #F5EDE0;   /* 金みがかった和紙色 */
+  --color-washi-ghost: #FAFAF7;  /* ほぼ白の和紙色 */
+  --color-wa-bg: #FEF7ED;        /* アプリ全体の背景色 */
+
+  /* 和紙ボーダー系（ベージュ〜タン） */
+  --color-washi-border: #E8E0D0; /* 和紙ボーダー（標準） */
   --color-washi-rule: #EBE5D9;   /* 罫線色 */
+  --color-washi-tan: #E8D8C0;    /* 砂子色（濃いめのボーダー） */
+  --color-washi-blush: #E8D0BC;  /* 少し赤みがかった砂色（プログレスバー等） */
+  --color-washi-sand: #D6CCB8;   /* 砂色（最も濃いボーダー） */
+  --color-washi-taupe: #D4C4B0;  /* タウプ（最濃ボーダー） */
+
+  /* 墨系（ダークブラウン） */
   --color-sumi: #4A4036;         /* 墨色（メインテキスト） */
+  --color-sumi-warm: #6B3A2A;    /* 温かみのある墨色 */
   --color-sumi-dark: #2D2520;    /* 墨色ダーク（ホバー時） */
+
+  /* 焦茶系（ミドルブラウン） */
   --color-kogecha: #8D7B68;      /* 焦茶（サブテキスト） */
   --color-kogecha-light: #B8AFA5; /* 焦茶ライト */
+
+  /* 金茶系（アンバー/ゴールド） */
   --color-kincha: #C87941;       /* 金茶（アクセント） */
+  --color-kincha-hover: #A0613A; /* 金茶ホバー（ボタン hover 時） */
+  --color-kincha-brown: #A8602F; /* 金茶ブラウン（濃いめ） */
   --color-kincha-light: #E8A87C; /* 金茶ライト */
+  --color-kincha-faint: #FFF4E5; /* 最薄の金茶背景（ホバー・カレンダー） */
   --color-kincha-bg: #FFF0D4;    /* 金茶背景 */
   --color-kincha-border: #F5D5A0; /* 金茶ボーダー */
+
+  /* 萌黄系（グリーン） */
   --color-moegi: #8EA084;        /* 萌黄（緑系アクセント） */
+  --color-moegi-muted: #7A9D7E;  /* くすんだ萌黄 */
+  --color-moegi-deep: #6B8D6E;   /* 深い萌黄 */
+  --color-moegi-dark: #5C7A60;   /* 濃い萌黄（テキスト用） */
   --color-moegi-light: #A8BCA3;  /* 萌黄ライト */
   --color-moegi-bg: #EEF2EB;     /* 萌黄背景 */
   --color-moegi-border: #C6D4C0; /* 萌黄ボーダー */
+
+  /* 茜系（サーモン/コーラル） */
+  --color-akane: #D4845F;        /* 茜色（サーモン） */
+  --color-akane-dark: #C97D5D;   /* 濃い茜色 */
+
+  /* 特殊用途 */
+  --color-sunday: #C26D63;       /* 日曜日・祝日の赤 */
+  --color-sumi-red: #8B4A3A;     /* エラー・警告テキスト */
 }
 
 /* daisyUI のデフォルトフォントを上書き */

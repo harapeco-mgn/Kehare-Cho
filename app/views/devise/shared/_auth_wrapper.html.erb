@@ -1,16 +1,16 @@
 <% content_for :hide_header, true %>
 <% content_for :hide_footer, true %>
 
-<div class="min-h-screen bg-[#F5F0E8] flex items-center justify-center py-12 px-4 font-zen">
+<div class="min-h-screen bg-washi-cream flex items-center justify-center py-12 px-4 font-zen">
   <div class="w-full max-w-md">
     <%# アプリロゴ %>
     <div class="text-center mb-8">
-      <%= app_icon("flower-2", css_class: "w-10 h-10 text-[#C87941] inline-block mb-2") %>
-      <h1 class="text-2xl font-bold text-[#4A4036] tracking-widest">keharecho</h1>
-      <p class="text-sm text-[#8D7B68] mt-1">日常に小さなハレを</p>
+      <%= app_icon("flower-2", css_class: "w-10 h-10 text-kincha inline-block mb-2") %>
+      <h1 class="text-2xl font-bold text-sumi tracking-widest">keharecho</h1>
+      <p class="text-sm text-kogecha mt-1">日常に小さなハレを</p>
     </div>
 
-    <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-md p-8">
+    <div class="bg-washi rounded-3xl border border-washi-border shadow-md p-8">
       <%= yield %>
     </div>
   </div>

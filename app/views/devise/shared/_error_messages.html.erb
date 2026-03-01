@@ -1,17 +1,17 @@
 <% if resource.errors.any? %>
-  <div id="error_explanation" data-turbo-cache="false" class="bg-[#FDF3F0] border-l-4 border-[#C87941] text-[#6B3A2A] p-4 mb-5 rounded-r-2xl">
+  <div id="error_explanation" data-turbo-cache="false" class="bg-washi-warm border-l-4 border-kincha text-sumi-warm p-4 mb-5 rounded-r-2xl">
     <div class="flex">
       <div class="flex-shrink-0">
-        <%= app_icon("alert-circle", css_class: "h-5 w-5 text-[#C87941]") %>
+        <%= app_icon("alert-circle", css_class: "h-5 w-5 text-kincha") %>
       </div>
       <div class="ml-3">
-        <h3 class="text-sm font-bold text-[#6B3A2A]">
+        <h3 class="text-sm font-bold text-sumi-warm">
           <%= I18n.t("errors.messages.not_saved",
                      count: resource.errors.count,
                      resource: devise_i18n_fix_model_name_case(resource.model_name.human, i18n_key: 'errors.messages.not_saved'))
            %>
         </h3>
-        <ul class="mt-2 text-sm text-[#8B4A3A] space-y-1">
+        <ul class="mt-2 text-sm text-sumi-red space-y-1">
           <% resource.errors.full_messages.each do |message| %>
             <li>• <%= message %></li>
           <% end %>

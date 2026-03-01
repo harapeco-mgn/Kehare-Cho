@@ -1,15 +1,15 @@
 <turbo-frame id="ai_analysis">
-  <div class="bg-[#FFFCF5] rounded-2xl border border-[#E8E0D0] shadow-sm p-5 font-zen">
-    <h2 class="text-sm font-semibold text-[#4A4036] mb-3 flex items-center gap-1">
-      <%= app_icon("bot", css_class: "w-4 h-4 text-[#C87941]") %> AI 傾向分析
+  <div class="bg-washi rounded-2xl border border-washi-border shadow-sm p-5 font-zen">
+    <h2 class="text-sm font-semibold text-sumi mb-3 flex items-center gap-1">
+      <%= app_icon("bot", css_class: "w-4 h-4 text-kincha") %> AI 傾向分析
     </h2>
-    <div class="text-sm text-[#4A4036] whitespace-pre-wrap leading-relaxed">
+    <div class="text-sm text-sumi whitespace-pre-wrap leading-relaxed">
       <%= @analysis %>
     </div>
     <div class="mt-4 text-right">
       <%= button_to "再分析する", analyze_reflection_path,
             method: :post,
-            class: "text-xs text-[#C87941] hover:text-[#A8602F] underline bg-transparent border-0 cursor-pointer",
+            class: "text-xs text-kincha hover:text-kincha-brown underline bg-transparent border-0 cursor-pointer",
             data: { turbo_submits_with: "分析中..." } %>
     </div>
   </div>

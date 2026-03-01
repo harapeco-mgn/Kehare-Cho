@@ -7,24 +7,24 @@
       <%# ヘッダー + 月ナビゲーション %>
       <div class="flex justify-between items-end px-2">
         <div>
-          <h2 class="text-3xl md:text-4xl font-bold text-[#4A4036]">Calendar</h2>
-          <p class="text-base text-[#8D7B68] mt-1 opacity-70">
+          <h2 class="text-3xl md:text-4xl font-bold text-sumi">Calendar</h2>
+          <p class="text-base text-kogecha mt-1 opacity-70">
             <%= @start_date.strftime("%Y年%-m月") %>
           </p>
         </div>
         <div class="flex gap-1">
           <%= link_to calendar_path(start_date: (@start_date - 1.month).to_s),
-              class: "p-2 hover:bg-[#F5F0EA] rounded-full transition-colors" do %>
-            <%= app_icon("chevron-left", css_class: "w-5 h-5 text-[#8D7B68]") %>
+              class: "p-2 hover:bg-washi-pale rounded-full transition-colors" do %>
+            <%= app_icon("chevron-left", css_class: "w-5 h-5 text-kogecha") %>
           <% end %>
           <%= link_to calendar_path,
-              class: "p-2 hover:bg-[#F5F0EA] rounded-full transition-colors",
+              class: "p-2 hover:bg-washi-pale rounded-full transition-colors",
               title: "今月へ" do %>
-            <%= app_icon("calendar", css_class: "w-5 h-5 text-[#8D7B68]") %>
+            <%= app_icon("calendar", css_class: "w-5 h-5 text-kogecha") %>
           <% end %>
           <%= link_to calendar_path(start_date: (@start_date + 1.month).to_s),
-              class: "p-2 hover:bg-[#F5F0EA] rounded-full transition-colors" do %>
-            <%= app_icon("chevron-right", css_class: "w-5 h-5 text-[#8D7B68]") %>
+              class: "p-2 hover:bg-washi-pale rounded-full transition-colors" do %>
+            <%= app_icon("chevron-right", css_class: "w-5 h-5 text-kogecha") %>
           <% end %>
         </div>
       </div>
@@ -36,14 +36,14 @@
         entries_by_date = @hare_entries.group_by(&:occurred_on)
         flower_rotations = %w[-rotate-12 rotate-6 -rotate-3 rotate-3 -rotate-6 rotate-12]
       %>
-      <div class="bg-[#FFFCF5] rounded-3xl p-5 shadow-md border-2 border-[#EBE5D9] relative overflow-hidden">
+      <div class="bg-washi rounded-3xl p-5 shadow-md border-2 border-washi-rule relative overflow-hidden">
         <%# 装飾グロー %>
-        <div class="absolute -top-8 -right-8 w-36 h-36 bg-[#C87941]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-8 -right-8 w-36 h-36 bg-kincha/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <%# 曜日ヘッダー %>
         <div class="grid grid-cols-7 gap-1 text-center mb-3">
           <% %w[日 月 火 水 木 金 土].each_with_index do |day, i| %>
-            <div class="font-bold text-xs py-1 <%= i == 0 ? 'text-[#C26D63]' : i == 6 ? 'text-blue-400' : 'text-[#8D7B68] opacity-70' %>">
+            <div class="font-bold text-xs py-1 <%= i == 0 ? 'text-sunday' : i == 6 ? 'text-blue-400' : 'text-kogecha opacity-70' %>">
               <%= day %>
             </div>
           <% end %>
@@ -67,17 +67,17 @@
                 data: { turbo_frame: "calendar-detail" },
                 class: [
                   "relative group rounded-xl transition-all p-1 flex flex-col items-center justify-start cursor-pointer min-h-[64px] md:min-h-[80px] border",
-                  is_today  ? "bg-[#C87941]/10 ring-2 ring-[#C87941]/50 border-transparent shadow-inner" :
-                  has_entry ? "border-transparent hover:bg-[#FFF4E5] hover:border-dashed hover:border-[#C87941]/40" :
-                              "border-transparent hover:bg-[#F5F0EA] hover:border-dashed hover:border-[#D6CCB8]/60"
+                  is_today  ? "bg-kincha/10 ring-2 ring-kincha/50 border-transparent shadow-inner" :
+                  has_entry ? "border-transparent hover:bg-kincha-faint hover:border-dashed hover:border-kincha/40" :
+                              "border-transparent hover:bg-washi-pale hover:border-dashed hover:border-washi-sand/60"
                 ].join(" ") do %>
 
               <%# 日付数字 %>
               <span class="text-sm z-10 relative mt-1
-                           <%= is_today ? 'text-[#C87941] font-bold' :
-                               has_entry ? 'text-[#C26D63] font-semibold' :
-                               date.wday == 0 ? 'text-[#C26D63]/60' :
-                               date.wday == 6 ? 'text-blue-400/60' : 'text-[#8D7B68]' %>">
+                           <%= is_today ? 'text-kincha font-bold' :
+                               has_entry ? 'text-sunday font-semibold' :
+                               date.wday == 0 ? 'text-sunday/60' :
+                               date.wday == 6 ? 'text-blue-400/60' : 'text-kogecha' %>">
                 <%= date.day %>
               </span>
 
@@ -85,7 +85,7 @@
               <% if has_entry %>
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <%= app_icon("flower-2",
-                        css_class: "w-9 h-9 md:w-11 md:h-11 text-[#C87941] opacity-70 #{rotation} transition-transform group-hover:scale-110 group-hover:opacity-90") %>
+                        css_class: "w-9 h-9 md:w-11 md:h-11 text-kincha opacity-70 #{rotation} transition-transform group-hover:scale-110 group-hover:opacity-90") %>
                 </div>
               <% end %>
             <% end %>
@@ -94,10 +94,10 @@
       </div>
 
       <%# 月のハレ件数フッター %>
-      <div class="bg-[#EEF2EB] rounded-2xl p-4 flex items-start gap-3 border border-[#C6D4C0]">
+      <div class="bg-moegi-bg rounded-2xl p-4 flex items-start gap-3 border border-moegi-border">
         <%= app_icon("leaf", css_class: "w-5 h-5 text-[#5A7055] mt-0.5 flex-shrink-0") %>
-        <p class="text-sm text-[#4A4036]">
-          今月は <strong class="text-[#C87941] font-bold"><%= @hare_entries.size %> 回</strong>のハレを記録しました。小さな特別を大切に。
+        <p class="text-sm text-sumi">
+          今月は <strong class="text-kincha font-bold"><%= @hare_entries.size %> 回</strong>のハレを記録しました。小さな特別を大切に。
         </p>
       </div>
     </div>
@@ -106,8 +106,8 @@
     <div class="lg:col-span-5">
       <div class="sticky top-24 flex flex-col gap-5">
         <div class="flex items-center gap-2 px-2">
-          <%= app_icon("sparkles", css_class: "w-5 h-5 text-[#C87941]") %>
-          <h2 class="text-xl font-bold text-[#4A4036]">Hare Record</h2>
+          <%= app_icon("sparkles", css_class: "w-5 h-5 text-kincha") %>
+          <h2 class="text-xl font-bold text-sumi">Hare Record</h2>
         </div>
 
         <turbo-frame id="calendar-detail">

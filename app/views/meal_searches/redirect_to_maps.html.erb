@@ -4,34 +4,34 @@
     <%# ページヘッダー %>
     <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 class="text-3xl font-bold text-[#4A4036] mb-2">かんたん献立</h1>
-        <p class="text-[#8D7B68] flex items-center gap-1">
+        <h1 class="text-3xl font-bold text-sumi mb-2">かんたん献立</h1>
+        <p class="text-kogecha flex items-center gap-1">
           今日のごはん、何にしますか？
-          <%= app_icon("utensils", css_class: "w-4 h-4 text-[#8EA084]") %>
+          <%= app_icon("utensils", css_class: "w-4 h-4 text-moegi") %>
         </p>
       </div>
-      <%= link_to "ホーム", home_path, class: "text-[#8D7B68] hover:text-[#C87941] font-medium transition-colors" %>
+      <%= link_to "ホーム", home_path, class: "text-kogecha hover:text-kincha font-medium transition-colors" %>
     </div>
 
     <%# メッセージカード %>
-    <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-8 text-center">
+    <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-8 text-center">
       <div class="flex justify-center mb-2">
-        <%= app_icon("map", css_class: "w-8 h-8 text-[#C87941]") %>
+        <%= app_icon("map", css_class: "w-8 h-8 text-kincha") %>
       </div>
-      <h2 class="text-xl font-bold text-[#4A4036] mb-2">近くのお店を探しています...</h2>
-      <p class="text-[#8D7B68] mb-6">
-        <span class="font-semibold text-[#C87941]"><%= @genre_label %></span> のお店を Google マップで検索します
+      <h2 class="text-xl font-bold text-sumi mb-2">近くのお店を探しています...</h2>
+      <p class="text-kogecha mb-6">
+        <span class="font-semibold text-kincha"><%= @genre_label %></span> のお店を Google マップで検索します
       </p>
 
       <%# ローディングアニメーション %>
       <div class="flex justify-center mb-8">
-        <span class="loading loading-dots loading-lg text-[#C87941]"></span>
+        <span class="loading loading-dots loading-lg text-kincha"></span>
       </div>
 
       <%# 手動リンク（フォールバック） %>
-      <p class="text-sm text-[#8D7B68]">
+      <p class="text-sm text-kogecha">
         自動で移動しない場合は
-        <%= link_to "こちら", @maps_url, class: "text-[#C87941] hover:text-[#A8602F] underline font-medium" %>
+        <%= link_to "こちら", @maps_url, class: "text-kincha hover:text-kincha-brown underline font-medium" %>
         をクリックしてください
       </p>
     </div>
