@@ -46,6 +46,22 @@
                   <% end %>
                 </div>
               <% end %>
+
+              <%# 自分の投稿にのみ編集・削除ボタンを表示 %>
+              <% if user_signed_in? && entry.user_id == current_user.id %>
+                <div class="flex gap-2 mt-3 pt-3" style="border-top: 1px solid #EBE5D9;">
+                  <%= link_to edit_hare_entry_path(entry),
+                      class: "btn btn-sm bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+                    <%= app_icon("pencil", css_class: "w-3 h-3 mr-1") %> 編集
+                  <% end %>
+                  <%= button_to hare_entry_path(entry),
+                      method: :delete,
+                      data: { turbo_confirm: "この記録を削除しますか？" },
+                      class: "btn btn-sm btn-error rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+                    <%= app_icon("trash-2", css_class: "w-3 h-3 mr-1") %> 削除
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>
