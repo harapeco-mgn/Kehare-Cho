@@ -3,6 +3,39 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
+  describe '#active_link_to' do
+    context '現在のページと一致する場合' do
+      it 'アクティブクラスが付与されたリンクを返す' do
+        allow(helper).to receive(:current_page?).and_return(true)
+        result = helper.active_link_to("ホーム", "/home", class: "btn")
+        expect(result).to include('text-[#C87941]')
+        expect(result).to include('bg-[#F5ECD7]')
+      end
+    end
+
+    context '現在のページと一致しない場合' do
+      it 'アクティブクラスが付与されないリンクを返す' do
+        allow(helper).to receive(:current_page?).and_return(false)
+        result = helper.active_link_to("カレンダー", "/calendar", class: "btn")
+        expect(result).not_to include('text-[#C87941]')
+        expect(result).not_to include('bg-[#F5ECD7]')
+      end
+    end
+
+    it '指定した base class を保持する' do
+      allow(helper).to receive(:current_page?).and_return(false)
+      result = helper.active_link_to("テスト", "/test", class: "btn btn-ghost btn-sm")
+      expect(result).to include('btn btn-ghost btn-sm')
+    end
+
+    it 'リンクテキストとパスが正しく出力される' do
+      allow(helper).to receive(:current_page?).and_return(false)
+      result = helper.active_link_to("ホーム", "/home", class: "btn")
+      expect(result).to include('href="/home"')
+      expect(result).to include('ホーム')
+    end
+  end
+
   describe '#linkify_body' do
     context 'URLが含まれない場合' do
       it 'テキストをそのまま返す' do
