@@ -26,6 +26,10 @@ gem "rails-i18n", "~> 8.0"
 gem "devise"
 # Devise の表示文言を日本語化 [https://github.com/tigrish/devise-i18n]
 gem "devise-i18n"
+# Google OAuth 2.0 ログイン [https://github.com/zquestz/omniauth-google-oauth2]
+gem "omniauth-google-oauth2"
+# OmniAuth の CSRF 対策（Rails との統合に必要）[https://github.com/cookpad/omniauth-rails_csrf_protection]
+gem "omniauth-rails_csrf_protection"
 
 # カレンダー表示 [https://github.com/excid3/simple_calendar]
 gem "simple_calendar", "~> 3.0"
