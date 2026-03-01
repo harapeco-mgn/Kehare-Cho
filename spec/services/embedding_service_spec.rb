@@ -41,5 +41,34 @@ RSpec.describe EmbeddingService, skip_embedding_stub: true do
 
       EmbeddingService.generate(nil)
     end
+
+    context "エラーが発生した場合" do
+      it "ネットワークエラー時は nil を返す" do
+        allow(Net::HTTP).to receive(:post).and_raise(SocketError, "getaddrinfo: Name or service not known")
+        expect(EmbeddingService.generate("テスト")).to be_nil
+      end
+
+      it "タイムアウト時は nil を返す" do
+        allow(Net::HTTP).to receive(:post).and_raise(Net::ReadTimeout)
+        expect(EmbeddingService.generate("テスト")).to be_nil
+      end
+
+      it "API キーが未設定の場合は nil を返す" do
+        allow(ENV).to receive(:fetch).with("GEMINI_API_KEY").and_raise(KeyError, "key not found")
+        expect(EmbeddingService.generate("テスト")).to be_nil
+      end
+
+      it "不正な JSON レスポンス時は nil を返す" do
+        bad_response = instance_double(Net::HTTPResponse, body: "invalid json{")
+        allow(Net::HTTP).to receive(:post).and_return(bad_response)
+        expect(EmbeddingService.generate("テスト")).to be_nil
+      end
+
+      it "エラーをログに記録する" do
+        allow(Net::HTTP).to receive(:post).and_raise(SocketError, "connection refused")
+        expect(Rails.logger).to receive(:error).with(/\[EmbeddingService\]/)
+        EmbeddingService.generate("テスト")
+      end
+    end
   end
 end
