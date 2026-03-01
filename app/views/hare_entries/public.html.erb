@@ -1,72 +1,90 @@
 <main class="max-w-3xl mx-auto px-4 py-8 font-zen">
   <%# ヘッダー %>
   <div class="mb-6">
-    <h1 class="text-2xl md:text-3xl font-bold text-sumi mb-1 tracking-wide">みんなのハレ</h1>
-    <p class="text-kogecha text-sm">他のユーザーのハレ投稿を見てみましょう</p>
+    <h1 class="text-2xl md:text-3xl font-bold text-[#4A4036] mb-1 tracking-wide">みんなのハレ</h1>
+    <p class="text-[#8D7B68] text-sm">他のユーザーのハレ投稿を見てみましょう</p>
   </div>
 
   <%# 投稿一覧 %>
   <% if @hare_entries.any? %>
-    <div class="space-y-4">
+    <div class="space-y-6">
       <% @hare_entries.each do |entry| %>
-        <div class="bg-washi rounded-2xl shadow-sm border border-washi-border hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
-          <div class="flex">
-            <%# 左側アクセントライン（index と同じオレンジ系） %>
-            <div class="w-1 bg-gradient-to-b from-kincha to-kincha-light flex-shrink-0"></div>
-            <div class="flex-1 p-5">
-              <%# ユーザー情報 %>
-              <div class="flex items-center mb-4">
+        <%# ノート風カード %>
+        <div class="relative bg-[#FFFCF5] rounded-3xl shadow-md border-2 border-[#E8E0D0] overflow-hidden">
+
+          <%# 罫線背景 %>
+          <div class="absolute inset-0 pointer-events-none"
+               style="background-image: repeating-linear-gradient(transparent, transparent calc(2.5rem - 1px), #EBE5D9 2.5rem);"></div>
+
+          <%# 穴パンチ装飾（左側） %>
+          <div class="absolute top-0 left-5 flex flex-col gap-10 pt-6 h-full pointer-events-none z-20">
+            <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+            <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+            <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+          </div>
+
+          <%# コンテンツ本体 %>
+          <div class="relative z-10 p-5 pl-14">
+
+            <%# ヘッダー: ユーザー情報 + 日付 %>
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4 pb-3"
+                 style="border-bottom: 1px solid #EBE5D9;">
+              <div class="flex items-center gap-3">
                 <div class="avatar">
-                  <div class="w-10 h-10 rounded-full border-2 border-washi-border overflow-hidden">
+                  <div class="w-10 h-10 rounded-full border-2 border-[#E8E0D0] overflow-hidden">
                     <%= image_tag level_image_url(entry.user.level), alt: entry.user.display_name, class: "w-full h-full object-cover" %>
                   </div>
                 </div>
-                <div class="ml-3">
-                  <p class="font-bold text-sumi text-sm"><%= entry.user.display_name %></p>
-                  <p class="text-xs text-kogecha">
-                    <%= app_icon("sparkles", css_class: "w-3 h-3 inline-block text-kincha mr-0.5") %>
+                <div>
+                  <p class="font-semibold text-[#4A4036] text-sm"><%= entry.user.display_name %></p>
+                  <p class="text-xs text-[#8D7B68]">
+                    <%= app_icon("sparkles", css_class: "w-3 h-3 inline-block text-[#C87941] mr-0.5") %>
                     <%= entry.occurred_on.strftime('%Y年%-m月%-d日') %>
                   </p>
                 </div>
               </div>
-
-              <%# 写真 %>
-              <% if entry.photo.attached? %>
-                <div class="mb-3">
-                  <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [600, 600]), class: "rounded-xl max-h-96 max-w-full w-auto mx-auto border border-washi-border" %>
-                </div>
-              <% end %>
-
-              <%# 投稿内容 %>
-              <p class="text-sumi mb-3 break-words leading-relaxed"><%= linkify_body(entry.body) %></p>
-
-              <%# タグ %>
-              <% if entry.hare_tags.any? %>
-                <div class="flex flex-wrap gap-2">
-                  <% entry.hare_tags.each do |tag| %>
-                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-moegi-bg text-moegi border border-moegi-border">
-                      <%= tag.label %>
-                    </span>
-                  <% end %>
-                </div>
-              <% end %>
-
-              <%# 自分の投稿にのみ編集・削除ボタンを表示 %>
-              <% if user_signed_in? && entry.user_id == current_user.id %>
-                <div class="flex gap-2 mt-3 pt-3 border-t border-washi-rule">
-                  <%= link_to edit_hare_entry_path(entry),
-                      class: "btn btn-sm bg-gradient-to-r from-kincha to-kincha-light text-white border-0 rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
-                    <%= app_icon("pencil", css_class: "w-3 h-3 mr-1") %> 編集
-                  <% end %>
-                  <%= button_to hare_entry_path(entry),
-                      method: :delete,
-                      data: { turbo_confirm: "この記録を削除しますか？" },
-                      class: "btn btn-sm btn-error rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
-                    <%= app_icon("trash-2", css_class: "w-3 h-3 mr-1") %> 削除
-                  <% end %>
-                </div>
-              <% end %>
             </div>
+
+            <%# 写真 %>
+            <% if entry.photo.attached? %>
+              <div class="mb-4">
+                <%= image_tag cloudinary_photo_url(entry.photo, resize_to_limit: [600, 600]),
+                    class: "rounded-xl max-h-96 max-w-full w-auto mx-auto border-2 border-[#E8E0D0] shadow-md" %>
+              </div>
+            <% end %>
+
+            <%# 本文 %>
+            <div class="mb-4" style="line-height: 2.5rem;">
+              <p class="whitespace-pre-wrap text-[#4A4036] break-words"><%= linkify_body(entry.body) %></p>
+            </div>
+
+            <%# タグ %>
+            <% if entry.hare_tags.any? %>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <% entry.hare_tags.each do |tag| %>
+                  <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold bg-[#EEF2EB] text-[#8EA084] border border-[#C6D4C0]">
+                    <%= tag.label %>
+                  </span>
+                <% end %>
+              </div>
+            <% end %>
+
+            <%# 自分の投稿にのみ編集・削除ボタンを表示 %>
+            <% if user_signed_in? && entry.user_id == current_user.id %>
+              <div class="flex gap-2 pt-3" style="border-top: 1px solid #EBE5D9;">
+                <%= link_to edit_hare_entry_path(entry),
+                    class: "btn btn-sm bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+                  <%= app_icon("pencil", css_class: "w-3 h-3 mr-1") %> 編集
+                <% end %>
+                <%= button_to hare_entry_path(entry),
+                    method: :delete,
+                    data: { turbo_confirm: "この記録を削除しますか？" },
+                    class: "btn btn-sm btn-error rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+                  <%= app_icon("trash-2", css_class: "w-3 h-3 mr-1") %> 削除
+                <% end %>
+              </div>
+            <% end %>
+
           </div>
         </div>
       <% end %>
@@ -78,9 +96,9 @@
     </div>
   <% else %>
     <%# 投稿がない場合 %>
-    <div class="bg-washi rounded-3xl shadow-sm border-2 border-dashed border-washi-border text-center py-16">
-      <p class="text-kogecha text-lg">まだ公開されている投稿がありません</p>
-      <p class="text-kogecha-light text-sm mt-2">最初のハレをシェアしてみましょう</p>
+    <div class="bg-[#FFFCF5] rounded-3xl shadow-sm border-2 border-dashed border-[#E8E0D0] text-center py-16">
+      <p class="text-[#8D7B68] text-lg">まだ公開されている投稿がありません</p>
+      <p class="text-[#B8AFA5] text-sm mt-2">最初のハレをシェアしてみましょう</p>
     </div>
   <% end %>
 </main>
