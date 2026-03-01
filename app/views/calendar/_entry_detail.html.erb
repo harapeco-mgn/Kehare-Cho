@@ -64,11 +64,13 @@
     <%# ボタン %>
     <div class="flex justify-center gap-3 pt-4">
       <%= link_to hare_entry_path(entry),
+          data: { turbo_frame: "_top" },
           class: "flex items-center gap-2 px-6 py-2.5 bg-[#8D7B68] hover:bg-[#776E60] text-white rounded-full shadow-md hover:-translate-y-0.5 transition-all font-bold text-sm" do %>
         <%= app_icon("notebook-pen", css_class: "w-4 h-4") %>
         全文を見る
       <% end %>
       <%= link_to edit_hare_entry_path(entry),
+          data: { turbo_frame: "_top" },
           class: "flex items-center gap-2 px-6 py-2.5 bg-[#FFFCF5] hover:bg-[#FFF0D4] text-[#8D7B68] hover:text-[#C87941] rounded-full shadow-sm border border-[#E8E0D0] hover:border-[#C87941] hover:-translate-y-0.5 transition-all font-bold text-sm" do %>
         <%= app_icon("pencil", css_class: "w-4 h-4") %>
         編集
