@@ -9,8 +9,8 @@ class CalendarController < ApplicationController
     @hare_entries = current_user.hare_entries.includes(:hare_tags).where(
       occurred_on: @start_date.beginning_of_month..@start_date.end_of_month
     )
-    # 右パネルの初期表示用：今月最新エントリー
-    @latest_entry = @hare_entries.max_by(&:occurred_on)
+    # 右パネルの初期表示用：今月最新エントリー（DB の ORDER BY で取得）
+    @latest_entry = @hare_entries.order(occurred_on: :desc).first
   end
 
   def show
