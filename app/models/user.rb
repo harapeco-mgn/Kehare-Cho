@@ -10,8 +10,7 @@ class User < ApplicationRecord
   has_many :meal_searches, dependent: :destroy
   has_many :chats, dependent: :destroy
 
-  validates :nickname, uniqueness: { case_sensitive: false }, allow_nil: true
-  validates :nickname, length: { maximum: 20 }, allow_nil: true
+  validates :nickname, uniqueness: { case_sensitive: false }, length: { maximum: 20 }, allow_nil: true
 
   def monthly_points
     point_transactions.where(awarded_on: current_month_range).sum(:points)
