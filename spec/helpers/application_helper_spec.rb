@@ -62,14 +62,14 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(result).to include('#ケハレ帖')
     end
 
-    context '本文が100文字を超える場合' do
-      let(:long_body) { 'あ' * 120 }
+    context '本文が200文字を超える場合' do
+      let(:long_body) { 'あ' * 220 }
       let(:entry) { build(:hare_entry, occurred_on: Date.new(2026, 3, 1), body: long_body) }
 
-      it '100文字で切り詰める（truncate の省略記号込み）' do
+      it '200文字で切り詰める（truncate の省略記号込み）' do
         result = helper.x_share_text(entry)
         body_part = result.split("\n\n").first
-        expect(body_part.length).to be <= 103 # 100文字 + "..."
+        expect(body_part.length).to be <= 203 # 200文字 + "..."
       end
     end
 

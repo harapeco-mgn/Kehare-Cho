@@ -12,7 +12,7 @@ module ApplicationHelper
   # @param entry [HareEntry] ハレ投稿
   # @return [String] シェア用テキスト
   def x_share_text(entry)
-    body_text = entry.body.gsub(/\r?\n/, " ").truncate(100)
+    body_text = entry.body.gsub(/\r?\n/, " ").truncate(200)
     date_text = entry.occurred_on.strftime("%Y年%-m月%-d日")
     "#{body_text}\n\n#{date_text}のハレ記録 #ケハレ帖"
   end

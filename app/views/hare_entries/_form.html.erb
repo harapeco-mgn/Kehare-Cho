@@ -20,11 +20,11 @@
     <%= f.text_area :body,
         class: "textarea w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] placeholder-[#C4B8AA] transition-colors",
         rows: 6,
-        maxlength: 280,
-        placeholder: "今日のごはんで「ちょっと特別」だったことは？（280文字まで）",
+        maxlength: 200,
+        placeholder: "今日のごはんで「ちょっと特別」だったことは？（200文字まで）",
         data: { character_count_target: "input", action: "input->character-count#update" } %>
     <p class="fieldset-label text-right text-[#B8AFA5]">
-      残り <span data-character-count-target="count" class="font-semibold text-[#8D7B68]">280</span> 文字
+      残り <span data-character-count-target="count" class="font-semibold text-[#8D7B68]">200</span> 文字
     </p>
   </fieldset>
 
