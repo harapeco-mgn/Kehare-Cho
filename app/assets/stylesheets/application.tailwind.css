@@ -4,10 +4,27 @@
 /* JS で動的に追加するクラスのセーフリスト（Tailwind v4 purge 対策） */
 @source inline("{text-stone-600,text-orange-500,text-red-500}");
 
-/* 絵文字表示用フォント設定 - Tailwind 4.x スタイル */
+/* 和モダンテーマ定義（Issue #241） */
 @theme {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-zen: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+
+  /* 和モダンカラーパレット */
+  --color-washi: #FFFCF5;        /* 和紙色（背景） */
+  --color-washi-border: #E8E0D0; /* 和紙ボーダー */
+  --color-washi-rule: #EBE5D9;   /* 罫線色 */
+  --color-sumi: #4A4036;         /* 墨色（メインテキスト） */
+  --color-sumi-dark: #2D2520;    /* 墨色ダーク（ホバー時） */
+  --color-kogecha: #8D7B68;      /* 焦茶（サブテキスト） */
+  --color-kogecha-light: #B8AFA5; /* 焦茶ライト */
+  --color-kincha: #C87941;       /* 金茶（アクセント） */
+  --color-kincha-light: #E8A87C; /* 金茶ライト */
+  --color-kincha-bg: #FFF0D4;    /* 金茶背景 */
+  --color-kincha-border: #F5D5A0; /* 金茶ボーダー */
+  --color-moegi: #8EA084;        /* 萌黄（緑系アクセント） */
+  --color-moegi-light: #A8BCA3;  /* 萌黄ライト */
+  --color-moegi-bg: #EEF2EB;     /* 萌黄背景 */
+  --color-moegi-border: #C6D4C0; /* 萌黄ボーダー */
 }
 
 /* daisyUI のデフォルトフォントを上書き */
