@@ -1,16 +1,14 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!  # Devise の認証チェック
+  before_action :set_user
 
   def show
-    @user = current_user
   end
 
   def edit
-    @user = current_user
   end
 
   def update
-    @user = current_user
     if @user.update(profile_params)
       redirect_to profile_path, notice: "プロフィールを更新しました"
     else
@@ -19,6 +17,10 @@ class ProfilesController < ApplicationController
   end
 
   private
+
+  def set_user
+    @user = current_user
+  end
 
   def profile_params
     params.require(:user).permit(:nickname)

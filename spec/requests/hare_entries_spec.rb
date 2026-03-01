@@ -113,16 +113,16 @@ RSpec.describe "HareEntries", type: :request do
         let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
         let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
 
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           get hare_entry_path(other_entry)
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
       end
 
       context '存在しないIDの場合' do
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           get hare_entry_path(id: 99999)
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
       end
     end
@@ -540,16 +540,16 @@ RSpec.describe "HareEntries", type: :request do
         let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
         let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
 
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           get edit_hare_entry_path(other_entry)
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
       end
 
       context '存在しないIDの場合' do
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           get edit_hare_entry_path(id: 99999)
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
       end
     end
@@ -753,9 +753,9 @@ RSpec.describe "HareEntries", type: :request do
         let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
         let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
 
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           patch hare_entry_path(other_entry), params: { hare_entry: { body: '不正な更新' } }
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
 
         it 'HareEntryが更新されない' do
@@ -809,9 +809,9 @@ RSpec.describe "HareEntries", type: :request do
         let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
         let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の投稿', occurred_on: Date.today, visibility: 'public_post') }
 
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           delete hare_entry_path(other_entry)
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
 
         it 'HareEntryが削除されない' do
@@ -822,9 +822,9 @@ RSpec.describe "HareEntries", type: :request do
       end
 
       context '存在しないIDの場合' do
-        it '404エラーになる' do
+        it 'ルートへリダイレクトされる' do
           delete hare_entry_path(id: 99999)
-          expect(response).to have_http_status(:not_found)
+          expect(response).to redirect_to(root_path)
         end
       end
     end

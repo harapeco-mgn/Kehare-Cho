@@ -1,6 +1,7 @@
 class HareEntriesController < ApplicationController
     before_action :authenticate_user!, except: [ :public ]
     before_action :set_hare_entry, only: [ :show, :edit, :update, :destroy ]
+    before_action :set_hare_tags, only: [ :new, :create, :edit, :update ]
 
     def index
       @hare_entries = current_user.hare_entries.with_attached_photo.includes(:hare_tags).order(occurred_on: :desc, created_at: :desc).page(params[:page]).per(20)
@@ -13,7 +14,6 @@ class HareEntriesController < ApplicationController
 
     def new
       @hare_entry = HareEntry.new(occurred_on: Date.today, body: params[:body])
-      @hare_tags = HareTag.active.sorted
     end
 
     def create
@@ -23,13 +23,11 @@ class HareEntriesController < ApplicationController
         PointAwardService.call(@hare_entry)
         redirect_to hare_entry_path(@hare_entry), notice: "ハレを記録しました！"
       else
-        @hare_tags = HareTag.active.sorted
         render :new, status: :unprocessable_entity
       end
     end
 
     def edit
-      @hare_tags = HareTag.active.sorted
     end
 
     def update
@@ -39,7 +37,6 @@ class HareEntriesController < ApplicationController
         PointRecalculationService.call(@hare_entry)
         redirect_to hare_entry_path(@hare_entry), notice: "ハレの記録を更新しました"
       else
-        @hare_tags = HareTag.active.sorted
         render :edit, status: :unprocessable_entity
       end
     end
@@ -64,6 +61,10 @@ class HareEntriesController < ApplicationController
 
     def set_hare_entry
       @hare_entry = current_user.hare_entries.find(params[:id])
+    end
+
+    def set_hare_tags
+      @hare_tags = HareTag.active.sorted
     end
 
     def hare_entry_params
