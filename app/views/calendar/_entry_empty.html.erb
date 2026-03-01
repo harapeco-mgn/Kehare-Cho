@@ -7,6 +7,7 @@
     <p class="text-[#4A4036] text-lg font-semibold mb-1">この日はまだハレがありません</p>
     <p class="text-[#B8AFA5] text-sm mb-6">小さな「ちょっと特別」を記録してみましょう</p>
     <%= link_to new_hare_entry_path,
+        data: { turbo_frame: "_top" },
         class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all font-bold" do %>
       <%= app_icon("plus", css_class: "w-4 h-4 mr-1") %> ハレを記録する
     <% end %>
