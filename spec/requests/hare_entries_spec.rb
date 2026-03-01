@@ -826,4 +826,52 @@ RSpec.describe "HareEntries", type: :request do
       end
     end
   end
+
+  describe "GET /hare_entries/public" do
+    let(:other_user) { User.create!(email: 'other@example.com', password: 'password') }
+    let!(:my_entry) { HareEntry.create!(user: user, body: '自分の公開投稿', occurred_on: Date.today, visibility: 'public_post') }
+    let!(:other_entry) { HareEntry.create!(user: other_user, body: '他人の公開投稿', occurred_on: Date.today, visibility: 'public_post') }
+
+    context '未ログイン時' do
+      it '正常にアクセスできる' do
+        get public_hare_entries_path
+        expect(response).to have_http_status(:success)
+      end
+
+      it '編集・削除ボタンが表示されない' do
+        get public_hare_entries_path
+        expect(response.body).not_to include(edit_hare_entry_path(my_entry))
+        expect(response.body).not_to include('削除')
+      end
+    end
+
+    context 'ログイン時（自分の投稿）' do
+      before { sign_in user }
+
+      it '正常にアクセスできる' do
+        get public_hare_entries_path
+        expect(response).to have_http_status(:success)
+      end
+
+      it '自分の投稿に編集ボタンが表示される' do
+        get public_hare_entries_path
+        expect(response.body).to include(edit_hare_entry_path(my_entry))
+      end
+
+      it '自分の投稿に削除ボタンが表示される' do
+        get public_hare_entries_path
+        # button_to が生成するフォームの action 属性でパスを確認
+        expect(response.body).to include(hare_entry_path(my_entry))
+      end
+    end
+
+    context 'ログイン時（他人の投稿）' do
+      before { sign_in user }
+
+      it '他人の投稿に編集ボタンが表示されない' do
+        get public_hare_entries_path
+        expect(response.body).not_to include(edit_hare_entry_path(other_entry))
+      end
+    end
+  end
 end
