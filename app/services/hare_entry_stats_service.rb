@@ -16,14 +16,15 @@ class HareEntryStatsService
   end
 
   def current_streak
-    dates = @user.hare_entries
-                 .order(occurred_on: :desc)
-                 .pluck(:occurred_on)
-                 .map(&:to_date)
-                 .uniq
+    # 全件ロードを避けるため直近1年分に絞り、Set で O(1) 検索
+    date_set = @user.hare_entries
+                    .where(occurred_on: 1.year.ago.to_date..)
+                    .pluck(:occurred_on)
+                    .map(&:to_date)
+                    .then { |dates| Set.new(dates) }
     streak = 0
     check_date = Date.today
-    while dates.include?(check_date)
+    while date_set.include?(check_date)
       streak += 1
       check_date -= 1.day
     end

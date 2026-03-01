@@ -1,5 +1,13 @@
 class GoogleMapsQueryBuilder
     BASE_URL = "https://www.google.com/maps/search/"
+    MOOD_KEYWORDS = {
+      "light"   => "さっぱり",
+      "rich"    => "こってり",
+      "warm"    => "あったかい",
+      "hearty"  => "がっつり",
+      "healthy" => "ヘルシー",
+      "easy"    => "簡単"
+    }.freeze
 
     def initialize(genre_id, mood_tag_id = nil)
       @genre = Genre.find(genre_id)
@@ -19,19 +27,6 @@ class GoogleMapsQueryBuilder
     private
 
     def mood_keyword
-      case @mood.key
-      when "light"
-        "さっぱり"
-      when "rich"
-        "こってり"
-      when "warm"
-        "あったかい"
-      when "hearty"
-        "がっつり"
-      when "healthy"
-        "ヘルシー"
-      when "easy"
-        "簡単"
-      end
+      MOOD_KEYWORDS[@mood.key]
     end
 end
