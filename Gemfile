@@ -71,6 +71,9 @@ gem "cloudinary"  # 画像ストレージ・CDN（全環境で使用）
 # SVG アイコンライブラリ Lucide Icons [https://github.com/kgiszczak/lucide-rails]
 gem "lucide-rails"
 
+# 本文中の URL を自動リンク化 [https://github.com/rails/rails_autolink]
+gem "rails_autolink"
+
 # AI / LLM 連携 [https://github.com/crmne/ruby_llm]
 gem "ruby_llm"
 # pgvector を ActiveRecord で扱う（ベクトル類似検索）[https://github.com/ankane/neighbor]

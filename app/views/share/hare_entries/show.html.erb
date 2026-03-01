@@ -30,7 +30,7 @@
 
     <%# 本文 %>
     <div class="mb-6">
-      <p class="whitespace-pre-wrap text-lg leading-relaxed text-[#4A4036]"><%= @hare_entry.body %></p>
+      <p class="whitespace-pre-wrap text-lg leading-relaxed text-[#4A4036]"><%= linkify_body(@hare_entry.body) %></p>
     </div>
 
     <%# 写真 %>
@@ -56,7 +56,7 @@
   <%# シェアボタン %>
   <div class="flex justify-center mt-6">
     <%= link_to "𝕏 でシェア",
-      "https://twitter.com/intent/tweet?" + { text: "#{@hare_entry.occurred_on.strftime('%Y年%-m月%-d日')}のハレ記録✨ #ケハレ帖", url: request.url }.to_query,
+      "https://twitter.com/intent/tweet?" + { text: x_share_text(@hare_entry), url: request.url }.to_query,
       target: "_blank",
       rel: "noopener noreferrer",
       class: "px-6 py-2.5 bg-[#4A4036] text-white rounded-full font-semibold hover:bg-[#2E2820] transition-colors shadow-sm" %>
