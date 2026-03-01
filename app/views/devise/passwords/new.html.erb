@@ -1,36 +1,24 @@
-<% content_for :hide_header, true %>
-<% content_for :hide_footer, true %>
+<% forgot_pwd_title = t('.forgot_your_password') %>
+<% send_instructions_label = t('.send_me_reset_password_instructions') %>
+<%= render layout: "devise/shared/auth_wrapper" do %>
+  <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= forgot_pwd_title %></h2>
 
-<div class="min-h-screen bg-[#F5F0E8] flex items-center justify-center py-12 px-4 font-zen">
-  <div class="w-full max-w-md">
-    <%# アプリロゴ %>
-    <div class="text-center mb-8">
-      <%= app_icon("flower-2", css_class: "w-10 h-10 text-[#C87941] inline-block mb-2") %>
-      <h1 class="text-2xl font-bold text-[#4A4036] tracking-widest">keharecho</h1>
-      <p class="text-sm text-[#8D7B68] mt-1">日常に小さなハレを</p>
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+
+    <div class="mb-4">
+      <%= f.label :email, class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
+      <%= f.email_field :email, autofocus: true, autocomplete: "email",
+            class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
     </div>
 
-    <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-md p-8">
-      <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= t('.forgot_your_password') %></h2>
-
-      <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-        <%= render "devise/shared/error_messages", resource: resource %>
-
-        <div class="mb-4">
-          <%= f.label :email, class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
-          <%= f.email_field :email, autofocus: true, autocomplete: "email",
-                class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
-        </div>
-
-        <div class="mt-6">
-          <%= f.submit t('.send_me_reset_password_instructions'),
-                class: "btn w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
-        </div>
-      <% end %>
-
-      <div class="mt-6 pt-5 border-t border-[#E8E0D0]">
-        <%= render "devise/shared/links" %>
-      </div>
+    <div class="mt-6">
+      <%= f.submit send_instructions_label,
+            class: "btn w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
     </div>
+  <% end %>
+
+  <div class="mt-6 pt-5 border-t border-[#E8E0D0]">
+    <%= render "devise/shared/links" %>
   </div>
-</div>
+<% end %>

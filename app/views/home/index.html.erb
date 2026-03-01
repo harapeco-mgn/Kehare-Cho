@@ -88,13 +88,8 @@
         </div>
 
         <%# 週間カレンダー行 %>
-        <%
-          week_start = Date.current.beginning_of_week(:sunday)
-          week_days  = (week_start..(week_start + 6)).to_a
-          day_names  = %w[日 月 火 水 木 金 土]
-        %>
         <div class="flex justify-between items-start gap-1 overflow-x-auto pb-2">
-          <% week_days.each_with_index do |date, i| %>
+          <% @week_days.each_with_index do |date, i| %>
             <% entry    = @week_entries[date] %>
             <% is_today = date == Date.current %>
             <div class="flex flex-col items-center min-w-[2.75rem] <%= entry ? 'cursor-pointer' : '' %>"
@@ -105,7 +100,7 @@
 
               <%# 曜日名 %>
               <span class="text-xs mb-1 <%= is_today ? 'text-[#C87941] font-bold' : 'text-gray-400' %>">
-                <%= day_names[i] %>
+                <%= @day_names[i] %>
               </span>
 
               <%# 日付円 %>

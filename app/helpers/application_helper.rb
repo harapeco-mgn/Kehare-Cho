@@ -1,4 +1,16 @@
 module ApplicationHelper
+  # 日付を日本語フォーマットで表示するヘルパー
+  # @param date [Date, nil] フォーマット対象の日付
+  # @param format [Symbol] :long（年月日曜日）:short（月日）:month（年月）
+  def format_date_ja(date, format: :long)
+    formats = {
+      long:  "%Y年%-m月%-d日（%a）",
+      short: "%-m月%-d日",
+      month: "%Y年%-m月"
+    }
+    date&.strftime(formats[format])
+  end
+
   # 現在のページかどうかでアクティブクラスを付与するリンクヘルパー
   # @param name [String] リンクテキスト
   # @param path [String] リンク先パス

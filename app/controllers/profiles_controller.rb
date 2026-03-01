@@ -3,6 +3,8 @@ class ProfilesController < ApplicationController
   before_action :set_user
 
   def show
+    @total_points            = @user.point_transactions.sum(:points)
+    @total_hare_entries_count = @user.hare_entries.count
   end
 
   def edit

@@ -6,7 +6,9 @@ class HomeController < ApplicationController
       @monthly_hare_entries_count = current_user.monthly_hare_entries_count
       @recent_hare_entries = current_user.hare_entries.includes(:hare_tags).order(occurred_on: :desc).limit(3)
       @calendar_dates = current_user.hare_entries.where(occurred_on: Time.current.all_month).pluck(:occurred_on)
-      week_start = Date.current.beginning_of_week(:sunday)
+      week_start   = Date.current.beginning_of_week(:sunday)
+      @week_days   = (week_start..(week_start + 6)).to_a
+      @day_names   = %w[日 月 火 水 木 金 土]
       @week_entries = current_user.hare_entries
                                   .includes(:hare_tags)
                                   .where(occurred_on: week_start..(week_start + 6))
