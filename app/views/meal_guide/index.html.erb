@@ -1,17 +1,17 @@
 <main class="max-w-3xl mx-auto px-4 pt-6 pb-8 font-zen">
   <%# ページヘッダー %>
   <div class="text-center mb-8">
-    <h1 class="text-3xl font-bold text-[#4A4036] mb-2">どうやって相談する？</h1>
-    <p class="text-[#8D7B68] flex items-center justify-center gap-1">
+    <h1 class="text-3xl font-bold text-sumi mb-2">どうやって相談する？</h1>
+    <p class="text-kogecha flex items-center justify-center gap-1">
       2種類の献立サポートから選んでください
-      <%= app_icon("utensils", css_class: "w-5 h-5 text-[#8EA084]") %>
+      <%= app_icon("utensils", css_class: "w-5 h-5 text-moegi") %>
     </p>
   </div>
 
   <%# 選択カード %>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <%# かんたん献立カード %>
-    <div class="bg-[#8EA084] rounded-3xl p-6 md:p-8 shadow-lg flex flex-col min-h-[220px]">
+    <div class="bg-moegi rounded-3xl p-6 md:p-8 shadow-lg flex flex-col min-h-[220px]">
       <div class="mb-3"><%= app_icon("clipboard-list", css_class: "w-10 h-10 text-white/80") %></div>
       <h2 class="text-white text-xl font-bold mb-2">かんたん献立</h2>
       <p class="text-white/90 text-sm leading-relaxed mb-6 flex-1">
@@ -19,12 +19,12 @@
       </p>
       <div class="mt-auto flex justify-end">
         <%= link_to "選ぶ", new_meal_search_path,
-              class: "bg-white text-[#5C7A60] px-6 py-2 rounded-full font-semibold text-sm hover:bg-[#F5F0E8] transition-colors shadow-md" %>
+              class: "bg-white text-moegi-dark px-6 py-2 rounded-full font-semibold text-sm hover:bg-washi-cream transition-colors shadow-md" %>
       </div>
     </div>
 
     <%# AI献立相談カード %>
-    <div class="bg-gradient-to-br from-[#C87941] to-[#A8602F] rounded-3xl p-6 md:p-8 shadow-lg flex flex-col min-h-[220px]">
+    <div class="bg-gradient-to-br from-kincha to-kincha-brown rounded-3xl p-6 md:p-8 shadow-lg flex flex-col min-h-[220px]">
       <div class="mb-3"><%= app_icon("bot", css_class: "w-10 h-10 text-white/80") %></div>
       <h2 class="text-white text-xl font-bold mb-2">AI献立相談</h2>
       <p class="text-white/90 text-sm leading-relaxed mb-6 flex-1">
@@ -33,10 +33,10 @@
       <div class="mt-auto flex justify-end">
         <% if user_signed_in? %>
           <%= link_to "相談する", new_chat_path,
-                class: "bg-white text-[#A8602F] px-6 py-2 rounded-full font-semibold text-sm hover:bg-[#FFF5E9] transition-colors shadow-md" %>
+                class: "bg-white text-kincha-brown px-6 py-2 rounded-full font-semibold text-sm hover:bg-washi-warm transition-colors shadow-md" %>
         <% else %>
           <%= link_to "ログインして使う", new_user_session_path,
-                class: "bg-white text-[#A8602F] px-6 py-2 rounded-full font-semibold text-sm hover:bg-[#FFF5E9] transition-colors shadow-md" %>
+                class: "bg-white text-kincha-brown px-6 py-2 rounded-full font-semibold text-sm hover:bg-washi-warm transition-colors shadow-md" %>
         <% end %>
       </div>
     </div>
@@ -44,6 +44,6 @@
 
   <%# 戻るリンク %>
   <div class="text-center mt-8">
-    <%= link_to "ホームに戻る", root_path, class: "text-[#8D7B68] hover:text-[#C87941] text-sm transition-colors" %>
+    <%= link_to "ホームに戻る", root_path, class: "text-kogecha hover:text-kincha text-sm transition-colors" %>
   </div>
 </main>

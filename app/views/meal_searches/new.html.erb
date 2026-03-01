@@ -1,41 +1,41 @@
 <main class="max-w-2xl mx-auto p-4 md:p-8 font-zen">
   <%# ページヘッダー %>
   <div class="mb-6">
-    <h1 class="text-2xl md:text-3xl font-bold text-[#4A4036] mb-1 tracking-wide">かんたん献立</h1>
-    <p class="text-[#8D7B68] flex items-center gap-1 text-sm">
+    <h1 class="text-2xl md:text-3xl font-bold text-sumi mb-1 tracking-wide">かんたん献立</h1>
+    <p class="text-kogecha flex items-center gap-1 text-sm">
       今日のごはん、何にしますか？
-      <%= app_icon("utensils", css_class: "w-4 h-4 text-[#8EA084]") %>
+      <%= app_icon("utensils", css_class: "w-4 h-4 text-moegi") %>
     </p>
   </div>
 
   <%# フォームカード %>
-  <div class="bg-[#FFFCF5] rounded-3xl shadow-sm border border-[#E8E0D0] p-6 md:p-8">
+  <div class="bg-washi rounded-3xl shadow-sm border border-washi-border p-6 md:p-8">
     <%= form_with url: meal_searches_path, method: :post, local: true, class: "space-y-8", data: { controller: "meal-search-form", turbo: false } do |f| %>
 
       <%# スタイル: 自炊 or 外食 %>
       <div>
-        <p class="font-bold text-[#4A4036] text-sm tracking-wide mb-3">スタイル</p>
+        <p class="font-bold text-sumi text-sm tracking-wide mb-3">スタイル</p>
         <div class="flex flex-col sm:flex-row gap-3">
           <label class="flex-1 cursor-pointer">
             <%= f.radio_button :cook_context, "self_cook", class: "peer sr-only",
                 data: { action: "change->meal-search-form#toggleMinutes" } %>
             <div class="flex items-center justify-center gap-2 px-4 py-4 rounded-2xl border-2
-                        border-[#E8E0D0] bg-[#FAFAF7]
-                        peer-checked:border-[#C87941] peer-checked:bg-[#FFF5E9]
-                        hover:border-[#D4C4B0] transition-all select-none">
-              <%= app_icon("cooking-pot", css_class: "w-6 h-6 text-[#C87941]") %>
-              <span class="font-semibold text-[#4A4036]">自炊する</span>
+                        border-washi-border bg-washi-ghost
+                        peer-checked:border-kincha peer-checked:bg-washi-warm
+                        hover:border-washi-taupe transition-all select-none">
+              <%= app_icon("cooking-pot", css_class: "w-6 h-6 text-kincha") %>
+              <span class="font-semibold text-sumi">自炊する</span>
             </div>
           </label>
           <label class="flex-1 cursor-pointer">
             <%= f.radio_button :cook_context, "eat_out", class: "peer sr-only",
                 data: { action: "change->meal-search-form#toggleMinutes" } %>
             <div class="flex items-center justify-center gap-2 px-4 py-4 rounded-2xl border-2
-                        border-[#E8E0D0] bg-[#FAFAF7]
-                        peer-checked:border-[#8EA084] peer-checked:bg-[#F0F4EE]
-                        hover:border-[#D4C4B0] transition-all select-none">
-              <%= app_icon("utensils", css_class: "w-6 h-6 text-[#8EA084]") %>
-              <span class="font-semibold text-[#4A4036]">外で食べる</span>
+                        border-washi-border bg-washi-ghost
+                        peer-checked:border-moegi peer-checked:bg-[#F0F4EE]
+                        hover:border-washi-taupe transition-all select-none">
+              <%= app_icon("utensils", css_class: "w-6 h-6 text-moegi") %>
+              <span class="font-semibold text-sumi">外で食べる</span>
             </div>
           </label>
         </div>
@@ -43,15 +43,15 @@
 
       <%# タイミング: 所要時間 %>
       <div data-meal-search-form-target="minutesField">
-        <p class="font-bold text-[#4A4036] text-sm tracking-wide mb-3">タイミング（所要時間）</p>
+        <p class="font-bold text-sumi text-sm tracking-wide mb-3">タイミング（所要時間）</p>
         <div class="flex flex-wrap gap-2">
           <% [10, 20, 30, 45, 60].each do |minutes| %>
             <label class="cursor-pointer">
               <%= f.radio_button :required_minutes, minutes, class: "peer sr-only" %>
               <span class="inline-block px-5 py-2 rounded-full border-2 text-sm font-semibold
-                           border-[#E8E0D0] bg-[#FAFAF7] text-[#8D7B68]
-                           peer-checked:border-[#C87941] peer-checked:bg-[#FFF5E9] peer-checked:text-[#C87941]
-                           hover:border-[#D4C4B0] transition-all cursor-pointer select-none">
+                           border-washi-border bg-washi-ghost text-kogecha
+                           peer-checked:border-kincha peer-checked:bg-washi-warm peer-checked:text-kincha
+                           hover:border-washi-taupe transition-all cursor-pointer select-none">
                 <%= minutes %>分
               </span>
             </label>
@@ -61,30 +61,30 @@
 
       <%# ジャンル %>
       <div>
-        <label class="block font-bold text-[#4A4036] text-sm tracking-wide mb-3">ジャンル</label>
+        <label class="block font-bold text-sumi text-sm tracking-wide mb-3">ジャンル</label>
         <%= f.collection_select :genre_id,
                                 @genres,
                                 :id,
                                 :label,
                                 { prompt: "選択してください" },
-                                { class: "select w-full bg-[#FAFAF7] border-2 border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] transition-colors" } %>
+                                { class: "select w-full bg-washi-ghost border-2 border-washi-border focus:border-kincha focus:outline-none rounded-xl text-sumi transition-colors" } %>
       </div>
 
       <%# 気分タグ %>
       <div>
-        <label class="block font-bold text-[#4A4036] text-sm tracking-wide mb-3">気分</label>
+        <label class="block font-bold text-sumi text-sm tracking-wide mb-3">気分</label>
         <%= f.collection_select :mood_tag_id,
                                 @moods,
                                 :id,
                                 :label,
                                 { prompt: "選択してください" },
-                                { class: "select w-full bg-[#FAFAF7] border-2 border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] transition-colors" } %>
+                                { class: "select w-full bg-washi-ghost border-2 border-washi-border focus:border-kincha focus:outline-none rounded-xl text-sumi transition-colors" } %>
       </div>
 
       <%# 送信ボタン %>
       <div class="pt-2">
         <%= f.submit "候補を見る",
-            class: "btn w-full bg-gradient-to-r from-[#8EA084] to-[#A8BCA3] text-white border-0 rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all font-bold text-base" %>
+            class: "btn w-full bg-gradient-to-r from-moegi to-moegi-light text-white border-0 rounded-full shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all font-bold text-base" %>
       </div>
 
     <% end %>

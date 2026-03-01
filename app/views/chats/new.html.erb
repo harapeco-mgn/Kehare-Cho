@@ -1,43 +1,43 @@
 <main class="max-w-2xl mx-auto px-4 pt-6 pb-8 font-zen">
   <div class="flex items-center justify-between mb-6">
     <div>
-      <h1 class="text-2xl font-bold text-[#4A4036] mb-1">AI 献立相談</h1>
-      <p class="text-[#8D7B68] text-sm flex items-center gap-1">
+      <h1 class="text-2xl font-bold text-sumi mb-1">AI 献立相談</h1>
+      <p class="text-kogecha text-sm flex items-center gap-1">
         何でもお気軽に相談してください
-        <%= app_icon("sparkles", css_class: "w-4 h-4 text-[#C87941]") %>
+        <%= app_icon("sparkles", css_class: "w-4 h-4 text-kincha") %>
       </p>
     </div>
-    <%= link_to "ホーム", home_path, class: "text-[#8D7B68] hover:text-[#C87941] text-sm font-medium transition-colors" %>
+    <%= link_to "ホーム", home_path, class: "text-kogecha hover:text-kincha text-sm font-medium transition-colors" %>
   </div>
 
-  <div class="bg-[#FFFCF5] rounded-3xl shadow-sm border border-[#E8E0D0] p-6 md:p-8">
+  <div class="bg-washi rounded-3xl shadow-sm border border-washi-border p-6 md:p-8">
     <%= form_with model: @chat, url: chats_path, method: :post, class: "space-y-6" do |f| %>
       <div>
-        <label class="block text-sm font-semibold text-[#4A4036] mb-3">相談の種類</label>
+        <label class="block text-sm font-semibold text-sumi mb-3">相談の種類</label>
         <div class="space-y-3">
-          <label class="flex items-center gap-3 cursor-pointer p-4 border-2 border-[#E8E0D0] rounded-2xl hover:border-[#8EA084]/60 transition-colors has-[:checked]:border-[#8EA084] has-[:checked]:bg-[#8EA084]/10 bg-white">
-            <%= f.radio_button :conversation_type, "meal_consultation", class: "text-[#8EA084] w-4 h-4 accent-[#8EA084]" %>
+          <label class="flex items-center gap-3 cursor-pointer p-4 border-2 border-washi-border rounded-2xl hover:border-moegi/60 transition-colors has-[:checked]:border-moegi has-[:checked]:bg-moegi/10 bg-white">
+            <%= f.radio_button :conversation_type, "meal_consultation", class: "text-moegi w-4 h-4 accent-moegi" %>
             <div>
-              <div class="font-semibold text-[#4A4036] flex items-center gap-1.5">
-                <%= app_icon("utensils", css_class: "w-5 h-5 text-[#8EA084]") %> 献立相談
+              <div class="font-semibold text-sumi flex items-center gap-1.5">
+                <%= app_icon("utensils", css_class: "w-5 h-5 text-moegi") %> 献立相談
               </div>
-              <div class="text-sm text-[#8D7B68]">今日のごはんを一緒に決めます</div>
+              <div class="text-sm text-kogecha">今日のごはんを一緒に決めます</div>
             </div>
           </label>
-          <label class="flex items-center gap-3 cursor-pointer p-4 border-2 border-[#E8E0D0] rounded-2xl hover:border-[#C87941]/40 transition-colors has-[:checked]:border-[#C87941] has-[:checked]:bg-[#FFF5E9] bg-white">
-            <%= f.radio_button :conversation_type, "cooking_advice", class: "text-[#C87941] w-4 h-4 accent-[#C87941]" %>
+          <label class="flex items-center gap-3 cursor-pointer p-4 border-2 border-washi-border rounded-2xl hover:border-kincha/40 transition-colors has-[:checked]:border-kincha has-[:checked]:bg-washi-warm bg-white">
+            <%= f.radio_button :conversation_type, "cooking_advice", class: "text-kincha w-4 h-4 accent-kincha" %>
             <div>
-              <div class="font-semibold text-[#4A4036] flex items-center gap-1.5">
-                <%= app_icon("chef-hat", css_class: "w-5 h-5 text-[#C87941]") %> 料理アドバイス
+              <div class="font-semibold text-sumi flex items-center gap-1.5">
+                <%= app_icon("chef-hat", css_class: "w-5 h-5 text-kincha") %> 料理アドバイス
               </div>
-              <div class="text-sm text-[#8D7B68]">レシピや調理のコツを教えます</div>
+              <div class="text-sm text-kogecha">レシピや調理のコツを教えます</div>
             </div>
           </label>
         </div>
       </div>
 
       <%= f.submit "相談を始める",
-            class: "w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 transition-opacity shadow-md cursor-pointer" %>
+            class: "w-full bg-gradient-to-r from-kincha to-kincha-light text-white py-4 rounded-2xl font-bold text-lg hover:opacity-90 transition-opacity shadow-md cursor-pointer" %>
     <% end %>
   </div>
 </main>

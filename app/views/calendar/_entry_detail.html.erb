@@ -1,15 +1,15 @@
 <%# ノート風エントリーカード
     locals: entry (HareEntry), date (Date) %>
-<div class="bg-[#FFFCF5] rounded-3xl shadow-md border-2 border-[#EBE5D9] relative overflow-hidden min-h-[420px]">
+<div class="bg-washi rounded-3xl shadow-md border-2 border-washi-rule relative overflow-hidden min-h-[420px]">
 
   <%# 罫線背景 %>
   <div class="absolute inset-0 pointer-events-none"
-       style="background-image: repeating-linear-gradient(transparent, transparent 39px, #E8E0D0 40px);"></div>
+       style="background-image: repeating-linear-gradient(transparent, transparent 39px, var(--color-washi-border) 40px);"></div>
 
   <%# 穴パンチ（左側） %>
   <div class="absolute top-0 left-6 flex flex-col gap-8 pt-6 h-full pointer-events-none z-20">
     <% 9.times do %>
-      <div class="w-3 h-3 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-3 h-3 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
     <% end %>
   </div>
 
@@ -19,7 +19,7 @@
     <%# ヘッダー: 日付 + フラワーアイコン %>
     <div class="flex justify-between items-start mb-6">
       <div>
-        <span class="text-sm font-bold text-[#C87941] tracking-widest uppercase">
+        <span class="text-sm font-bold text-kincha tracking-widest uppercase">
           <%= l(entry.occurred_on, format: "%A") %>
         </span>
         <%# スクリーンリーダー・テスト用の完全な日付 %>
@@ -27,13 +27,13 @@
           <%= entry.occurred_on.strftime('%Y年%-m月%-d日') %>
         </time>
         <div class="flex items-baseline gap-2 mt-1" aria-hidden="true">
-          <span class="text-5xl font-bold text-[#4A4036]"><%= entry.occurred_on.day %></span>
-          <span class="text-xl text-[#4A4036] opacity-60">日</span>
-          <span class="text-sm text-[#8D7B68]"><%= entry.occurred_on.strftime('%Y年%-m月') %></span>
+          <span class="text-5xl font-bold text-sumi"><%= entry.occurred_on.day %></span>
+          <span class="text-xl text-sumi opacity-60">日</span>
+          <span class="text-sm text-kogecha"><%= entry.occurred_on.strftime('%Y年%-m月') %></span>
         </div>
       </div>
-      <div class="w-16 h-16 rounded-full border-2 border-[#C87941]/30 flex items-center justify-center rotate-12 bg-white/80 shadow-sm">
-        <%= app_icon("flower-2", css_class: "w-8 h-8 text-[#C87941]") %>
+      <div class="w-16 h-16 rounded-full border-2 border-kincha/30 flex items-center justify-center rotate-12 bg-white/80 shadow-sm">
+        <%= app_icon("flower-2", css_class: "w-8 h-8 text-kincha") %>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
     <% if entry.hare_tags.any? %>
       <div class="flex flex-wrap gap-2 mb-6">
         <% entry.hare_tags.each do |tag| %>
-          <span class="px-4 py-1.5 rounded-full bg-[#8D7B68] text-white text-sm font-bold shadow-sm">
+          <span class="px-4 py-1.5 rounded-full bg-kogecha text-white text-sm font-bold shadow-sm">
             <%= tag.label %>
           </span>
         <% end %>
@@ -49,14 +49,14 @@
     <% end %>
 
     <%# 本文 %>
-    <div class="text-base leading-[2.5rem] text-[#4A4036] whitespace-pre-wrap mb-6">
+    <div class="text-base leading-[2.5rem] text-sumi whitespace-pre-wrap mb-6">
       <%= linkify_body(entry.body) %>
     </div>
 
     <%# ポイント %>
     <% if entry.awarded_points&.positive? %>
-      <p class="text-sm text-[#8D7B68] mb-4 flex items-center gap-1">
-        <%= app_icon("sparkles", css_class: "w-4 h-4 text-[#C87941]") %>
+      <p class="text-sm text-kogecha mb-4 flex items-center gap-1">
+        <%= app_icon("sparkles", css_class: "w-4 h-4 text-kincha") %>
         +<%= entry.awarded_points %> ポイント
       </p>
     <% end %>
@@ -65,13 +65,13 @@
     <div class="flex justify-center gap-3 pt-4">
       <%= link_to hare_entry_path(entry),
           data: { turbo_frame: "_top" },
-          class: "flex items-center gap-2 px-6 py-2.5 bg-[#8D7B68] hover:bg-[#776E60] text-white rounded-full shadow-md hover:-translate-y-0.5 transition-all font-bold text-sm" do %>
+          class: "flex items-center gap-2 px-6 py-2.5 bg-kogecha hover:bg-[#776E60] text-white rounded-full shadow-md hover:-translate-y-0.5 transition-all font-bold text-sm" do %>
         <%= app_icon("notebook-pen", css_class: "w-4 h-4") %>
         全文を見る
       <% end %>
       <%= link_to edit_hare_entry_path(entry),
           data: { turbo_frame: "_top" },
-          class: "flex items-center gap-2 px-6 py-2.5 bg-[#FFFCF5] hover:bg-[#FFF0D4] text-[#8D7B68] hover:text-[#C87941] rounded-full shadow-sm border border-[#E8E0D0] hover:border-[#C87941] hover:-translate-y-0.5 transition-all font-bold text-sm" do %>
+          class: "flex items-center gap-2 px-6 py-2.5 bg-washi hover:bg-kincha-bg text-kogecha hover:text-kincha rounded-full shadow-sm border border-washi-border hover:border-kincha hover:-translate-y-0.5 transition-all font-bold text-sm" do %>
         <%= app_icon("pencil", css_class: "w-4 h-4") %>
         編集
       <% end %>

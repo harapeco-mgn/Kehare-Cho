@@ -8,7 +8,7 @@
   { label: "ハレ投稿",     path: new_hare_entry_path },
   { label: "プロフィール", path: profile_path }
 ] %>
-<header class="navbar bg-[#FFFCF5] shadow-md">
+<header class="navbar bg-washi shadow-md">
   <%# モバイル: ハンバーガー + アプリ名 %>
   <div class="navbar-start">
     <div class="dropdown">
@@ -17,26 +17,26 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
         </svg>
       </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-[#FFFCF5] rounded-box w-52">
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-washi rounded-box w-52">
         <% nav_items.each do |item| %>
-          <li><%= active_link_to item[:label], item[:path], class: "text-[#4A4036] hover:text-[#C87941]" %></li>
+          <li><%= active_link_to item[:label], item[:path], class: "text-sumi hover:text-kincha" %></li>
         <% end %>
         <li>
           <%# data-turbo="false" をフォーム要素に設定し Turbo のインターセプトを防ぐ %>
           <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
                         form: { "data-turbo" => "false" },
-                        class: "btn bg-[#C87941] hover:bg-[#A0613A] text-white btn-sm border-0 w-full mt-1" %>
+                        class: "btn bg-kincha hover:bg-kincha-hover text-white btn-sm border-0 w-full mt-1" %>
         </li>
       </ul>
     </div>
-    <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-[#4A4036]" %>
+    <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-sumi" %>
   </div>
 
   <%# デスクトップ: 横並びメニュー %>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 space-x-2">
       <% nav_items.each do |item| %>
-        <li><%= active_link_to item[:label], item[:path], class: "btn btn-ghost btn-sm text-[#4A4036] hover:text-[#C87941]" %></li>
+        <li><%= active_link_to item[:label], item[:path], class: "btn btn-ghost btn-sm text-sumi hover:text-kincha" %></li>
       <% end %>
     </ul>
   </div>
@@ -46,6 +46,6 @@
   <div id="desktop-nav" class="navbar-end hidden lg:flex">
     <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
                   form: { "data-turbo" => "false" },
-                  class: "btn bg-[#C87941] hover:bg-[#A0613A] text-white btn-sm border-0" %>
+                  class: "btn bg-kincha hover:bg-kincha-hover text-white btn-sm border-0" %>
   </div>
 </header>

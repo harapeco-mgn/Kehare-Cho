@@ -1,45 +1,45 @@
 <div class="max-w-4xl mx-auto px-4 pt-6 pb-8 font-zen">
-  <h1 class="text-3xl font-bold mb-6 text-center text-[#4A4036]">ケハレ帖の使い方</h1>
+  <h1 class="text-3xl font-bold mb-6 text-center text-sumi">ケハレ帖の使い方</h1>
 
   <!-- 1. イントロ -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="text-[#C87941] font-bold">今日のごはんに、小さなハレを。</h2>
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="text-kincha font-bold">今日のごはんに、小さなハレを。</h2>
       <p>「ケハレ帖」は、日常の食事に「小さな特別」を見つけて記録するアプリです。</p>
       <p>
-        <strong class="text-[#4A4036]">ケ（褻）</strong>とは「日常」のこと。<strong class="text-[#4A4036]">ハレ（晴れ）</strong>とは「特別な日」のこと。
+        <strong class="text-sumi">ケ（褻）</strong>とは「日常」のこと。<strong class="text-sumi">ハレ（晴れ）</strong>とは「特別な日」のこと。
       </p>
       <p>
         毎日のごはんは「ケ」だけど、ちょっと工夫したり、いつもより美味しいものを選んだり。<br>
-        そんな<span class="text-[#C87941] font-bold">「小さなハレ」</span>を記録して、日常を楽しく振り返りましょう。
+        そんな<span class="text-kincha font-bold">「小さなハレ」</span>を記録して、日常を楽しく振り返りましょう。
       </p>
     </div>
   </div>
 
   <!-- 2. かんたん献立 -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="flex items-center gap-2 text-[#4A4036] font-bold">
-        <%= app_icon("cooking-pot", css_class: "w-6 h-6 text-[#C87941]") %> かんたん献立機能
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="flex items-center gap-2 text-sumi font-bold">
+        <%= app_icon("cooking-pot", css_class: "w-6 h-6 text-kincha") %> かんたん献立機能
       </h2>
-      <p class="text-[#8D7B68]">「今日は何を食べよう？」そんなときは、かんたん献立を使ってみましょう。</p>
-      <ol class="text-[#4A4036]">
+      <p class="text-kogecha">「今日は何を食べよう？」そんなときは、かんたん献立を使ってみましょう。</p>
+      <ol class="text-sumi">
         <li><strong>食事のジャンルを選ぶ</strong>：和食、洋食、中華など、気分に合わせて選択</li>
         <li><strong>候補が3つ表示される</strong>：ランダムにおすすめの献立が提案されます</li>
         <li><strong>気になったらGoogle検索へ</strong>：レシピを調べたり、お店を探したりできます</li>
       </ol>
-      <p class="text-sm text-[#8D7B68]">※ レシピデータベースは持っていません。Google検索で自由に探してください。</p>
+      <p class="text-sm text-kogecha">※ レシピデータベースは持っていません。Google検索で自由に探してください。</p>
     </div>
   </div>
 
   <!-- 3. ハレ投稿 -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="flex items-center gap-2 text-[#4A4036] font-bold">
-        <%= app_icon("sparkles", css_class: "w-6 h-6 text-[#C87941]") %> ハレ投稿機能
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="flex items-center gap-2 text-sumi font-bold">
+        <%= app_icon("sparkles", css_class: "w-6 h-6 text-kincha") %> ハレ投稿機能
       </h2>
-      <p class="text-[#8D7B68]">「今日のごはん、ちょっと特別だったな」と思ったら、ハレ投稿で記録しましょう。</p>
-      <ol class="text-[#4A4036]">
+      <p class="text-kogecha">「今日のごはん、ちょっと特別だったな」と思ったら、ハレ投稿で記録しましょう。</p>
+      <ol class="text-sumi">
         <li><strong>日付を選ぶ</strong>：今日のことでも、過去のことでもOK</li>
         <li><strong>タグを選ぶ</strong>：「いつもより手間をかけた」「ちょっと贅沢した」など、ハレの種類を選択</li>
         <li><strong>ひとことメモを書く</strong>：「久しぶりに魚を焼いた」「デザート付き」など、自由に記録</li>
@@ -49,13 +49,13 @@
   </div>
 
   <!-- 4. カレンダー -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="flex items-center gap-2 text-[#4A4036] font-bold">
-        <%= app_icon("calendar", css_class: "w-6 h-6 text-[#C87941]") %> カレンダー機能
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="flex items-center gap-2 text-sumi font-bold">
+        <%= app_icon("calendar", css_class: "w-6 h-6 text-kincha") %> カレンダー機能
       </h2>
-      <p class="text-[#8D7B68]">投稿したハレは、カレンダーでスタンプとして表示されます。</p>
-      <ul class="text-[#4A4036]">
+      <p class="text-kogecha">投稿したハレは、カレンダーでスタンプとして表示されます。</p>
+      <ul class="text-sumi">
         <li><strong>1か月の記録が一目で分かる</strong>：「今月は何回ハレがあったかな？」</li>
         <li><strong>タグごとにスタンプが違う</strong>：手間をかけた日、贅沢した日が色分けされます</li>
         <li><strong>振り返りが楽しくなる</strong>：「先月より増えてる！」と成長を実感</li>
@@ -64,28 +64,28 @@
   </div>
 
   <!-- 5. ポイント・レベル -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="flex items-center gap-2 text-[#4A4036] font-bold">
-        <%= app_icon("gamepad-2", css_class: "w-6 h-6 text-[#C87941]") %> ポイントとレベル
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="flex items-center gap-2 text-sumi font-bold">
+        <%= app_icon("gamepad-2", css_class: "w-6 h-6 text-kincha") %> ポイントとレベル
       </h2>
-      <p class="text-[#8D7B68]">ハレを投稿するとポイントが貯まり、レベルアップしていきます。</p>
-      <ul class="text-[#4A4036]">
+      <p class="text-kogecha">ハレを投稿するとポイントが貯まり、レベルアップしていきます。</p>
+      <ul class="text-sumi">
         <li><strong>投稿1回で+1ポイント</strong></li>
         <li><strong>1日最大3ポイント</strong>：朝・昼・夜のハレを記録できます</li>
         <li><strong>10ポイントでレベル1アップ</strong>：コツコツ続けることで成長を実感</li>
       </ul>
-      <p class="text-sm text-[#8D7B68]">※ ポイントに特典はありません。自分の成長を楽しむためのものです。</p>
+      <p class="text-sm text-kogecha">※ ポイントに特典はありません。自分の成長を楽しむためのものです。</p>
     </div>
   </div>
 
   <!-- 6. 始め方 -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="flex items-center gap-2 text-[#4A4036] font-bold">
-        <%= app_icon("rocket", css_class: "w-6 h-6 text-[#C87941]") %> 始め方
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="flex items-center gap-2 text-sumi font-bold">
+        <%= app_icon("rocket", css_class: "w-6 h-6 text-kincha") %> 始め方
       </h2>
-      <ol class="text-[#4A4036]">
+      <ol class="text-sumi">
         <li><strong>アカウント登録</strong>：メールアドレスとパスワードで簡単登録</li>
         <li><strong>かんたん献立で今日のごはんを考える</strong>：気軽に試してみましょう</li>
         <li><strong>ハレを見つけたら投稿</strong>：「ちょっと特別」を記録</li>
@@ -94,31 +94,31 @@
       <% if user_signed_in? %>
         <div class="text-center mt-4">
           <%= link_to "かんたん献立を始める", new_meal_search_path,
-                class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full hover:opacity-90 shadow-sm" %>
+                class: "btn bg-gradient-to-r from-kincha to-kincha-light text-white border-0 rounded-full hover:opacity-90 shadow-sm" %>
         </div>
       <% else %>
         <div class="text-center mt-4">
           <%= link_to "アカウント登録", new_user_registration_path,
-                class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full hover:opacity-90 shadow-sm" %>
+                class: "btn bg-gradient-to-r from-kincha to-kincha-light text-white border-0 rounded-full hover:opacity-90 shadow-sm" %>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- 7. FAQ -->
-  <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6 mb-6">
-    <div class="prose max-w-none text-[#4A4036]">
-      <h2 class="flex items-center gap-2 text-[#4A4036] font-bold">
-        <%= app_icon("lightbulb", css_class: "w-6 h-6 text-[#C87941]") %> よくある質問
+  <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6 mb-6">
+    <div class="prose max-w-none text-sumi">
+      <h2 class="flex items-center gap-2 text-sumi font-bold">
+        <%= app_icon("lightbulb", css_class: "w-6 h-6 text-kincha") %> よくある質問
       </h2>
 
-      <h3 class="text-[#4A4036]">Q1. 「ハレ」って、どのくらい特別じゃないとダメ？</h3>
+      <h3 class="text-sumi">Q1. 「ハレ」って、どのくらい特別じゃないとダメ？</h3>
       <p><strong>A.</strong> 基準は自由です！「いつもよりちょっと良い」「ちょっと手間をかけた」「気分が上がった」など、あなたが「特別」と感じたらそれがハレです。</p>
 
-      <h3 class="text-[#4A4036]">Q2. ポイントは何に使えるの？</h3>
+      <h3 class="text-sumi">Q2. ポイントは何に使えるの？</h3>
       <p><strong>A.</strong> ポイントは特典と交換できるものではありません。自分の成長や継続を楽しむための指標です。レベルが上がると達成感が得られます。</p>
 
-      <h3 class="text-[#4A4036]">Q3. レシピは載っていないの？</h3>
+      <h3 class="text-sumi">Q3. レシピは載っていないの？</h3>
       <p><strong>A.</strong> ケハレ帖はレシピデータベースを持っていません。かんたん献立で候補を提案し、Google検索に誘導する形でレシピや食材を探せます。</p>
     </div>
   </div>

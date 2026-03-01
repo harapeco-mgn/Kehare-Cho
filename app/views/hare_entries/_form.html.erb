@@ -15,30 +15,30 @@
 
   <%# 内容入力 %>
   <fieldset class="fieldset" data-controller="character-count">
-    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">内容</legend>
+    <legend class="fieldset-legend font-bold text-sumi text-sm tracking-wide">内容</legend>
     <label class="sr-only" for="hare_entry_body">内容</label>
     <%= f.text_area :body,
-        class: "textarea w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] placeholder-[#C4B8AA] transition-colors",
+        class: "textarea w-full bg-washi border-washi-border focus:border-kincha focus:outline-none rounded-xl text-sumi placeholder-[#C4B8AA] transition-colors",
         rows: 6,
         maxlength: 200,
         placeholder: "今日のごはんで「ちょっと特別」だったことは？（200文字まで）",
         data: { character_count_target: "input", action: "input->character-count#update" } %>
-    <p class="fieldset-label text-right text-[#B8AFA5]">
-      残り <span data-character-count-target="count" class="font-semibold text-[#8D7B68]">200</span> 文字
+    <p class="fieldset-label text-right text-kogecha-light">
+      残り <span data-character-count-target="count" class="font-semibold text-kogecha">200</span> 文字
     </p>
   </fieldset>
 
   <%# 日付入力 %>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">日付</legend>
+    <legend class="fieldset-legend font-bold text-sumi text-sm tracking-wide">日付</legend>
     <%= f.date_field :occurred_on,
-        class: "input w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] transition-colors" %>
+        class: "input w-full bg-washi border-washi-border focus:border-kincha focus:outline-none rounded-xl text-sumi transition-colors" %>
   </fieldset>
 
   <%# タグ選択 %>
   <% if local_assigns[:hare_tags]&.any? %>
     <fieldset class="fieldset">
-      <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">タグ（複数選択可）</legend>
+      <legend class="fieldset-legend font-bold text-sumi text-sm tracking-wide">タグ（複数選択可）</legend>
       <%
         tag_icons = {
           'homemade_meal'       => 'cooking-pot',
@@ -58,11 +58,11 @@
           <label class="cursor-pointer">
             <%= b.check_box(class: "peer sr-only") %>
             <div class="flex flex-col items-center gap-2 p-4 rounded-2xl border-2
-                        border-[#E8E0D0] bg-[#FAFAF7]
-                        peer-checked:border-[#C87941] peer-checked:bg-[#FFF5E9]
-                        hover:border-[#D4C4B0] transition-all select-none">
-              <%= app_icon(tag_icons.fetch(b.object.key, 'tag'), css_class: "w-7 h-7 text-[#C87941]") %>
-              <span class="text-xs font-semibold text-[#4A4036] text-center leading-snug"><%= b.text %></span>
+                        border-washi-border bg-washi-ghost
+                        peer-checked:border-kincha peer-checked:bg-washi-warm
+                        hover:border-washi-taupe transition-all select-none">
+              <%= app_icon(tag_icons.fetch(b.object.key, 'tag'), css_class: "w-7 h-7 text-kincha") %>
+              <span class="text-xs font-semibold text-sumi text-center leading-snug"><%= b.text %></span>
             </div>
           </label>
         <% end %>
@@ -72,35 +72,35 @@
 
   <%# 公開設定 %>
   <fieldset class="fieldset">
-    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">公開設定</legend>
+    <legend class="fieldset-legend font-bold text-sumi text-sm tracking-wide">公開設定</legend>
     <%= f.select :visibility,
         HareEntry.visibilities.keys.map { |k| [I18n.t("enums.hare_entry.visibility.#{k}", default: k), k] },
         {},
-        class: "select w-full bg-[#FFFCF5] border-[#E8E0D0] focus:border-[#C87941] focus:outline-none rounded-xl text-[#4A4036] transition-colors" %>
+        class: "select w-full bg-washi border-washi-border focus:border-kincha focus:outline-none rounded-xl text-sumi transition-colors" %>
   </fieldset>
 
   <%# 写真アップロード %>
   <fieldset class="fieldset" data-controller="image-preview">
-    <legend class="fieldset-legend font-bold text-[#4A4036] text-sm tracking-wide">写真</legend>
+    <legend class="fieldset-legend font-bold text-sumi text-sm tracking-wide">写真</legend>
     <%= f.file_field :photo,
         accept: "image/jpeg,image/png,image/webp",
-        class: "file-input w-full bg-[#FFFCF5] border-[#E8E0D0] rounded-xl text-[#4A4036]",
+        class: "file-input w-full bg-washi border-washi-border rounded-xl text-sumi",
         data: { image_preview_target: "input", action: "change->image-preview#preview" } %>
-    <p class="fieldset-label text-[#B8AFA5]">JPEG、PNG、WebP形式（最大5MB）</p>
+    <p class="fieldset-label text-kogecha-light">JPEG、PNG、WebP形式（最大5MB）</p>
 
     <%# プレビューエリア %>
     <div data-image-preview-target="previewContainer" class="mt-4 hidden">
-      <img data-image-preview-target="preview" class="max-w-full md:max-w-md rounded-xl border border-[#E8E0D0] shadow-sm">
+      <img data-image-preview-target="preview" class="max-w-full md:max-w-md rounded-xl border border-washi-border shadow-sm">
     </div>
 
     <%# 既存の写真表示と削除チェックボックス %>
     <% if hare_entry.photo.attached? %>
       <div class="mt-4">
-        <p class="text-sm font-bold text-[#4A4036] mb-2">現在の写真</p>
-        <%= image_tag cloudinary_photo_url(hare_entry.photo, resize_to_limit: [200, 200]), class: "max-w-full md:max-w-md rounded-xl border border-[#E8E0D0] shadow-sm" %>
+        <p class="text-sm font-bold text-sumi mb-2">現在の写真</p>
+        <%= image_tag cloudinary_photo_url(hare_entry.photo, resize_to_limit: [200, 200]), class: "max-w-full md:max-w-md rounded-xl border border-washi-border shadow-sm" %>
         <label class="flex items-center gap-2 mt-3 cursor-pointer">
           <%= f.check_box :remove_photo, class: "checkbox checkbox-error checkbox-sm" %>
-          <span class="text-sm font-medium text-[#4A4036]">写真を削除する</span>
+          <span class="text-sm font-medium text-sumi">写真を削除する</span>
         </label>
       </div>
     <% end %>
@@ -109,8 +109,8 @@
   <%# ボタン %>
   <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
     <%= f.submit submit_label,
-        class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all rounded-full w-full sm:w-auto px-8 font-zen font-bold" %>
+        class: "btn bg-gradient-to-r from-kincha to-kincha-light text-white border-0 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all rounded-full w-full sm:w-auto px-8 font-zen font-bold" %>
     <%= link_to "キャンセル", cancel_path,
-        class: "btn btn-ghost rounded-full text-[#8D7B68] hover:text-[#4A4036] w-full sm:w-auto text-center transition-colors" %>
+        class: "btn btn-ghost rounded-full text-kogecha hover:text-sumi w-full sm:w-auto text-center transition-colors" %>
   </div>
 <% end %>

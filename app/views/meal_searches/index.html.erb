@@ -1,12 +1,12 @@
 <main class="max-w-5xl mx-auto px-4 pt-6 pb-8 font-zen">
   <%# ページヘッダー %>
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
-    <h1 class="text-2xl md:text-3xl font-bold text-[#4A4036]">かんたん献立のログ</h1>
+    <h1 class="text-2xl md:text-3xl font-bold text-sumi">かんたん献立のログ</h1>
     <div class="flex gap-3">
       <%= link_to "新しく相談する", new_meal_search_path,
-            class: "bg-gradient-to-r from-[#8EA084] to-[#A8C4A0] text-white px-6 py-2.5 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-sm" %>
+            class: "bg-gradient-to-r from-moegi to-[#A8C4A0] text-white px-6 py-2.5 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-sm" %>
       <%= link_to "ホーム", home_path,
-            class: "text-[#8D7B68] hover:text-[#C87941] font-medium transition-colors" %>
+            class: "text-kogecha hover:text-kincha font-medium transition-colors" %>
     </div>
   </div>
 
@@ -14,25 +14,25 @@
   <% if @candidates.present? %>
     <div class="mb-12">
       <div class="flex items-center gap-2 mb-6">
-        <%= app_icon("cooking-pot", css_class: "w-6 h-6 text-[#8EA084]") %>
-        <h2 class="text-2xl font-bold text-[#4A4036]">今回の提案</h2>
+        <%= app_icon("cooking-pot", css_class: "w-6 h-6 text-moegi") %>
+        <h2 class="text-2xl font-bold text-sumi">今回の提案</h2>
       </div>
       <div class="grid md:grid-cols-2 gap-4">
         <% @candidates.each do |candidate| %>
-          <div class="bg-[#FFFCF5] border-2 border-[#8EA084]/50 rounded-3xl p-6 shadow-sm">
-            <h3 class="text-xl font-bold text-[#4A4036] mb-2"><%= candidate.name %></h3>
-            <p class="text-sm text-[#8D7B68] mb-4">
-              ジャンル: <span class="font-semibold text-[#4A4036]"><%= candidate.genre.label %></span>
+          <div class="bg-washi border-2 border-moegi/50 rounded-3xl p-6 shadow-sm">
+            <h3 class="text-xl font-bold text-sumi mb-2"><%= candidate.name %></h3>
+            <p class="text-sm text-kogecha mb-4">
+              ジャンル: <span class="font-semibold text-sumi"><%= candidate.genre.label %></span>
             </p>
             <div class="flex flex-col gap-2 mt-2">
               <%= link_to "Google で検索",
                           GoogleSearchQueryBuilder.new(candidate.name).url,
                           target: "_blank",
                           rel: "noopener noreferrer",
-                          class: "inline-block bg-white text-[#8D7B68] border border-[#D6CCB8] px-4 py-2 rounded-full text-sm font-semibold hover:border-[#C87941] hover:text-[#C87941] transition-colors shadow-sm text-center" %>
+                          class: "inline-block bg-white text-kogecha border border-washi-sand px-4 py-2 rounded-full text-sm font-semibold hover:border-kincha hover:text-kincha transition-colors shadow-sm text-center" %>
               <%= link_to "これにした！記録する",
                           new_hare_entry_path(body: candidate.name),
-                          class: "inline-block bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm text-center" %>
+                          class: "inline-block bg-gradient-to-r from-kincha to-kincha-light text-white px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity shadow-sm text-center" %>
             </div>
           </div>
         <% end %>
@@ -42,32 +42,32 @@
 
   <%# 過去のログ一覧 %>
   <div>
-    <h2 class="text-xl font-bold text-[#4A4036] mb-4">過去の相談</h2>
+    <h2 class="text-xl font-bold text-sumi mb-4">過去の相談</h2>
     <% if @meal_searches.present? %>
       <div class="space-y-3">
         <% @meal_searches.each do |meal_search| %>
-          <div class="bg-[#FFFCF5] rounded-2xl border border-[#E8E0D0] p-5">
+          <div class="bg-washi rounded-2xl border border-washi-border p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-[#8D7B68]"><%= meal_search.created_at.strftime("%Y年%-m月%-d日 %H:%M") %></span>
+              <span class="text-sm text-kogecha"><%= meal_search.created_at.strftime("%Y年%-m月%-d日 %H:%M") %></span>
               <% if meal_search.genre.present? %>
-                <span class="px-3 py-1 bg-[#8EA084]/20 text-[#5C7A60] rounded-full text-xs font-semibold">
+                <span class="px-3 py-1 bg-moegi/20 text-moegi-dark rounded-full text-xs font-semibold">
                   <%= meal_search.genre.label %>
                 </span>
               <% end %>
             </div>
-            <div class="text-[#4A4036]">
+            <div class="text-sumi">
               <span class="font-semibold">提案された候補:</span>
-              <span class="text-[#8D7B68] break-words"><%= meal_search.presented_candidate_names.join(", ") %></span>
+              <span class="text-kogecha break-words"><%= meal_search.presented_candidate_names.join(", ") %></span>
             </div>
           </div>
         <% end %>
       </div>
     <% else %>
-      <div class="text-center py-16 bg-[#FFFCF5] rounded-3xl border-2 border-dashed border-[#E8E0D0]">
+      <div class="text-center py-16 bg-washi rounded-3xl border-2 border-dashed border-washi-border">
         <div class="flex justify-center mb-4">
-          <%= app_icon("utensils", css_class: "w-12 h-12 text-[#D6CCB8]") %>
+          <%= app_icon("utensils", css_class: "w-12 h-12 text-washi-sand") %>
         </div>
-        <p class="text-[#8D7B68]">まだかんたん献立のログがありません</p>
+        <p class="text-kogecha">まだかんたん献立のログがありません</p>
       </div>
     <% end %>
   </div>

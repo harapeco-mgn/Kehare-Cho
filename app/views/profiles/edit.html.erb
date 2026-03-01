@@ -1,16 +1,16 @@
 <div class="max-w-2xl mx-auto px-4 pt-6 pb-8 font-zen">
-  <h1 class="text-2xl font-bold mb-6 text-[#4A4036]">プロフィール編集</h1>
+  <h1 class="text-2xl font-bold mb-6 text-sumi">プロフィール編集</h1>
 
   <%= form_with model: @user, url: profile_path, method: :patch do |f| %>
-    <div class="bg-[#FFFCF5] rounded-3xl border border-[#E8E0D0] shadow-sm p-6">
+    <div class="bg-washi rounded-3xl border border-washi-border shadow-sm p-6">
 
       <% if @user.errors.any? %>
-        <div class="bg-[#FDF3F0] border-l-4 border-[#C87941] p-4 rounded-2xl mb-6">
+        <div class="bg-washi-warm border-l-4 border-kincha p-4 rounded-2xl mb-6">
           <div class="flex items-start">
-            <%= app_icon("alert-circle", css_class: "flex-shrink-0 h-5 w-5 text-[#C87941] mr-2 mt-0.5") %>
+            <%= app_icon("alert-circle", css_class: "flex-shrink-0 h-5 w-5 text-kincha mr-2 mt-0.5") %>
             <div>
-              <h3 class="font-bold text-[#6B3A2A]">入力内容にエラーがあります</h3>
-              <ul class="list-disc list-inside mt-2 text-[#8B4A3A] text-sm">
+              <h3 class="font-bold text-sumi-warm">入力内容にエラーがあります</h3>
+              <ul class="list-disc list-inside mt-2 text-sumi-red text-sm">
                 <% @user.errors.full_messages.each do |message| %>
                   <li><%= message %></li>
                 <% end %>
@@ -21,30 +21,30 @@
       <% end %>
 
       <div class="mb-6">
-        <label class="block text-sm font-bold text-[#4A4036] mb-1">ニックネーム</label>
+        <label class="block text-sm font-bold text-sumi mb-1">ニックネーム</label>
         <%= f.text_field :nickname,
-              class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl",
+              class: "input w-full bg-white text-sumi border-washi-sand focus:border-kincha focus:ring-2 focus:ring-kincha/20 rounded-xl",
               placeholder: "20文字以内で入力してください",
               maxlength: 20 %>
-        <p class="text-xs text-[#8D7B68] mt-1">未設定の場合はメールアドレスの @ 前が表示されます</p>
+        <p class="text-xs text-kogecha mt-1">未設定の場合はメールアドレスの @ 前が表示されます</p>
       </div>
 
-      <div class="h-px bg-[#E8E0D0] my-6"></div>
+      <div class="h-px bg-washi-border my-6"></div>
 
-      <div class="bg-[#FFF5E9] p-4 rounded-2xl border border-[#E8D8C0]">
-        <h3 class="font-bold mb-2 text-[#4A4036]">メールアドレス・パスワードの変更</h3>
-        <p class="text-sm text-[#8D7B68] mb-3">
+      <div class="bg-washi-warm p-4 rounded-2xl border border-washi-tan">
+        <h3 class="font-bold mb-2 text-sumi">メールアドレス・パスワードの変更</h3>
+        <p class="text-sm text-kogecha mb-3">
           セキュリティ上の理由により、メールアドレスとパスワードの変更は専用画面で行います。
         </p>
         <%= link_to "変更する", edit_user_registration_path,
-              class: "px-4 py-2 border-2 border-[#C87941] text-[#C87941] rounded-xl hover:bg-[#FFF5E9] transition-colors font-semibold text-sm" %>
+              class: "px-4 py-2 border-2 border-kincha text-kincha rounded-xl hover:bg-washi-warm transition-colors font-semibold text-sm" %>
       </div>
 
-      <div class="flex justify-end items-center gap-4 mt-8 pt-6 border-t border-[#E8E0D0]">
+      <div class="flex justify-end items-center gap-4 mt-8 pt-6 border-t border-washi-border">
         <%= link_to "キャンセル", profile_path,
-              class: "px-6 py-3 text-[#8D7B68] hover:text-[#4A4036] font-semibold transition-colors" %>
+              class: "px-6 py-3 text-kogecha hover:text-sumi font-semibold transition-colors" %>
         <%= f.submit "更新",
-              class: "bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-md cursor-pointer" %>
+              class: "bg-gradient-to-r from-kincha to-kincha-light text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition-opacity shadow-md cursor-pointer" %>
       </div>
     </div>
   <% end %>

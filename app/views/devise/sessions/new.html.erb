@@ -1,12 +1,12 @@
 <% sign_in_label = t('.sign_in') %>
 <%= render layout: "devise/shared/auth_wrapper" do %>
-  <h2 class="text-xl font-bold text-[#4A4036] mb-6"><%= sign_in_label %></h2>
+  <h2 class="text-xl font-bold text-sumi mb-6"><%= sign_in_label %></h2>
 
   <%# Google でログインボタン %>
   <%= button_to user_google_oauth2_omniauth_authorize_path,
         method: :post,
         data: { turbo: false },
-        class: "btn w-full bg-white text-[#4A4036] border border-[#D6CCB8] rounded-full font-bold text-base hover:bg-[#F5F0E8] transition-colors shadow-sm cursor-pointer flex items-center justify-center gap-2 mb-4" do %>
+        class: "btn w-full bg-white text-sumi border border-washi-sand rounded-full font-bold text-base hover:bg-washi-cream transition-colors shadow-sm cursor-pointer flex items-center justify-center gap-2 mb-4" do %>
     <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
       <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -18,40 +18,40 @@
 
   <%# メール/パスワード フォームとの区切り %>
   <div class="flex items-center gap-3 mb-4">
-    <div class="flex-1 h-px bg-[#E8E0D0]"></div>
-    <span class="text-xs text-[#8D7B68]">または</span>
-    <div class="flex-1 h-px bg-[#E8E0D0]"></div>
+    <div class="flex-1 h-px bg-washi-border"></div>
+    <span class="text-xs text-kogecha">または</span>
+    <div class="flex-1 h-px bg-washi-border"></div>
   </div>
 
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="mb-4">
-      <%= f.label :email, class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
+      <%= f.label :email, class: "block text-sm font-semibold text-sumi mb-1" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email",
-            class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
+            class: "input w-full bg-white text-sumi border-washi-sand focus:border-kincha focus:ring-2 focus:ring-kincha/20 rounded-xl" %>
     </div>
 
     <div class="mb-4">
-      <%= f.label :password, class: "block text-sm font-semibold text-[#4A4036] mb-1" %>
+      <%= f.label :password, class: "block text-sm font-semibold text-sumi mb-1" %>
       <%= f.password_field :password, autocomplete: "current-password",
-            class: "input w-full bg-white text-[#4A4036] border-[#D6CCB8] focus:border-[#C87941] focus:ring-2 focus:ring-[#C87941]/20 rounded-xl" %>
+            class: "input w-full bg-white text-sumi border-washi-sand focus:border-kincha focus:ring-2 focus:ring-kincha/20 rounded-xl" %>
     </div>
 
     <% if devise_mapping.rememberable? %>
       <div class="mb-4">
         <label class="flex items-center gap-2 cursor-pointer">
-          <%= f.check_box :remember_me, class: "checkbox checkbox-sm border-[#D6CCB8] checked:bg-[#C87941] rounded" %>
-          <span class="text-sm text-[#8D7B68]"><%= f.label :remember_me %></span>
+          <%= f.check_box :remember_me, class: "checkbox checkbox-sm border-washi-sand checked:bg-kincha rounded" %>
+          <span class="text-sm text-kogecha"><%= f.label :remember_me %></span>
         </label>
       </div>
     <% end %>
 
     <div class="mt-6">
       <%= f.submit sign_in_label,
-            class: "btn w-full bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
+            class: "btn w-full bg-gradient-to-r from-kincha to-kincha-light text-white border-0 rounded-full font-bold text-base hover:opacity-90 transition-opacity shadow-sm cursor-pointer" %>
     </div>
   <% end %>
 
-  <div class="mt-6 pt-5 border-t border-[#E8E0D0]">
+  <div class="mt-6 pt-5 border-t border-washi-border">
     <%= render "devise/shared/links" %>
   </div>
 <% end %>

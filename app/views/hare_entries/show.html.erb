@@ -1,35 +1,35 @@
 <main class="max-w-3xl mx-auto p-4 md:p-8 font-zen">
   <%# 戻るリンク %>
   <div class="mb-6">
-    <%= link_to hare_entries_path, class: "inline-flex items-center gap-1 text-[#8D7B68] hover:text-[#C87941] font-medium transition-colors" do %>
+    <%= link_to hare_entries_path, class: "inline-flex items-center gap-1 text-kogecha hover:text-kincha font-medium transition-colors" do %>
       <%= app_icon("arrow-left", css_class: "w-4 h-4") %> 一覧に戻る
     <% end %>
   </div>
 
   <%# ノート風メインカード %>
-  <div class="relative bg-[#FFFCF5] rounded-3xl shadow-md border-2 border-[#E8E0D0] overflow-hidden">
+  <div class="relative bg-washi rounded-3xl shadow-md border-2 border-washi-border overflow-hidden">
 
     <%# 罫線背景 %>
     <div class="absolute inset-0 pointer-events-none"
-         style="background-image: repeating-linear-gradient(transparent, transparent calc(2.5rem - 1px), #EBE5D9 2.5rem);"></div>
+         style="background-image: repeating-linear-gradient(transparent, transparent calc(2.5rem - 1px), var(--color-washi-rule) 2.5rem);"></div>
 
     <%# 穴パンチ装飾（左側） %>
     <div class="absolute top-0 left-5 flex flex-col gap-10 pt-8 h-full pointer-events-none z-20">
-      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
-      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
-      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
-      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
-      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
-      <div class="w-4 h-4 rounded-full bg-[#F9F6EE] border-2 border-[#D6CCB8] shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
+      <div class="w-4 h-4 rounded-full bg-washi-faint border-2 border-washi-sand shadow-inner"></div>
     </div>
 
     <%# コンテンツ本体 %>
     <div class="relative z-10 p-8 pl-14">
 
       <%# ヘッダー: 日付 + スタンプバッジ %>
-      <div class="flex justify-between items-start mb-6 pb-4" style="border-bottom: 1px solid #EBE5D9;">
+      <div class="flex justify-between items-start mb-6 pb-4" style="border-bottom: 1px solid var(--color-washi-rule);">
         <div>
-          <p class="text-xs font-bold text-[#C87941] tracking-widest uppercase mb-1">
+          <p class="text-xs font-bold text-kincha tracking-widest uppercase mb-1">
             <%= l(@hare_entry.occurred_on, format: "%A") %>
           </p>
           <%# スクリーンリーダー・テスト用の完全な日付 %>
@@ -37,46 +37,46 @@
             <%= @hare_entry.occurred_on.strftime('%Y年%-m月%-d日') %>
           </time>
           <div class="flex items-baseline gap-2" aria-hidden="true">
-            <span class="text-5xl font-bold text-[#4A4036]"><%= @hare_entry.occurred_on.day %></span>
-            <span class="text-xl text-[#4A4036] opacity-60">日</span>
-            <span class="text-base text-[#8D7B68]"><%= @hare_entry.occurred_on.strftime('%Y年%-m月') %></span>
+            <span class="text-5xl font-bold text-sumi"><%= @hare_entry.occurred_on.day %></span>
+            <span class="text-xl text-sumi opacity-60">日</span>
+            <span class="text-base text-kogecha"><%= @hare_entry.occurred_on.strftime('%Y年%-m月') %></span>
           </div>
         </div>
         <%# スタンプ風バッジ %>
         <% if @hare_entry.public_post? %>
           <div class="flex flex-col items-center gap-1">
-            <div class="w-16 h-16 rounded-full border-2 border-[#C87941]/50 flex items-center justify-center rotate-6 bg-white/80 shadow-sm">
-              <%= app_icon("sparkles", css_class: "w-7 h-7 text-[#C87941]") %>
+            <div class="w-16 h-16 rounded-full border-2 border-kincha/50 flex items-center justify-center rotate-6 bg-white/80 shadow-sm">
+              <%= app_icon("sparkles", css_class: "w-7 h-7 text-kincha") %>
             </div>
-            <span class="text-xs font-bold text-[#C87941] rotate-3">公開中</span>
+            <span class="text-xs font-bold text-kincha rotate-3">公開中</span>
           </div>
         <% else %>
           <div class="flex flex-col items-center gap-1">
-            <div class="w-16 h-16 rounded-full border-2 border-[#8EA084]/50 flex items-center justify-center -rotate-3 bg-white/80 shadow-sm">
-              <%= app_icon("lock", css_class: "w-7 h-7 text-[#8EA084]") %>
+            <div class="w-16 h-16 rounded-full border-2 border-moegi/50 flex items-center justify-center -rotate-3 bg-white/80 shadow-sm">
+              <%= app_icon("lock", css_class: "w-7 h-7 text-moegi") %>
             </div>
-            <span class="text-xs font-bold text-[#8EA084] -rotate-2">非公開</span>
+            <span class="text-xs font-bold text-moegi -rotate-2">非公開</span>
           </div>
         <% end %>
       </div>
 
       <%# 本文 %>
       <div class="mb-8" style="line-height: 2.5rem;">
-        <p class="whitespace-pre-wrap text-[#4A4036] text-lg"><%= linkify_body(@hare_entry.body) %></p>
+        <p class="whitespace-pre-wrap text-sumi text-lg"><%= linkify_body(@hare_entry.body) %></p>
       </div>
 
       <%# 写真表示 %>
       <% if @hare_entry.photo.attached? %>
         <div class="mb-8">
           <%= image_tag cloudinary_photo_url(@hare_entry.photo, resize_to_limit: [600, 600]),
-              class: "w-full max-w-2xl rounded-2xl border-2 border-[#E8E0D0] shadow-md" %>
+              class: "w-full max-w-2xl rounded-2xl border-2 border-washi-border shadow-md" %>
         </div>
       <% end %>
 
       <%# アクションボタン %>
-      <div class="flex flex-wrap gap-3 pt-4 mt-4" style="border-top: 1px solid #EBE5D9;">
+      <div class="flex flex-wrap gap-3 pt-4 mt-4" style="border-top: 1px solid var(--color-washi-rule);">
         <%= link_to edit_hare_entry_path(@hare_entry),
-            class: "btn bg-gradient-to-r from-[#C87941] to-[#E8A87C] text-white border-0 rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
+            class: "btn bg-gradient-to-r from-kincha to-kincha-light text-white border-0 rounded-full shadow hover:shadow-md hover:-translate-y-0.5 transition-all" do %>
           <%= app_icon("pencil", css_class: "w-4 h-4 mr-1") %> 編集
         <% end %>
         <%= button_to hare_entry_path(@hare_entry),
@@ -90,11 +90,11 @@
                data-clipboard-text-value="<%= share_hare_entry_url(@hare_entry.share_token) %>">
             <button data-action="click->clipboard#copy"
                     data-clipboard-target="button"
-                    class="btn btn-outline border-[#8EA084] text-[#8EA084] hover:bg-[#8EA084] hover:text-white rounded-full transition-all">
+                    class="btn btn-outline border-moegi text-moegi hover:bg-moegi hover:text-white rounded-full transition-all">
               <%= app_icon("link", css_class: "w-4 h-4 mr-1") %> URLをコピー
             </button>
             <span data-clipboard-target="feedback"
-                  class="hidden ml-2 text-sm text-[#8EA084] font-medium">コピーしました！</span>
+                  class="hidden ml-2 text-sm text-moegi font-medium">コピーしました！</span>
           </div>
           <%= link_to "https://twitter.com/intent/tweet?" + { text: x_share_text(@hare_entry), url: share_hare_entry_url(@hare_entry.share_token) }.to_query,
             target: "_blank",
@@ -103,7 +103,7 @@
             𝕏 でシェア
           <% end %>
         <% end %>
-        <%= link_to hare_entries_path, class: "btn btn-ghost rounded-full text-[#8D7B68] hover:text-[#4A4036] transition-colors" do %>
+        <%= link_to hare_entries_path, class: "btn btn-ghost rounded-full text-kogecha hover:text-sumi transition-colors" do %>
           一覧に戻る
         <% end %>
       </div>
