@@ -1,4 +1,13 @@
 module ApplicationHelper
+  # 現在のページかどうかでアクティブクラスを付与するリンクヘルパー
+  # @param name [String] リンクテキスト
+  # @param path [String] リンク先パス
+  # @param options [Hash] HTML オプション（class など）
+  def active_link_to(name, path, **options)
+    active_class = current_page?(path) ? "text-[#C87941] bg-[#F5ECD7]" : nil
+    link_to name, path, **options.merge(class: [ options[:class], active_class ].compact.join(" "))
+  end
+
   # Lucide SVG アイコンを描画するラッパーヘルパー
   # @param name [String] Lucide アイコン名（例: "sparkles", "bot"）
   # @param css_class [String] Tailwind CSS クラス（デフォルト: インラインテキスト用サイズ）

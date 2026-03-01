@@ -1,4 +1,14 @@
-<header class="navbar bg-white shadow-md">
+<% nav_items = [
+  { label: "ホーム",       path: home_path },
+  { label: "カレンダー",   path: calendar_path },
+  { label: "かんたん献立", path: new_meal_search_path },
+  { label: "AI相談",       path: new_chat_path },
+  { label: "振り返り",     path: reflection_path },
+  { label: "みんなのハレ", path: public_hare_entries_path },
+  { label: "ハレ投稿",     path: new_hare_entry_path },
+  { label: "プロフィール", path: profile_path }
+] %>
+<header class="navbar bg-[#FFFCF5] shadow-md">
   <%# モバイル: ハンバーガー + アプリ名 %>
   <div class="navbar-start">
     <div class="dropdown">
@@ -7,37 +17,27 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
         </svg>
       </div>
-      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52">
-        <li><%= link_to "ホーム", home_path, class: "#{current_page?(home_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "カレンダー", calendar_path, class: "#{current_page?(calendar_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "かんたん献立", new_meal_search_path, class: "#{current_page?(new_meal_search_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "AI相談", new_chat_path, class: "#{current_page?(new_chat_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "振り返り", reflection_path, class: "#{current_page?(reflection_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "#{current_page?(public_hare_entries_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "ハレ投稿", new_hare_entry_path, class: "#{current_page?(new_hare_entry_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-        <li><%= link_to "プロフィール", profile_path, class: "#{current_page?(profile_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-[#FFFCF5] rounded-box w-52">
+        <% nav_items.each do |item| %>
+          <li><%= active_link_to item[:label], item[:path], class: "text-[#4A4036] hover:text-[#C87941]" %></li>
+        <% end %>
         <li>
           <%# data-turbo="false" をフォーム要素に設定し Turbo のインターセプトを防ぐ %>
           <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
                         form: { "data-turbo" => "false" },
-                        class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0 w-full mt-1" %>
+                        class: "btn bg-[#C87941] hover:bg-[#A0613A] text-white btn-sm border-0 w-full mt-1" %>
         </li>
       </ul>
     </div>
-    <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-gray-900" %>
+    <%= link_to t('app_name'), root_path, class: "text-xl font-bold text-[#4A4036]" %>
   </div>
 
   <%# デスクトップ: 横並びメニュー %>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 space-x-2">
-      <li><%= link_to "ホーム", home_path, class: "btn btn-ghost btn-sm #{current_page?(home_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "カレンダー", calendar_path, class: "btn btn-ghost btn-sm #{current_page?(calendar_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "かんたん献立", new_meal_search_path, class: "btn btn-ghost btn-sm #{current_page?(new_meal_search_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "AI相談", new_chat_path, class: "btn btn-ghost btn-sm #{current_page?(new_chat_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "振り返り", reflection_path, class: "btn btn-ghost btn-sm #{current_page?(reflection_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "みんなのハレ", public_hare_entries_path, class: "btn btn-ghost btn-sm #{current_page?(public_hare_entries_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "ハレ投稿", new_hare_entry_path, class: "btn btn-ghost btn-sm #{current_page?(new_hare_entry_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
-      <li><%= link_to "プロフィール", profile_path, class: "btn btn-ghost btn-sm #{current_page?(profile_path) ? 'text-orange-600 bg-orange-50' : 'text-gray-700 hover:text-orange-600'}" %></li>
+      <% nav_items.each do |item| %>
+        <li><%= active_link_to item[:label], item[:path], class: "btn btn-ghost btn-sm text-[#4A4036] hover:text-[#C87941]" %></li>
+      <% end %>
     </ul>
   </div>
 
@@ -46,6 +46,6 @@
   <div id="desktop-nav" class="navbar-end hidden lg:flex">
     <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
                   form: { "data-turbo" => "false" },
-                  class: "btn bg-orange-600 hover:bg-orange-700 text-white btn-sm border-0" %>
+                  class: "btn bg-[#C87941] hover:bg-[#A0613A] text-white btn-sm border-0" %>
   </div>
 </header>
