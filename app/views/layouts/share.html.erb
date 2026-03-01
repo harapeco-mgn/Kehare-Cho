@@ -5,15 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= content_for?(:title) ? yield(:title) : "ケハレ帖" %></title>
 
-    <%# OGP メタタグ %>
-    <meta property="og:title" content="<%= content_for?(:og_title) ? yield(:og_title) : "ケハレ帖" %>">
-    <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを" %>">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="<%= request.url %>">
-    <% if content_for?(:og_image) %>
-      <meta property="og:image" content="<%= yield(:og_image) %>">
-    <% end %>
-    <meta name="twitter:card" content="summary">
+    <%# meta description（SEO） %>
+    <meta name="description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
+
+    <%# OGP（Open Graph Protocol） %>
+    <meta property="og:title"       content="<%= content_for?(:og_title) ? yield(:og_title) : "ケハレ帖" %>">
+    <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
+    <meta property="og:type"        content="article">
+    <meta property="og:url"         content="<%= request.original_url %>">
+    <meta property="og:image"       content="<%= content_for?(:og_image) ? yield(:og_image) : image_url("ogp.png") %>">
+    <meta property="og:site_name"   content="ケハレ帖">
+    <meta property="og:locale"      content="ja_JP">
+
+    <%# Twitter Card %>
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="<%= content_for?(:og_title) ? yield(:og_title) : "ケハレ帖" %>">
+    <meta name="twitter:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
+    <meta name="twitter:image"       content="<%= content_for?(:og_image) ? yield(:og_image) : image_url("ogp.png") %>">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+
+    <%# 和モダンフォント %>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
