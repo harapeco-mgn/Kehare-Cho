@@ -161,6 +161,84 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe '.from_omniauth' do
+    let(:auth) do
+      OmniAuth::AuthHash.new({
+        provider: 'google_oauth2',
+        uid: '123456789',
+        info: { email: 'google@example.com', name: 'Google ユーザー' }
+      })
+    end
+
+    context '同じ provider + uid のユーザーが存在する場合' do
+      let!(:existing_user) { create(:user, provider: 'google_oauth2', uid: '123456789', email: 'google@example.com') }
+
+      it '既存ユーザーを返す' do
+        user = User.from_omniauth(auth)
+        expect(user).to eq existing_user
+      end
+
+      it '新しいユーザーは作成しない' do
+        expect { User.from_omniauth(auth) }.not_to change(User, :count)
+      end
+    end
+
+    context '同じメールアドレスの既存ユーザーが存在する場合（provider/uid なし）' do
+      let!(:existing_user) { create(:user, email: 'google@example.com', provider: nil, uid: nil) }
+
+      it '既存ユーザーを返す' do
+        user = User.from_omniauth(auth)
+        expect(user).to eq existing_user
+      end
+
+      it 'provider と uid を既存ユーザーに紐付ける' do
+        User.from_omniauth(auth)
+        existing_user.reload
+        expect(existing_user.provider).to eq 'google_oauth2'
+        expect(existing_user.uid).to eq '123456789'
+      end
+
+      it '新しいユーザーは作成しない' do
+        expect { User.from_omniauth(auth) }.not_to change(User, :count)
+      end
+    end
+
+    context '一致するユーザーが存在しない場合' do
+      it '新しいユーザーを作成する' do
+        expect { User.from_omniauth(auth) }.to change(User, :count).by(1)
+      end
+
+      it '正しいメールアドレスで作成される' do
+        user = User.from_omniauth(auth)
+        expect(user.email).to eq 'google@example.com'
+      end
+
+      it '正しい provider と uid で作成される' do
+        user = User.from_omniauth(auth)
+        expect(user.provider).to eq 'google_oauth2'
+        expect(user.uid).to eq '123456789'
+      end
+    end
+  end
+
+  describe '#password_required?' do
+    context 'provider が空の場合（メール/パスワード認証ユーザー）' do
+      let(:user) { build(:user, provider: nil) }
+
+      it 'パスワードが必要' do
+        expect(user.password_required?).to be true
+      end
+    end
+
+    context 'provider が設定されている場合（OAuth ユーザー）' do
+      let(:user) { build(:user, provider: 'google_oauth2', uid: '123456789') }
+
+      it 'パスワードが不要' do
+        expect(user.password_required?).to be false
+      end
+    end
+  end
+
   describe '#level' do
     let(:user) { create(:user) }
 
