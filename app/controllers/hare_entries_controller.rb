@@ -46,8 +46,7 @@ class HareEntriesController < ApplicationController
 
     def destroy
       @hare_entry.destroy
-      # 削除後に total_points カウンターキャッシュを更新
-      current_user.update!(total_points: current_user.point_transactions.sum(:points))
+      PointRecalculationService.recalculate_total(current_user)
       redirect_to hare_entries_path, notice: "ハレの記録を削除しました"
     end
 

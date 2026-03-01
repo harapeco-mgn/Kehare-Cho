@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_01_023236) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_01_060322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "vector"
@@ -220,6 +220,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_01_023236) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["awarded_on"], name: "index_point_transactions_on_awarded_on"
+    t.index ["hare_entry_id", "point_rule_id"], name: "index_point_transactions_on_hare_entry_and_rule", unique: true
     t.index ["hare_entry_id"], name: "index_point_transactions_on_hare_entry_id"
     t.index ["point_rule_id"], name: "index_point_transactions_on_point_rule_id"
     t.index ["user_id"], name: "index_point_transactions_on_user_id"

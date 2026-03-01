@@ -5,4 +5,5 @@ class PointTransaction < ApplicationRecord
 
   validates :awarded_on, presence: true
   validates :points, presence: true
+  validates :point_rule_id, uniqueness: { scope: :hare_entry_id }
 end

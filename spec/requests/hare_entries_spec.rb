@@ -216,8 +216,9 @@ RSpec.describe "HareEntries", type: :request do
         end
 
         context '複数のポイントが存在する場合' do
+          let!(:hare_entry2) { HareEntry.create!(user: user, body: 'テスト投稿2', occurred_on: Time.zone.today, visibility: 'private_post') }
           let!(:point_transaction2) do
-            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+            create(:point_transaction, user: user, hare_entry: hare_entry2, point_rule: point_rule,
                                        points: 25, awarded_on: Time.zone.today.end_of_month)
           end
 
@@ -228,8 +229,9 @@ RSpec.describe "HareEntries", type: :request do
         end
 
         context '先月のポイントがある場合' do
+          let!(:hare_entry2) { HareEntry.create!(user: user, body: 'テスト投稿2', occurred_on: 1.month.ago.to_date, visibility: 'private_post') }
           let!(:last_month_transaction) do
-            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+            create(:point_transaction, user: user, hare_entry: hare_entry2, point_rule: point_rule,
                                        points: 200, awarded_on: 1.month.ago)
           end
 
@@ -292,8 +294,9 @@ RSpec.describe "HareEntries", type: :request do
             create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
                                        points: 10, awarded_on: Time.zone.today)
           end
+          let!(:hare_entry2) { HareEntry.create!(user: user, body: 'テスト投稿2', occurred_on: 1.month.ago.to_date, visibility: 'private_post') }
           let!(:point_transaction2) do
-            create(:point_transaction, user: user, hare_entry: hare_entry, point_rule: point_rule,
+            create(:point_transaction, user: user, hare_entry: hare_entry2, point_rule: point_rule,
                                        points: 12, awarded_on: 1.month.ago)
           end
 
