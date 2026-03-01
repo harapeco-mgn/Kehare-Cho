@@ -7,7 +7,7 @@ class EmbeddingService
 
   # テキストをベクトル（768次元）に変換する
   # @param text [String] 変換対象のテキスト
-  # @return [Array<Float>] 768次元のベクトル
+  # @return [Array<Float>, nil] 768次元のベクトル。API エラー時は nil を返す
   def self.generate(text)
     api_key = ENV.fetch("GEMINI_API_KEY")
     uri = URI("#{GEMINI_API_BASE}/#{EMBEDDING_MODEL}:embedContent?key=#{api_key}")
@@ -17,5 +17,8 @@ class EmbeddingService
     }.to_json
     response = Net::HTTP.post(uri, body, "Content-Type" => "application/json")
     JSON.parse(response.body).dig("embedding", "values")
+  rescue StandardError => e
+    Rails.logger.error "[EmbeddingService] 埋め込み生成に失敗しました: #{e.class} - #{e.message}"
+    nil
   end
 end
