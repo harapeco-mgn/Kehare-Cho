@@ -47,7 +47,7 @@
         <span class="text-sm font-semibold text-[#8D7B68]">累計ポイント</span>
         <div class="flex items-center gap-2">
           <%= app_icon("sparkles", css_class: "w-5 h-5 text-[#C87941]") %>
-          <span class="text-lg font-semibold text-[#4A4036]"><%= @user.point_transactions.sum(:points) %> pt</span>
+          <span class="text-lg font-semibold text-[#4A4036]"><%= @total_points %> pt</span>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
         <span class="text-sm font-semibold text-[#8D7B68]">総ハレ投稿数</span>
         <div class="flex items-center gap-2">
           <%= app_icon("flower-2", css_class: "w-5 h-5 text-[#C87941]") %>
-          <span class="text-lg font-semibold text-[#4A4036]"><%= @user.hare_entries.count %> 件</span>
+          <span class="text-lg font-semibold text-[#4A4036]"><%= @total_hare_entries_count %> 件</span>
         </div>
       </div>
 
