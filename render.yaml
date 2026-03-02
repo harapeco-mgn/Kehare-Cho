@@ -38,6 +38,8 @@ services:
         value: "true"
       - key: RAILS_MAX_THREADS
         value: "1"
+      - key: RUBY_YJIT_ENABLE
+        value: "0"
       - key: RAILS_ENV
         value: production
       - key: RAILS_LOG_LEVEL
