@@ -84,6 +84,7 @@
     <legend class="fieldset-legend font-bold text-sumi text-sm tracking-wide">写真</legend>
     <%= f.file_field :photo,
         accept: "image/jpeg,image/png,image/webp",
+        direct_upload: true,
         class: "file-input w-full bg-washi border-washi-border rounded-xl text-sumi",
         data: { image_preview_target: "input", action: "change->image-preview#preview" } %>
     <p class="fieldset-label text-kogecha-light">JPEG、PNG、WebP形式（最大5MB）</p>
