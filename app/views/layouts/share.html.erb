@@ -13,7 +13,7 @@
     <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
     <meta property="og:type"        content="article">
     <meta property="og:url"         content="<%= request.original_url %>">
-    <meta property="og:image"       content="<%= content_for?(:og_image) ? yield(:og_image) : image_url("ogp.png") %>">
+    <meta property="og:image"       content="<%= content_for?(:og_image) ? yield(:og_image) : "#{request.base_url}/ogp.png" %>">
     <meta property="og:site_name"   content="ケハレ帖">
     <meta property="og:locale"      content="ja_JP">
 
@@ -21,7 +21,7 @@
     <meta name="twitter:card"        content="summary_large_image">
     <meta name="twitter:title"       content="<%= content_for?(:og_title) ? yield(:og_title) : "ケハレ帖" %>">
     <meta name="twitter:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "日常の食事に小さなハレを足す。毎日の食事記録アプリ「ケハレ帖」" %>">
-    <meta name="twitter:image"       content="<%= content_for?(:og_image) ? yield(:og_image) : image_url("ogp.png") %>">
+    <meta name="twitter:image"       content="<%= content_for?(:og_image) ? yield(:og_image) : "#{request.base_url}/ogp.png" %>">
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
