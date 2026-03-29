@@ -1,0 +1,40 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f docker-compose.yml ]; then echo '🔍 Docker環境チェック中...'; docker compose exec -T web bash -c 'echo \"RAILS_ENV=$RAILS_ENV\" && echo \"DATABASE_URL=$DATABASE_URL\"' 2>/dev/null || echo '⚠️ Dockerコンテナが起動していません'; fi"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if echo \"$CLAUDE_TOOL_INPUT\" | grep -qE 'rspec|db:test|db:drop'; then docker compose exec -T web bash -c 'if [ -n \"$DATABASE_URL\" ]; then echo \"⚠️ WARNING: DATABASE_URL is set: $DATABASE_URL\"; echo \"This may override RAILS_ENV-based database selection.\"; fi' 2>/dev/null || true; fi"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(echo \"$CLAUDE_TOOL_INPUT\" | jq -r '.file_path // empty'); if [ -n \"$FILE\" ] && echo \"$FILE\" | grep -qE '\\.rb$'; then docker compose exec -T web bundle exec rubocop \"$FILE\" --format simple 2>/dev/null | tail -5 || true; fi"
+          }
+        ]
+      }
+    ]
+  }
+}
