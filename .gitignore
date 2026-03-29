@@ -1,6 +1,5 @@
 # --- AI assistant instructions (local only) ---
 .github/copilot-instructions.md
-**/CLAUDE.md
 .cursorrules
 .agent/
 test.md
